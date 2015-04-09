@@ -1,0 +1,192 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-include name="group_edit.html" />
+
+<al-macro name="contact_user_select">
+ <table border="0" class="darker">
+  <al-if expr="contact_user_select.results is None">
+   <al-if expr="unit.contact_user_id is not None">
+    <al-exec expr="contact_user = unit.get_ref('contact_user_id')" />
+    <tr>
+     <td>Name:</td>
+     <td><al-value expr="contact_user.fullname" />
+    </tr>
+    <tr>
+     <td>Title:</td>
+     <td><al-value expr="contact_user.title" />
+    </tr>
+    <tr>
+     <td>Work Phone:</td>
+     <td><al-value expr="contact_user.phone_work" />
+    </tr>
+    <tr>
+     <td>Home Phone:</td>
+     <td><al-value expr="contact_user.phone_home" />
+    </tr>
+    <tr>
+     <td>Mobile Phone:</td>
+     <td><al-value expr="contact_user.phone_mobile" />
+    </tr>
+    <tr>
+     <td>Fax Phone:</td>
+     <td><al-value expr="contact_user.phone_fax" />
+    </tr>
+    <tr>
+     <td>e-mail:</td>
+     <td><al-value expr="contact_user.email" />
+    </tr>
+   </al-if>
+   <tr>
+    <td colspan="2">
+     <al-input name="contact_user_select.search_term" size="40" />
+     <al-input type="submit" class="butt" name="contact_user_select_go" value="Search" />
+    </td>
+   </tr>
+   <al-if expr="contact_user_select.error_msg">
+    <tr>
+     <td class="reverr" colspan="2">
+      <al-value expr="contact_user_select.error_msg" />
+     </td>
+    </tr>
+   </al-if>
+  <al-else>
+   <tr><th colspan="3">User search results:</th></tr>
+   <al-for iter="result_i" expr="contact_user_select.results">
+    <al-exec expr="user_result = result_i.value()" />
+    <tr>
+     <td><al-value expr="user_result.username"></td>
+     <td><al-value expr="user_result.fullname"></td>
+     <td align="right"><al-input type="submit" class="butt" value="Apply"
+       nameexpr="'contact:%s' % user_result.user_id" /></td>
+    </tr>
+   </al-for>
+   <tr>
+    <td class="darkest" align="right" colspan="3">
+     <al-input type="submit" class="butt" name="contact_user_select_cancel" value="Cancel" />
+    </td>
+   </tr>
+  </al-if>
+ </table>
+</al-macro>
+
+<al-expand name="page_layout_admin">
+ <al-setarg name="title"><al-value expr="config.unit_label" /> <al-value expr="repr(unit.name)" /></al-setarg>
+  <table border="0" class="admin-u">
+   <tr>
+    <td colspan="2">
+     <table width="100%" border="0">
+      <tr>
+       <th width="100%">Edit <al-value expr="config.unit_label"></th>
+       <al-if expr="not unit.is_new()">
+        <td align="center" class="darkest">
+          <al-input name="users" type="submit" class="butt" value="Users" />
+        </td>
+       </al-if>
+      </tr>
+     </table>
+    </td>
+   </tr>
+   <tr>
+    <td align="right">Name:</td>
+    <td><al-input name="unit.name" size="60" /></td>
+   </tr>
+   <tr>
+    <td align="right">Enabled:</td>
+    <td align="left">
+     <al-input id="unit_enabled" name="unit.enabled" type="radio" value="True">Yes
+     <al-input id="unit_disabled" name="unit.enabled" type="radio" value="">No
+    </td>
+   </tr>
+   <tr>
+    <td align="right"><al-value expr="config.group_label" />:</td>
+    <td>
+     <al-expand name="group_edit" />
+    </td>
+   </tr>
+   <tr>
+    <td align="right">Rights:</td>
+    <td align="left">
+     <al-if expr="group_pt">
+      <table width="100%" class="gridtab" cellpadding="2" style="text-align: center;">
+       <tr>
+        <al-for iter="g_i" expr="group_pt">
+         <th><al-value expr="g_i.value().group_name" /></th>
+        </al-for>
+        <th><al-value expr="config.unit_label" /></th>
+        <th style="text-align: left;" width="100%">Right</th>
+       </tr>
+       <al-for iter="r_i" expr="credentials.Rights.available">
+        <tr class="darker">
+         <al-for iter="g_i" expr="group_pt">
+          <td>
+           <al-input type="checkbox" name="grouprights" disabled
+             checkedbool="r_i.value().right in credentials.Rights(g_i.value().rights)" />
+          </td>
+         </al-for>
+         <td>
+          <al-input type="checkbox" name="urights" list
+           valueexpr="r_i.value().right" />
+         </td>
+         <td align="left">
+          <al-value expr="r_i.value().label" />
+          <al-if expr="r_i.value().desc">
+           <span class="smaller"> (<al-value expr="r_i.value().desc"/>)</span>
+          </al-if>
+         </td>
+        </tr>
+       </al-for>
+      </table>
+     </al-if>
+    </td>
+   </tr>
+   <tr>
+    <td align="right">Street Address:</td>
+    <td><al-input name="unit.street_address" size="60" /></td>
+   </tr>
+   <tr>
+    <td align="right">Postal Address:</td>
+    <td><al-input name="unit.postal_address" size="60" /></td>
+   </tr>
+   <tr>
+    <td align="right">Contact Person:</td>
+    <td>
+      <al-expand name="contact_user_select" />
+    </td>
+   </tr>
+   <tr>
+    <td colspan="2" class="darkest">
+     <al-expand name="confirm_or_error">
+      <table width="100%" cellpadding="0" cellspacing="0">
+       <tr>
+        <td align="center" width="100%">
+         <al-input class="butt danger" name="delete" type="submit" value="delete" />
+        </td>
+        <td align="right">
+         <al-input class="butt" name="update" type="submit" value="Save" />
+         <script>enterSubmit('appform', 'update');</script>
+        </td>
+       </tr>
+      </table>
+     </al-expand>
+    </td>
+   </tr>
+  </table>
+</al-expand>

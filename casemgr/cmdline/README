@@ -1,0 +1,35 @@
+Modules in this directory are NetEpi plug-ins that implement the netepi
+command line command.
+
+The script "app/cmdline.py" is installed into the system path, and is
+responsible for setting the sys.path so that application modules can
+be found. It then imports one of the "plug-ins" in this directory and
+calls the plug-in module's main() function with the (modified) cmdline
+arguments. The plug-in is then responsible for doing it's own setup and
+command line parsing.  In most cases, the plug-ins will be minimal,
+implemented as calls into the application modules, where the bulk of
+the logic will be.
+
+The driver script accepts (and suppresses) these arguments:
+
+    -D                  Enable application "debug" mode
+    -T                  Enable application "database trace" mode
+
+Modules must support these arguments:
+
+    -h, --help          Print module-specific usage
+
+Modules may support these arguments:
+
+    --csv               Write output in CSV format
+    -n, --dry-run       Do not perform any actions; show what would be
+                        performed
+    -o, --outfile       Write output to specified file
+    -q, --quiet         Run without generating unnecessary output
+    -s, --syndrome      Use specified syndrome/case definition (pattern)
+    -u, --username      Run with credentials of specified user (default to
+                        'admin').
+    -v, --verbose       Produce friendlier output (by default, output should
+                        suit scripting).
+
+Plug-ins should avoid using the above options for other purposes.

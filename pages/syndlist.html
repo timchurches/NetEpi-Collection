@@ -1,0 +1,92 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-macro name="syndlist">
+  <div class="syndlist">
+   <al-if expr="synd_list">
+    <al-input name="syn_detail" type="hidden" value="" />
+    <al-for vars="item" iter="syndrome_i" expr="synd_list">
+     <div class="syndrome">
+      <al-div class="foldicon" 
+        idexpr="'icon_syndrome_%s' % item.syndrome_id"></al-div>
+      <al-if expr="item.syndrome.has_additional_info">
+        <al-input class="info" type="image"
+          nameexpr="'syn_detail:%s' % item.syndrome_id" 
+          srcexpr="appath('images/info.png')" />
+      </al-if>
+      <al-h1 idexpr="'label_syndrome_%s' % item.syndrome_id">
+        <al-value expr="item.syndrome.name" />
+      </al-h1>
+      <div class="actions">
+       <al-for vars="mb_item" expr="item.menubar.left">
+        <al-div class="sl-action" idexpr="'label_'+mb_item.name">
+         <al-if expr="'butt' in mb_item.style">
+          <al-input class="sublink" type="submit"
+           nameexpr="mb_item.name" expr="mb_item.label" />
+          <al-if expr="mb_item.drop">
+           <al-span class="sla-more clickable" 
+            idexpr="'icon_'+mb_item.name">&#9660;</al-span>
+          <al-else>
+           &nbsp;&nbsp;
+          </al-if>
+         <al-elif expr="mb_item.drop">
+          <al-span class="clickable sublink" idexpr="'icon_'+mb_item.name">
+           <al-value expr="mb_item.label" />
+           <span class="sla-more">&#9660;</span>
+          </al-span>
+         </al-if>
+         <al-if expr="mb_item.drop">
+          <al-div class="mb_items" idexpr="'list_' + mb_item.name">
+           <al-for vars="name, label" expr="mb_item.drop">
+            <al-div class="clickable" idexpr="name"><al-value expr="label" /></al-div>
+            <al-comment><al-input class="sublink" type="submit"
+             nameexpr="name" expr="label" /><br></al-comment>
+           </al-for>
+          </al-div>
+          <script>droplist('<al-value expr="mb_item.name" />', true);</script>
+         </al-if>
+        </al-div>
+       </al-for>
+      </div>
+      <al-if expr="item.syndrome.description">
+       <al-div class="detail" 
+         idexpr="'fold_syndrome_%s' % item.syndrome_id">
+         <al-value expr="wiki_text(item.syndrome.description)" 
+          noescape="noescape"/>
+         <script>linkfold('syndrome_<al-value expr="item.syndrome_id" />', true);</script>
+       </al-div>
+      </al-if>
+      <div class="count">
+       <al-if expr="item.record_count is not None">
+        <al-value expr="item.record_count"> records
+       </al-if>
+      </div>
+      <al-if expr="item.syndrome.post_date">
+       <div class="count">
+        Posted <al-value expr="item.syndrome.post_date">
+       </div>
+      </al-if>
+     </div>
+    </al-for>
+   <al-else>
+    No <al-value expr="config.syndrome_label.lower()" />s available
+   </al-if>
+  </div>
+</al-macro>

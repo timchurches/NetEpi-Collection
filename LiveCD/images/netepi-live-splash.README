@@ -1,0 +1,15 @@
+Splash screen image is converted to a syslinux-specific format, and
+is shown on a 640x480 VGA screen. Colours come from a pallette of 16,
+with index 0 being background colour and index 7 being foreground.
+
+Ubuntu live CD isolinux boot loader uses "isolinux/splash.rle" which is
+generated with:
+
+    pcxtoppm images/netpi-live-splash.pcx \
+        | ppmtolss16 '#ff9e00=7' '#000000=0' > isolinux/splash.rle
+
+The ppmtolss16 tool is a perl script that is included in the syslinux
+distribution, and pcxtoppm is part of the NetPBM toolchain.
+
+isolinux has been patched to use gfxboot, and this is configured to use
+isolinux/splash.pcx, so this also needs to be copied into the CD.

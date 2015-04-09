@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<form name='sars_travel' form_type='case' allow_multiple='True'>
+ <label>Travel history (SARS)</label>
+ <question>
+  <label>
+   <![CDATA[<b>History of travel to or transit through an area affected by
+   SARS</b> <br> <br>Please list all countries visited,along with the relevant
+   dates of arrival and departure, and flight numbers.]]>
+  </label>
+ </question>
+ <question>
+  <label>
+   For people visiting China, Hong Kong, Vietnam, Canada, and Singapore please
+   complete individual country travel forms as well.
+  </label>
+ </question>
+ <question>
+  <label>Country</label>
+  <input name='Country' type='TextInput' required='True'>
+   <summary>Country</summary>
+   <pre_text>Country</pre_text>
+  </input>
+ </question>
+ <question>
+  <label>Date of arrival</label>
+  <input name='Arrival_date' type='DateInput' required='True'>
+   <summary>Arrival date</summary>
+   <pre_text>Arrival date</pre_text>
+  </input>
+ </question>
+ <question>
+  <label>Arrival flight number</label>
+  <input name='Arrival_flight' type='TextInput'>
+   <pre_text>Arrival flight number</pre_text>
+  </input>
+ </question>
+ <question>
+  <label>Date of departure</label>
+  <input name='Departure_date' type='DateInput'>
+   <pre_text>Departure date</pre_text>
+  </input>
+ </question>
+ <question>
+  <label>Departure flight number</label>
+  <input name='Departure_flight' type='TextInput'>
+   <pre_text>Departure flight number</pre_text>
+  </input>
+ </question>
+ <question>
+  <label>Duration of visit</label>
+  <input name='Duration' type='IntInput'>
+   <summary>Duration of visit (days)</summary>
+   <pre_text>Duration</pre_text>
+   <post_text>Whole days</post_text>
+  </input>
+ </question>
+</form>

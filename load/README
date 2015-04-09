@@ -1,0 +1,155 @@
+NetEpi Collection Functional Test Facility
+==========================================
+
+NOTE - this code has not been maintained for some time, and is almost
+certainly non-functional in its current form. It has been retained to
+illustrate an alternative to the Selenium-based functional tests.
+
+LICENSE
+=======
+
+All material associated with "NetEpi Collection" is Copyright (C) 2004-2010
+Health Administration Corporation (New South Wales Department of Health).
+
+NetEpi Collection is licensed under the terms of the Health
+Administration Corporation Open Source License Version 1.2 (HACOS License
+V1.2), the full text of which can be found in the LICENSE file provided
+with NetEpi Collection.
+
+A set of functional (end-to-end) tests are under development.  Functional
+tests "exercise" the application from the user's perspective, by using
+an automated Web browser client.
+
+Two approaches are being taken. The first uses "Selenium", an open source Web
+application testing facility which uses very sophisticated Javascript to
+"drive" a Web browser to interact with the application. see the ../Selenium
+directory in the NetEpi Collection distribution for more details.
+
+An alternative approach to functional testing does not use a Web
+browser at all - the functional test programmes just pretend to be
+a Web browser by "speaking" HTTP (the protocol used by Web browsers)
+to the NetEpi Collection Web server, and checking that the expected
+responses are received. That is the approach taken by the initial
+functional test programme in this directory. 
+
+Although we plan to develop a comprehensive suite of functional tests,
+it is difficult and time-consuming to do this while the NetEpi software
+is still undergoing rapid evolution. Thus, in the current version,
+there is only one functional test provided in this directory (although
+several more are available in the ./Selenium directory).  The main use
+of the test programme provided here (formtest2.py) is for load testing -
+that is, checking the performance under load of your Web server, and also
+the characteristics (bandwidth and latency) of the network connection
+over which users will use NetEpi applications.
+
+PREREQUISITES
+=============
+
+As mentioned in the top-level README installation instructions, you need
+to have the ClientForm (http://wwwsearch.sourceforge.net/ClientForm/)
+and ClientCookie (http://wwwsearch.sourceforge.net/ClientCookie/)
+extension libraries for Python installed.
+
+In addition, you also need a source of test data. Test data must be in
+the form of a CSV (comma-separated value) file containing the following
+columns (fields) in the following order (note numbering starts at zero):
+
+    0: (ignored)
+    1: sex
+    2: given_names
+    3: surname
+    4: street_number
+    5: street_name_and_type (note columns 4 and 5 are concatenated
+       together, so all the street address data can placed in column 4
+       or column 5 if you wish)
+    6: (ignored)
+    7: locality (suburb, town)
+    8: postcode
+    9: state (as distributed, NetEpi Collection expects an Australian
+       state or territory abbreviation i.e. QLD, NSW, VIC, TAS, ACT,
+       SA, WA or NT
+    10: date of birth in yyyymmdd format
+    11: an arbitrary ID number
+
+A convenient method of generating such a file is to use the dbgen
+facility provided by the Febrl open source probabilistic record
+linkage project (see http://febrl.sf.net for more information about
+this project).  Febrl version 0.3 or later can be downloaded from
+http://sourceforge.net/project/showfiles.php?group_id=62161 You do not
+need to install it, just unpack the Febrl tarball and change to the
+dbgen subdirectory. Then issue the following command:
+
+    python generate.py testdata.csv 10000 0 0 uniform
+
+This will synthesise 10,000 dummy names and addresses and store them in
+a file called testdata.csv. You can specify numbers larger or smaller
+than 10,000 if you wish. The resulting file can be compressed using gzip
+(but not zip or other compression utilities) if you wish - the functional
+testing script can read gzipped data directly. Copy or move the test
+data file to the Collection load directory.
+
+However, dbgen does not include a sex field (something which needs to be
+fixed).  You can edit the formtest2.py programme to remove the need for
+the sex column, or you can add a sex column to the data file generated
+by dbgen, or you can use the small synthesised data file provided in
+the ./load directory.
+
+RUNNING THE TESTS
+=================
+
+Note that the test programme itself generates a significant load on
+the system on which it is running, thus is it generally better to run
+the test programme on a different machine from the Web server hosting
+NetEpi Collection (except if you merely wish to use it to load some
+dummy records for demonstration purposes).
+
+The full range of options and parameters can been seen by issuing the
+command (after changing to the load subdirectory):
+
+    python formtest2.py --help
+
+which produces the following output:
+
+    usage: Usage: formtest2.py --username=<username> 
+                    --password=<password> [options] <persons.csv> ...
+
+    options:
+    -h, --help            show this help message and exit
+    -C, --no-contacts     if given, only create cases, no contacts (contacts 
+                          creation currently disabled)
+    --sars-travel         if given, fill in a number of sars travel forms
+    --use_lynx            if given, program will use /usr/bin/lynx to extract
+                          clean HTML (Linux and Unix machines only)
+    -FLOG_FORMAT, --log-format=LOG_FORMAT
+                          log format string (default: %(asctime)s: %(levelname)s
+                            %(message)s)
+    -lLOG, --log=LOG      specify log targets
+    -q, --quiet           disable normal output
+    --retry               retry after errors
+    -UURL, --url=URL      specify application URL [default: URL]
+    -sSLEEP, --sleep=SLEEP
+                          sleep SLEEP seconds between interactions
+    --skip=SKIP           skip SKIP rows into the person data
+    -D, --debug           enable debugging
+    -uUSERNAME, --username=USERNAME
+                          username to use to login to NetEpi Collection
+    -pPASSWORD, --password=PASSWORD
+                          password to use to login to NetEpi Collection
+
+In general, you will need to specify the --url, --username and --password
+options. If lynx is available (it is on most Linux systems), then it may
+be helpful to include the --use_lynx option. The --retry option causes
+the functional tester to attempt to continue operation if an error is
+encountered (due, for instance, to a network outage or similar).
+
+Note that more than one instance of the formtest2.py script may be run
+at once, and all instances can point to the same Collection instance -
+this simulates multiple users all using the facility at once. All these
+instances of formtest2.py can use the same testdata file, but you need
+to specify a different --skip offset for each instance so that they do
+not all feed the same data to Collection.
+
+We have successfully run six instances of formtest2.py against a single
+Collection instance, loading 300,000 cases and their contacts (a
+process which took several days).
+

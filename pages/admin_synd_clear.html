@@ -1,0 +1,63 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-include name="search_pt.html" />
+<al-include name="group_edit.html" />
+
+<al-expand name="page_layout_admin">
+ <al-setarg name="title">Clearing <al-value expr="config.syndrome_label" /> <al-value expr="syndrome.name" /></al-setarg>
+ <div class="centbox">
+  <h1>CLEARING <al-value expr="config.syndrome_label" /></h1>
+  <al-if expr="syndrome.description">
+   <div class="quote">
+    <h1><al-value expr="syndrome.name" /></h1>
+    <al-value expr="wiki_text(syndrome.description)" noescape="noescape" />
+   </div>
+  </al-if>
+  <al-if expr="clear_syndrome.errors">
+   <div><al-value expr="config.syndrome_label"> cannot be cleared:</div>
+   <al-for iter="e" expr="clear_syndrome.errors">
+    <div class="err"><al-value expr="e.value()" /></div>
+   </al-for>
+  </al-if>
+  <al-if expr="clear_syndrome.case_count is not None">
+   <div>Clearing this <al-value expr="config.syndrome_label" /> will 
+    irreversably delete <al-value expr="clear_syndrome.case_count" /> 
+    case(s), <al-value expr="clear_syndrome.form_count" /> form(s) and
+    <al-value expr="clear_syndrome.task_count" /> task(s). 
+    <al-if expr="not have_errors() and not clear_syndrome.errors">
+     It is recommended that you back up your data before performing
+     this operation.<br>
+     <b>Check this box to acknowledge the above:</b>
+     <al-input type="checkbox" name="clear_syndrome.acknowledge" value="ACK" />
+    </al-if>
+   </div>
+  </al-if>
+  <table width="100%">
+   <tr>
+    <td align="right">
+     <al-if expr="not have_errors() and not clear_syndrome.errors">
+      <al-input class="bigbutt danger" name="delete" type="submit" value="Delete (data only)" />
+     </al-if>
+    </td>
+   </tr>
+  </table>
+ </div>
+</al-expand>

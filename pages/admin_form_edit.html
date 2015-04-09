@@ -1,0 +1,233 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-include name="form_inputs.html" />
+
+<al-macro name="formedit">
+     <table class="admin-fe-work" id="formedit" border="0">
+      <al-tree iter="tree_i" expr="form_meta.root">
+       <al-exec expr="node = tree_i.value()" />
+
+       <al-if expr="node != form_meta.root">
+        <al-comment><!-- Add section/question --></al-comment>
+        <tr>
+         <al-if expr="tree_i.depth() > 1">
+          <al-td colspanexpr="tree_i.depth() - 1" class="line"></al-td>
+         </al-if>
+         <al-td colspanexpr="tree_i.span() + 2" class="line hover-expand">
+          <al-input type="image" alt="add" class="he-opener"
+                srcexpr="appath('images/plus.png')"
+                nameexpr="'add:%s' % node.id()" />
+          <span class="he-open">
+           <al-input type="image" alt="add question"
+                 srcexpr="appath('images/add-question.png')"
+                 nameexpr="'add_question:%s' % node.id()" />
+           <al-input type="image" alt="add section"
+                 srcexpr="appath('images/add-section.png')"
+                 nameexpr="'add_section:%s' % node.id()" />
+           <al-if expr="form_cutbuff">
+            <al-input type="image" alt="paste"
+                  srcexpr="appath('images/add-paste.png')"
+                  nameexpr="'paste:%s' % node.id()" />
+           </al-if>
+          </span>
+         </al-td>
+        </tr>
+       </al-if>
+
+       <al-if expr="node.node_type != 'end'">
+        <al-tr classexpr="node.css_class()" idexpr="node.id()">
+         <al-comment><!-- Q number --></al-comment>
+         <al-if expr="tree_i.depth()">
+          <al-if expr="tree_i.depth() > 1">
+           <al-td colspanexpr="tree_i.depth() - 1"></al-td>
+          </al-if>
+          <td class="number"><al-value expr="node.get_label()" /></td>
+         </al-if>
+         <al-comment><!-- Text --></al-comment>
+         <al-if expr="node.node_type == 'section'">
+          <al-td colspanexpr="tree_i.span() + 1" class="qtext">
+           <al-if expr="section_edit and section_edit.node == node">
+            <div class="noselect fieldandbutt">
+             <div class="andbutt">
+              <al-input type="submit" class="butt" 
+               name="section_edit_ok" value="Okay" />
+              <al-input type="submit" class="butt" 
+               name="section_edit_cancel" value="Cancel" />
+              <al-expand name="wikihelp" />
+             </div>
+             <div class="fieldand">
+             <al-textarea cols="40" rows="4" 
+              name="section_edit.text" noescape />
+             </div>
+            </div>
+           <al-else>
+            <al-value expr="wiki_text(node.text)" noescape />
+           </al-if>
+          </al-td>
+         <al-elif expr="node.node_type == 'question'">
+          <al-td colspanexpr="tree_i.span() + (not node.inputs)" class="qtext">
+           <al-for iter="skiptext_i" expr="node.skiptext()">
+            <div class="skiptext"><al-value expr="wiki_oneliner(skiptext_i.value())" noescape></div>
+           </al-for>
+           <al-if expr="getattr(node, 'help', None)">
+            <al-img expr="appath('images/info.png')" class="right" />
+           </al-if>
+           <al-value expr="wiki_text(node.text)" noescape />
+          </al-td>
+          <al-comment><!-- Inputs --></al-comment>
+          <al-if expr="node.inputs">
+           <td class="inputs">
+            <table width="100%" border="0">
+             <al-for iter="input_i" expr="node.inputs">
+              <al-exec expr="input = input_i.value()" />
+              <al-value lookup="input_markup" expr="input.render" />
+              <al-if expr="input_i.index() < len(node.inputs) - 1">
+               <tr><td class="line" colspan="2"></td></tr>
+              </al-if>
+             </al-for>
+            </table>
+           </td>
+          </al-if>
+         </al-if>
+        </al-tr>
+       </al-if>
+      </al-tree>
+     </table>
+     <al-input type="hidden" name="selected" />
+     <script>
+      jsselect('formedit', fe_select('appform', 'selected', 
+                              ['Cancel', 'Copy', 'Cut']), fe_click, true);
+      attachExpandOnHover('formedit');
+      scrollRemember('appform', 'fe_<al-value expr="form_meta.name"/>');
+     </script>
+</al-macro>
+
+<al-expand name="page_layout_admin">
+ <al-script srcexpr="appath('admin.js')" type="text/javascript"></al-script>
+ <al-setarg name="title">Design form - 
+  <al-value expr="form_meta.name"> - 
+  <al-value expr="form_meta.root.text"></al-setarg>
+
+  <al-expand name="confirm_or_error" />
+
+  <al-if expr="mode == 'rename' or mode.startswith('saveas')">
+   <div class="centbox">
+    <h1><al-if expr="mode == 'rename'">Rename<al-else>Save As</al-if></h1>
+    New name: <al-input size="30" type="text" name="new_name" />
+     <al-input class="butt" type="submit" name="name_okay" value="Okay" />
+     <al-input class="butt" type="submit" name="name_cancel" value="Cancel" />
+   </div>
+  </al-if>
+
+  <al-if expr="mode == 'import'">
+   <div class="centbox">
+    <h1>Import a form definition</h1>
+    Local file: <al-input class="file" type="file" name="import_form" />
+     <al-input class="butt" type="submit" name="name_okay" value="Okay" />
+     <al-input class="butt" type="submit" name="name_cancel" value="Cancel" />
+   </div>
+  </al-if>
+
+  <al-if expr="mode == 'delete_confirm'">
+   <div class="centbox">
+    <h1>Delete this form definition</h1>
+    <p>You have requested that this form definition be deleted. Note that this
+    operation cannot be undone - both the form definition and <b>all form data
+    will be lost</b>. Are you sure you want to delete this form?</p>
+    <al-input type="submit" name="delete_okay" value="Yes, Delete" />
+      <al-input type="submit" name="delete_cancel" value="Do not Delete" />
+   </div>
+  </al-if>
+
+  <al-if expr="mode == 'edit' and not confirm">
+   <table class="admin-fe">
+    <tr>
+     <td class="nav">
+      <al-input type="submit" class="item butt" name="preview"   value="Preview" />
+      <al-if expr="form_meta.has_changed() and form_meta.name">
+       <al-input type="submit" class="item butt" name="save"     value="Save" />
+      </al-if>
+      <al-input type="submit" class="item butt" name="saveas"  value="Save As" />
+      <al-input type="submit" class="item butt" name="rename"   value="Rename" />
+      <al-if expr="form_meta.name">
+       <al-input type="submit" class="item butt" name="export"   value="Export" />
+      </al-if>
+      <al-input type="submit" class="item butt" name="import"   value="Import" />
+      <br />
+      <table class="item">
+       <tr>
+        <td>Type:</td>
+        <td><al-select name="form_meta.root.form_type" onchange="submit();"
+         optionexpr="form_meta.root.form_types" /></td>
+       </tr>
+       <tr>
+        <td>Multi:</td>
+        <td><al-input type="checkbox" name="form_meta.root.allow_multiple" value="True" onclick="submit();" /></td>
+       </tr>
+      </table>
+      <br />
+      <table class="item smaller">
+       <tr><th colspan="2">Versions</th></tr>
+       <tr>
+        <td>This <al-if expr="form_meta.has_changed()">(modified)</al-if>:</td>
+        <td align="right"><al-value expr="form_meta.version" /></td>
+       </tr>
+       <al-if expr="form_meta.root.update_time">
+        <tr>
+         <td colspan="2"><al-value expr="form_meta.root.update_time" /></td>
+        </tr>
+       </al-if>
+       <tr>
+        <td>Deployed:</td>
+        <td align="right"><al-value expr="form_meta.vers_deployed()" /></td>
+       </tr>
+      </table>
+      <al-select name="vers_select" onchange="submit();" class="item"
+        optionexpr="form_meta.available_vers()" />
+      <al-input type="submit" class="item butt" name="vers_go" value="Change Vers" />
+      <al-input type="submit" class="item butt" name="diff" value="Diff vs deployed" />
+      <br />
+      <al-if expr="form_meta.version != form_meta.vers_deployed() or form_meta.has_changed()">
+       <al-input type="submit" class="item butt" name="deploy"   value="Deploy" />
+       <br />
+      </al-if>
+      <table width="100%" class="smaller">
+       <tr><th>Used by:</th></tr>
+       <al-if expr="used_by">
+        <al-for iter="i" expr="used_by">
+         <tr><td><al-value expr="i.value()" /></td></tr>
+        </al-for>
+       <al-else>
+        <tr><td>- none -</td></tr>
+       </al-if>
+      </table>
+      <al-if expr="not used_by">
+       <al-input type="submit" class="item butt danger" name="delete" value="Delete" />
+      </al-if>
+     </td>
+
+     <td>
+       <al-expand name="formedit" />
+     </td>
+    </tr>
+   </table>
+  </al-if>
+</al-expand>

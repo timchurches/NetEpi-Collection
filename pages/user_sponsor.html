@@ -1,0 +1,101 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-expand name="page_layout_banner">
+ <al-setarg name="title">Sponsor a user</al-setarg>
+
+ <al-expand name="confirm_or_error">
+  <h3>Enter details of the prospective user you wish to invite to use the system:</h3>
+  <table class="widelabelform">
+   <tr>
+    <td class="label"><label for="fullname">Full name</label></td>
+    <td class="field">
+     <al-input name="fullname" id="fullname" />
+    </td>
+   </tr>
+   <tr>
+    <td class="label"><label for="email">e-mail address</label></td>
+    <td class="field">
+     <al-input name="email" id="email" />
+    </td>
+   </tr>
+   <tr>
+    <td colspan="2" align="right">
+     <al-input type="submit" class="butt" name="invite" value="Invite" />
+    </td>
+   </tr>
+  </table>
+
+  <al-if expr="pending_enable">
+   <h3>Accepted invitations pending approval:</h3>
+   <table class="gridtab">
+    <thead>
+     <tr>
+      <th>Full Name</th>
+      <th>Username</th>
+      <th>e-mail</th>
+      <th></th>
+    </thead>
+    <tbody>
+     <al-for vars="invite" expr="pending_enable">
+      <tr>
+       <td><al-value expr="invite.fullname" /></td>
+       <td><al-value expr="invite.username" /></td>
+       <td><al-value expr="invite.email" /></td>
+       <td><al-input type="submit" class="butt" value="Approve"
+           nameexpr="'enable:%s' % invite.user_id" /></td>
+      </tr>
+     </al-for>
+    </tbody>
+   </table>
+  </al-if>
+
+  <al-if expr="outstanding_invites">
+   <h3>Outstanding invitations:</h3>
+   <table class="gridtab">
+    <thead>
+     <tr>
+      <th></th>
+      <th>Full Name</th>
+      <th>e-mail</th>
+      <th>Registration key</th>
+      <th>Date sent</th>
+      <th></th>
+    </thead>
+    <tbody>
+     <al-for vars="invite" expr="outstanding_invites">
+      <tr>
+       <td><al-input type="submit" class="butt" value="Revoke"
+           nameexpr="'revoke:%s' % invite.user_id" /></td>
+       <td><al-value expr="invite.fullname" /></td>
+       <td><al-value expr="invite.email" /></td>
+       <td><al-value expr="invite.enable_key" /></td>
+       <td><al-value expr="invite.date" /></td>
+       <td><al-input type="submit" class="butt" value="Resend"
+           nameexpr="'resend:%s' % invite.user_id" /></td>
+      </tr>
+     </al-for>
+    </tbody>
+   </table>
+  <al-else>
+   <p>No outstanding invitations</p>
+  </al-if>
+ </al-expand>
+</al-expand>

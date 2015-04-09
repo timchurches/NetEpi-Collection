@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<form name='None' form_type='testform' allow_multiple='False'>
+ <label>Test Form</label>
+ <section>
+  <label>Section 1</label>
+  <question>
+   <label>First Question</label>
+   <input name='input_a' type='YesNo' required='True'>
+    <summary>Input A</summary>
+   </input>
+  </question>
+  <question>
+   <label>Second Question</label>
+   <input name='q2a' type='TextInput'>
+    <pre_text>Part A</pre_text>
+   </input>
+   <input name='q2b' type='TextInput'>
+    <pre_text>Part B</pre_text>
+   </input>
+   <input name='q2c' type='TextInput'>
+    <pre_text>Part C</pre_text>
+   </input>
+  </question>
+ </section>
+ <section>
+  <label>New section</label>
+ </section>
+ <question>
+  <label>Third Question</label>
+  <input name='q3' type='RadioList' required='True' direction='horizontal'>
+   <choices>
+    <choice name='a'>A</choice>
+    <choice name='b'>B</choice>
+    <choice name='c'>C</choice>
+   </choices>
+  </input>
+ </question>
+</form>

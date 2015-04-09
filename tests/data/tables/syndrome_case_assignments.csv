@@ -1,0 +1,19 @@
+name,label
+GSAHS_G,Greater Southern AHS (Goulburn)
+GSAHS_A,Greater Southern AHS (Albury)
+GWAHS_BH,Greater Western AHS (Broken Hill)
+GWAHS_D,Greater Western AHS (Dubbo)
+GWAHS_B,Greater Western AHS (Bathurst)
+HNEAHS_N,Hunter/New England AHS (Newcastle)
+HNEAHS_T,Hunter/New England AHS (Tamworth)
+JH,Justice Health Service
+NCAHS_PM,North Coast AHS (Port Macquarie)
+NCAHS_L,North Coast AHS (Lismore)
+NSCCAHS_H,Northern Sydney/Central Coast AHS (Hornsby)
+NSCCAHS_G,Northern Sydney/Central Coast AHS (Gosford)
+SESIAHS_R,South Eastern Sydney/Illawarra AHS (Randwick)
+SESIAHS_W,South Eastern Sydney/Illawarra AHS (Wollongong)
+SSWAHS_C,Sydney South West AHS (Camperdown)
+SWAHS_PA,Sydney West AHS (Parramatta)
+SWAHS_PE,Sydney West AHS (Penrith)
+OTHER,Other

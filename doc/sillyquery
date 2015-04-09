@@ -1,0 +1,58 @@
+CREATE TEMPORARY VIEW swineflu_view
+    AS SELECT case_id, form_swineflu_00056.* FROM form_swineflu_00056
+        JOIN case_form_summary USING (summary_id)
+        WHERE NOT deleted;
+
+CREATE TEMPORARY VIEW case_fu_view
+    AS SELECT case_id, form_case_fu_00007.* FROM form_case_fu_00007
+        JOIN case_form_summary USING (summary_id)
+        WHERE NOT deleted;
+
+SELECT case_id, swineflu_view.summary_id, case_fu_view.summary_id
+    FROM cases 
+    JOIN persons USING (person_id) 
+    LEFT JOIN swineflu_view USING (case_id)
+    LEFT JOIN case_fu_view USING (case_id)
+    WHERE case_fu_view.summary_id IS NOT NULL OR (not cases.deleted 
+        AND syndrome_id = 8
+        AND swineflu_view.phu_for_case IN ('NSCCAHS_H','NSCCAHS_G')
+        AND NOT (swineflu_view.home_isolation_released IN ('True'))
+        AND cases.case_status IN ('suspected','probable','confirmed','susp_cannot_excl'))
+    ORDER BY surname asc,interpreter_req asc;
+
+SELECT case_id, swineflu_view.summary_id, case_fu_view.summary_id
+    FROM cases 
+    JOIN persons USING (person_id) 
+    LEFT JOIN (SELECT case_id, form_swineflu_00056.* FROM form_swineflu_00056
+            JOIN case_form_summary USING (summary_id)
+                    WHERE NOT deleted) 
+        AS swineflu_view USING (case_id)
+    LEFT JOIN (SELECT case_id, form_case_fu_00007.* FROM form_case_fu_00007
+            JOIN case_form_summary USING (summary_id)
+                    WHERE NOT deleted) 
+        AS case_fu_view USING (case_id)
+    WHERE case_fu_view.summary_id IS NOT NULL OR (not cases.deleted 
+        AND syndrome_id = 8
+        AND swineflu_view.phu_for_case IN ('NSCCAHS_H','NSCCAHS_G')
+        AND NOT (swineflu_view.home_isolation_released IN ('True'))
+        AND cases.case_status IN ('suspected','probable','confirmed','susp_cannot_excl'))
+    ORDER BY surname asc,interpreter_req asc;
+
+
+SELECT case_id, form_swineflu_00056.summary_id, form_case_fu_00007.summary_id
+    FROM cases 
+    JOIN persons USING (person_id) 
+    LEFT JOIN (SELECT case_id, form_swineflu_00056.* FROM form_swineflu_00056
+            JOIN case_form_summary USING (summary_id)
+                    WHERE NOT deleted) 
+        AS form_swineflu_00056 USING (case_id)
+    LEFT JOIN (SELECT case_id, form_case_fu_00007.* FROM form_case_fu_00007
+            JOIN case_form_summary USING (summary_id)
+                    WHERE NOT deleted) 
+        AS form_case_fu_00007 USING (case_id)
+    WHERE form_case_fu_00007.summary_id IS NOT NULL OR (not cases.deleted 
+        AND syndrome_id = 8
+        AND form_swineflu_00056.phu_for_case IN ('NSCCAHS_H','NSCCAHS_G')
+        AND NOT (form_swineflu_00056.home_isolation_released IN ('True'))
+        AND cases.case_status IN ('suspected','probable','confirmed','susp_cannot_excl'))
+    ORDER BY surname asc,interpreter_req asc;

@@ -1,0 +1,274 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-macro name="dataimp_translations">
+   <al-if expr="editfield.is_datefield">
+     <tr>
+      <td valign="top"><label>Date format:</label></td>
+      <td>
+       <al-for iter="f_i" expr="editfield.date_formats">
+        <al-input name="editfield.date_format" type="radio" onclick="submit();"
+          valueexpr="f_i.value()">&nbsp;<al-value expr="f_i.value()" /><br>
+       </al-for>
+       <label>Other:</label><al-input name="editfield.date_format_other">
+      </td>
+     </tr>
+   </al-if>
+
+   <al-if expr="editfield.is_filterable">
+    <al-exec expr="colvals = editfield.colvalues(dataimp_src)">
+    <al-if expr="not editfield.ignore_case">
+     <tr>
+      <td valign="top"><label>Case:</label></td>
+      <td>
+       <al-for iter="c_i" expr="editfield.case_options">
+        <al-input type="radio" name="editfield.case" onclick="submit();"
+          valueexpr="c_i.value()[0]">
+        &nbsp;<al-value expr="c_i.value()[1]" />&nbsp;&nbsp;
+       </al-for>
+      </td>
+     </tr>
+    </al-if>
+    <tr>
+     <td valign="top"><label>Filters:</label></td>
+     <td>
+      <table>
+       <al-for iter="f_i" expr="editfield.translations">
+        <al-exec expr="_translation = f_i.value()" />
+        <tr>
+         <td><al-value expr="_translation.type"></td>
+         <td>
+          <al-if expr="_translation.type == 'Translate' and colvals">
+           <al-select optionexpr="colvals"
+            nameexpr="'editfield.translations[%d].match' % f_i.index()" />
+          <al-else>
+           <al-input nameexpr="'editfield.translations[%d].match' % f_i.index()">
+          </al-if>
+         </td>
+         <td>
+          <al-if expr="editfield.field_options">
+           <al-select nameexpr="'editfield.translations[%d].to' % f_i.index()"
+            optionexpr="[(CHOOSE, CHOOSE)] + editfield.field_options" />
+          <al-else>
+           <al-input nameexpr="'editfield.translations[%d].to' % f_i.index()">
+          </al-if>
+         </td>
+         <td>
+          Ignore case? 
+          <al-input type="checkbox" value="True"
+           nameexpr="'editfield.translations[%d].ignorecase' % f_i.index()">
+         </td>
+         <td>
+          <al-input type="submit" class="smallbutt" value="Del"
+           nameexpr="'del_translate:%d' % f_i.index()">
+         </td>
+        </tr>
+       </al-for>
+       <tr>
+        <td colspan="5" align="right">
+         <al-input type="submit" name="add_translate:normal" class="bigbutt"
+          value="New Translation" />
+         <al-input type="submit" name="add_translate:regexp" class="bigbutt"
+          value="New RegExp" />
+        </td>
+       </tr>
+       <al-if expr="editfield.field_options">
+        <al-exec expr="missing = editfield.get_field_options_sorted(colvals)" />
+        <al-if expr="missing">
+         <tr>
+          <td colspan="3">
+           Missing translations: 
+           <al-value expr="', '.join(missing)" />
+          </td>
+          <td colspan="2" align="right">
+           <al-input type="submit" name="add_field_opts" class="bigbutt"
+            value="Add as Translations" />
+          </td>
+         </tr>
+        </al-if>
+       </al-if>
+      </table>
+     </td>
+    </tr>
+   </al-if>
+</al-macro>
+
+<al-macro name="import_this_column">
+     <tr>
+      <td colspan="2" class="eif-label">
+       <al-if expr="editor.importrules.mode == 'named'">
+        Import this field from the named column (first data row names
+        each column)
+       <al-else>
+        Import this field from column number
+       </al-if><al-usearg />
+      </td>
+     </tr>
+</al-macro>
+
+<al-macro name="import_src_col">
+     <tr>
+      <td>
+       <label for="editfield.selected.src">Source field:</label>
+      </td>
+      <td>
+       <al-if expr="dataimp_src.preview">
+        <al-select name="editfield.selected.src" onchange="submit();"
+         optionexpr="editfield.src_fields(dataimp_src)" />
+        <al-if expr="not has_js">
+         <al-input type="submit" class="butt" name="apply" value="Apply" />
+        </al-if>
+       <al-else>
+        <al-input name="editfield.selected.src" />
+       </al-if>
+      </td>
+     </tr>
+</al-macro>
+
+<al-expand name="page_layout_banner">
+ <al-setarg name="title">Import rule for <al-value expr="repr(editfield.label)" /> field</al-setarg>
+ <div class="ttabs">
+  <al-for iter="b_i" expr="editfield.actions">
+   <al-exec expr="action = b_i.value()" />
+   <al-if expr="action.selected">
+    <al-input type="submit"  class="curr" disabled
+     nameexpr="'setaction:%s' % action.action_name" expr="action.desc" />
+   <al-elif expr="action.initial">
+    <al-input type="submit" class="initial"
+     nameexpr="'setaction:%s' % action.action_name" expr="action.desc" />
+   <al-else>
+    <al-input type="submit" 
+     nameexpr="'setaction:%s' % action.action_name" expr="action.desc" />
+   </al-if>
+  </al-for>
+ </div>
+
+ <al-if expr="dataimp_src and getattr(editfield.selected, 'src', None)">
+  <table border="2" class="imp-preview">
+   <tr><th><al-value expr="editfield.selected.src"></th></tr>
+   <al-for iter="c_i" expr="editfield.preview(dataimp_src)">
+    <tr><td><al-value expr="c_i.value()" /></td></tr>
+   </al-for>
+   <tr><td>...</td></tr>
+  </table>
+ </al-if>
+
+ <table class="edit-imp-field">
+   <al-lookup expr="editfield.selected.action_name">
+
+    <al-item expr="'source'">
+     <al-expand name="import_this_column" />
+     <al-expand name="import_src_col" />
+     <al-expand name="dataimp_translations" />
+    </al-item>
+
+    <al-item expr="'agesource'">
+     <al-expand name="import_this_column" />
+     <tr>
+      <td>
+       <label for="editfield.selected.age">
+        <al-if expr="editor.importrules.mode == 'named'">
+         Age field name
+        <al-else>
+         Age field index
+        </al-if>
+       </label>
+      </td>
+      <td>
+       <al-if expr="dataimp_src.preview">
+        <al-select name="editfield.selected.age" onchange="submit();"
+         optionexpr="[CHOOSE] + dataimp_src.preview.col_names" />
+       <al-else>
+        <al-input name="editfield.selected.age" />
+       </al-if>
+      </td>
+     </tr>
+     <tr>
+      <td>
+       <label for="editfield.selected.src">DOB source field:</label>
+      </td>
+      <td>
+       <al-if expr="dataimp_src.preview">
+        <al-select name="editfield.selected.src" onchange="submit();"
+         optionexpr="[CHOOSE] + dataimp_src.preview.col_names" />
+        <al-if expr="not has_js">
+         <al-input type="submit" class="butt" name="apply" value="Apply" />
+        </al-if>
+       <al-else>
+        <al-input name="editfield.selected.src" />
+       </al-if>
+      </td>
+     </tr>
+     <al-expand name="dataimp_translations" />
+    </al-item>
+
+    <al-item expr="'multivalue'">
+     <al-expand name="import_this_column">, spliting on the supplied
+       delimiter</al-expand>
+     <al-expand name="import_src_col" />
+     <tr>
+      <td>
+       <label for="editfield.selected.delimiter">Delimiter:</label>
+      </td>
+      <td>
+       <al-select name="editfield.selected.delimiter" 
+           optionexpr="editfield.selected.delimiter_options" 
+           onchange="submit();" />
+      </td>
+     </tr>
+     <al-expand name="dataimp_translations" />
+    </al-item>
+
+    <al-item expr="'fixed'">
+     <tr>
+      <td colspan="2" class="eif-label">
+       On imported records, set this field to the value given.
+      </td>
+     </tr>
+     <tr>
+      <td><label for="editfield.selected.value">Field value</label></td>
+      <td>
+       <al-if expr="editfield.field_options">
+        <al-select name="editfield.selected.value" 
+         optionexpr="[CHOOSE] + editfield.field_options" />
+       <al-else>
+        <al-input name="editfield.selected.value" />
+       </al-if>
+      </td>
+     </tr>
+    </al-item>
+
+    <al-item expr="'ignore'">
+     <tr>
+      <td colspan="2" class="eif-label">
+       Ignore this field while importing.
+      </td>
+     </tr>
+    </al-item>
+   </al-lookup>
+
+  <tr>
+   <td colspan="2" align="right">
+    <al-input type="submit" class="butt" name="okay" value="Okay" />
+   </td>
+  </tr>
+
+ </table> 
+</al-expand>

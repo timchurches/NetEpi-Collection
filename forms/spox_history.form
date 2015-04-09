@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<form name='spox_history' form_type='case' allow_multiple='False'>
+ <label>Past history (smallpox)</label>
+ <question>
+  <label>
+   Was  a smallpox vaccination administered prior to current outbreak?
+  </label>
+  <input name='Prio_vaccination' type='YesNo' required='True'>
+   <summary>Previous vaccination</summary>
+  </input>
+  <input name='Vaccine_doses' type='IntInput'>
+   <pre_text>If yes, how many doses?</pre_text>
+  </input>
+ </question>
+ <question>
+  <label>In what year was the last dose administered?</label>
+  <input name='Vaccine_year' type='IntInput'>
+   <summary>Year of last vaccine dose</summary>
+   <pre_text>Year of last dose</pre_text>
+  </input>
+ </question>
+ <question>
+  <label>
+   Was a smallpox vaccination administered during current outbreak?
+  </label>
+  <input name='Current_vaccine' type='YesNo' required='True' />
+  <input name='Current_vaccine_date' type='DateInput'>
+   <pre_text>If yes, date vaccine was given</pre_text>
+  </input>
+ </question>
+ <question>
+  <label>Is the patient pregnant?</label>
+  <input name='Pregnant' type='YesNo'>
+   <summary>Pregnant</summary>
+  </input>
+ </question>
+ <question>
+  <label>
+   Does the patient have a pre-existing immunocompromising condition? Eg
+   leukaemia, other cancers, HIV/Aids
+  </label>
+  <input name='Immuncomp' type='YesNo' />
+  <input name='Immuncomp_detail' type='TextInput'>
+   <summary>Immune compromising condition</summary>
+   <pre_text>If yes, please specify</pre_text>
+  </input>
+ </question>
+ <question>
+  <label>
+   During the past month, has the patient taken any prescribed
+   immunocompromising or immunomodulating medications, including steroids?
+  </label>
+  <input name='Immundrug' type='YesNo' />
+  <input name='Immundrug_detail' type='TextInput'>
+   <summary>Immune compromising medication</summary>
+   <pre_text>If yes, please specify</pre_text>
+  </input>
+  <input name='Immundrug_condition' type='TextInput'>
+   <pre_text>If yes, for what condition/s</pre_text>
+  </input>
+ </question>
+ <question>
+  <label>
+   In what setting did the patient think that they might have been exposed?
+  </label>
+  <input name='Exposure_setting' type='CheckBoxes'>
+   <summary>Suspected exposure setting</summary>
+   <choices>
+    <choice name='Community'>Community</choice>
+    <choice name='Correct'>Correctional facility</choice>
+    <choice name='Daycare'>Daycare</choice>
+    <choice name='Doctor'>Doctor's office</choice>
+    <choice name='Home'>Home</choice>
+    <choice name='Hospital'>Hospital</choice>
+    <choice name='Overseas'>Overseas travel</choice>
+    <choice name='Military'>Military</choice>
+    <choice name='School'>School</choice>
+    <choice name='Sport'>Sporting event</choice>
+    <choice name='University'>University or college</choice>
+    <choice name='Work'>Workplace</choice>
+    <choice name='Worship'>Place of worship</choice>
+    <choice name='Other'>Other</choice>
+    <choice name='Unknown'>Unknown</choice>
+   </choices>
+  </input>
+  <input name='Exposure_detail' type='TextInput'>
+   <pre_text>If other, please specify</pre_text>
+  </input>
+ </question>
+</form>

@@ -1,0 +1,86 @@
+body {
+    background: white;
+    white-space: normal;
+}
+h1 {
+    text-align: center;
+    background: #eee;
+    margin: 0;
+    border-bottom: 2px solid #cce;
+}
+.motd {
+    display: block;
+    margin: 2ex;
+    text-align: center;
+    background: #eee;
+    border: 2px solid #cce;
+}
+    
+.controls {
+    display: block;
+    float: right;
+    margin: 2ex;
+}
+.controls input {
+    width: 12ex;
+    display: block;
+}
+.params {
+    margin: 2ex;
+}
+.params .prm {
+    margin: 2px;
+}
+.params label {
+    width: 20%;
+    display: block;
+    float: left;
+    background-color: #eee;
+    border-right: 2px solid #cce;
+    margin-right: 1ex;
+}
+.params input {
+    width: 50%;
+}
+#results {
+    margin: 2ex;
+}
+#results table {
+    border: 1px solid #ccc;
+    empty-cells: show;
+}
+#results th {
+    background-color: #eee;
+}
+#results td {
+    border: 1px solid #ccc;
+    padding-left: 0.5ex;
+    padding-right: 0.5ex;
+}
+#stats {
+    display: block;
+    float: right;
+    margin: 2ex;
+    border: 1px solid #cce;
+}
+#stats td {
+    padding-left: 0.5ex;
+    padding-right: 0.5ex;
+}
+#log {
+    margin: 2ex;
+    background-color: #eec;
+}
+#log h2 {
+    margin: 0;
+    background-color: #ddb;
+}
+.hidden {
+    display: none;
+}
+.notice {
+    background-color: #fc4;
+}
+.error {
+    background-color: #f44;
+}

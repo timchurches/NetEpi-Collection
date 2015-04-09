@@ -1,0 +1,48 @@
+if [ -z "$1" ]; then
+    echo "Usage: $0 <database>" >&2;
+    exit 1;
+fi
+dir=`dirname $0`/
+psql -f - -q $1 << EOF
+
+begin;
+\qecho === forms
+\copy forms from '${dir}data/forms' using delimiters '|'
+
+\qecho === syndrome_types
+\copy syndrome_types from '${dir}data/syndrome_types' using delimiters '|'
+SELECT setval('seq_syndrome_id_syndrome_types', 
+              (SELECT max(syndrome_id) FROM syndrome_types));
+
+\qecho === syndrome_forms
+\copy syndrome_forms from '${dir}data/syndrome_forms' using delimiters '|'
+SELECT setval('seq_syndrome_forms_id_syndrome_forms', 
+              (SELECT max(syndrome_forms_id) FROM syndrome_forms));
+
+\qecho === users
+\copy users from '${dir}data/users' using delimiters '|'
+SELECT setval('seq_user_id_users', (SELECT max(user_id) FROM users));
+
+\qecho === units
+\copy units from '${dir}data/units' using delimiters '|'
+SELECT setval('seq_unit_id_units', (SELECT max(unit_id) FROM units));
+
+\qecho === groups
+\copy groups from '${dir}data/groups' using delimiters '|'
+SELECT setval('seq_group_id_groups', (SELECT max(group_id) FROM groups));
+
+\qecho === unit_groups
+\copy unit_groups from '${dir}data/unit_groups' using delimiters '|'
+SELECT setval('seq_unit_groups_id_unit_groups', 
+              (SELECT max(unit_groups_id) FROM unit_groups));
+
+\qecho === unit_users
+\copy unit_users from '${dir}data/unit_users' using delimiters '|'
+SELECT setval('seq_unit_user_id_unit_users', 
+              (SELECT max(unit_user_id) FROM unit_users));
+
+\qecho === group_syndromes
+\copy group_syndromes from '${dir}data/group_syndromes' using delimiters '|'
+SELECT setval('seq_group_syndromes_id_group_syndromes', 
+              (SELECT max(group_syndromes_id) FROM group_syndromes));
+commit;

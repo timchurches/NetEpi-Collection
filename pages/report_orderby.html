@@ -1,0 +1,46 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<table>
+ <al-if expr="reportparams.order_by">
+  <al-for iter="o" expr="reportparams.order_by">
+   <tr>
+    <td><al-select 
+      nameexpr="'reportparams.order_by[%s].col' % o.index()"
+      optionexpr="reportparams.order_cols()" /></td>
+    <td><al-select 
+      nameexpr="'reportparams.order_by[%s].rev' % o.index()"
+      optionexpr="reportparams.rev_options" /></td>
+    <td align="right"><al-input type="submit" class="butt"
+       nameexpr="'del_order:%s' % o.index()" value="Delete" /></td>
+   </tr>
+  </al-for>
+ <al-else>
+  <tr>
+   <td colspan="3" align="center"><b>No ordering defined</b></td>
+  </tr>
+ </al-if>
+ <tr>
+  <td colspan="2"></td>
+  <td align="right">
+   <al-input class="butt" type="submit" name="add_order" value="Add" />
+  </td>
+ </tr>
+</table>

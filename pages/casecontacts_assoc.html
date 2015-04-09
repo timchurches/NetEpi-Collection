@@ -1,0 +1,110 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-include name="demogfields.html">
+<al-include name="taskbanner.html" />
+
+<al-expand name="page_layout_banner">
+ <al-setarg name="title">Case association</al-setarg>
+ <al-expand name="taskbanner" />
+ <h3>Details of the case to which <al-value expr="config.contact_label.lower()" />s relate:</h3>
+ <al-exec expr="field_rows = case.rows_and_cols('form')" />
+ <al-if expr="case.deleted"><div class="deleted"><al-else><div></al-if>
+  <al-expand name="demogfields_text" />
+ </div>
+
+ <al-expand name="confirm_or_error">
+  <h3>Nature of <al-value expr="config.contact_label.lower()" />:</h3>
+  <table class="labelform">
+   <tr>
+    <al-if expr="new_contact_type">
+     <td class="label"><label for="contact_type">New <al-value expr="config.contact_label.lower()" /> type</label></td>
+     <td class="field">
+      <div class="fieldandbutt">
+       <div class="andbutt">
+        <al-input type="submit" name="new_contact_type_cancel" value="Cancel" />
+       </div>
+       <div class="fieldand">
+        <al-input type="text" id="contact_type" name="contact_type" />
+       </div>
+      </div>
+     </td>
+    <al-else>
+     <td class="label"><label for="contact_type_id"><al-value expr="config.contact_label" /> type</label></td>
+     <td class="field">
+      <div class="fieldandbutt">
+       <div class="andbutt">
+        <al-input type="submit" name="new_contact_type" value="New" />
+       </div>
+       <div class="fieldand">
+        <al-select id="contact_type_id" name="assoc_contacts.contact_type_id" 
+         optionexpr="assoc_contacts.contact_types()" />
+       </div>
+      </div>
+     </td>
+    </al-if>
+    <td class="label"><label for="contact_date"><al-value expr="config.contact_label" /> date</label></td>
+    <td class="field" nowrap>
+     <al-input name="assoc_contacts.contact_date" id="contact_date"
+      calendarformatexpr="assoc_contacts.datetime_fmt" />
+    </td>
+   </tr>
+  </table>
+
+  <table class="menubar">
+   <tr>
+    <td class="mbr">
+     <al-input class="bigbutt" type="submit" name="okay" 
+      expr="'%s %ss' % (assoc_mode, config.contact_label)" />
+    </td>
+   </tr>
+  </table>
+
+  <h3><al-value expr="config.contact_label" />s to be added:</h3>
+  <table class="casecontacts">
+   <thead>
+    <tr><td colspan="7"><al-expand name="page_select" /></td></tr>
+    <tr>
+     <th>ID</th>
+     <th><al-value expr="config.syndrome_label" /></th>
+     <th>Status</th>
+     <th><al-value expr="config.person_label" /></th>
+     <th><al-value expr="config.contact_label" /> Type</th>
+     <th><al-value expr="config.contact_label" /> Date</th>
+    </tr>
+   </thead>
+   <tfoot>
+    <tr><td colspan="7"><al-expand name="page_select" /></td></tr>
+   </tfoot>
+   <al-for iter="contact_i" expr="assoc_contacts.result_page()">
+    <al-exec expr="c = contact_i.value()">
+    <tr class="row">
+     <td><al-value expr="c.case_id" /></td>
+     <td><al-value expr="c.syndrome_name" /></td>
+     <td><al-value expr="c.case_status" /></td>
+     <td><al-value expr="c.person.summary(contacts.order_by_cols())" /></td>
+     <td><al-value expr="c.contact_type" /></td>
+     <td><al-value expr="c.contact_date" /></td>
+    </tr>
+   </al-for>
+  </table>
+ </al-expand>
+</al-expand>
+

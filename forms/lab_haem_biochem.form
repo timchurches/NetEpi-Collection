@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<form name='lab_haem_biochem' form_type='case' allow_multiple='True'>
+ <label>Lab test - Haematology and biochemistry (SARS)</label>
+ <question>
+  <label>
+   At what stage of progression of the disease was the sample taken (More than
+   one series of results can be entered)
+  </label>
+  <input name='Biochemistry_stage' type='RadioList' required='True'>
+   <summary>Stage</summary>
+   <choices>
+    <choice name='Acute'>Acute</choice>
+    <choice name='Convalescent'>Convalescent</choice>
+    <choice name='None'>Not answered</choice>
+   </choices>
+  </input>
+ </question>
+ <question>
+  <label>
+   On what date was the sample taken? (More than one series of results can be
+   entered)
+  </label>
+  <input name='Biochemistry_date' type='DateInput'>
+   <summary>Date</summary>
+   <pre_text>Date of collection</pre_text>
+  </input>
+ </question>
+ <question>
+  <label>White cell count</label>
+  <input name='WCC' type='FloatInput'>
+   <summary><![CDATA[WCC (x10<sup>9</sup>/L)]]></summary>
+   <pre_text>White cell count</pre_text>
+   <post_text><![CDATA[x10<sup>9</sup>/L]]></post_text>
+  </input>
+ </question>
+ <question>
+  <label>Lymphocytes</label>
+  <input name='Lymphocytes' type='FloatInput'>
+   <summary><![CDATA[Lymphocytes (x10<sup>9</sup>/L)]]></summary>
+   <pre_text>Lymphocyte count</pre_text>
+   <post_text><![CDATA[x10<sup>9</sup>/L]]></post_text>
+  </input>
+ </question>
+ <question>
+  <label>Neutrophils</label>
+  <input name='Neutrophils' type='FloatInput'>
+   <summary><![CDATA[Neutrophils (x10<sup>9</sup>/L)]]></summary>
+   <pre_text>Neutrophil count</pre_text>
+   <post_text><![CDATA[x10<sup>9</sup>/L]]></post_text>
+  </input>
+ </question>
+ <question>
+  <label>Platelets</label>
+  <input name='Platelet' type='FloatInput'>
+   <summary><![CDATA[Platelets (x10<sup>9</sup>/L)]]></summary>
+   <pre_text>Platelet count</pre_text>
+   <post_text><![CDATA[x10<sup>9</sup>/L]]></post_text>
+  </input>
+ </question>
+ <question>
+  <label>ALT</label>
+  <input name='ALT' type='FloatInput'>
+   <summary>ALT (U/L)</summary>
+   <pre_text>ALT</pre_text>
+   <post_text>(U/L)</post_text>
+  </input>
+ </question>
+ <question>
+  <label>AST</label>
+  <input name='AST' type='FloatInput'>
+   <summary>AST (U/L)</summary>
+   <pre_text>AST</pre_text>
+   <post_text>U/L</post_text>
+  </input>
+ </question>
+ <question>
+  <label>LDH</label>
+  <input name='LDH' type='FloatInput'>
+   <summary>LDH (U/L)</summary>
+   <pre_text>LDH</pre_text>
+   <post_text>U/L</post_text>
+  </input>
+ </question>
+ <question>
+  <label>CK</label>
+  <input name='CK' type='FloatInput'>
+   <summary>CK (U/L)</summary>
+   <pre_text>CK</pre_text>
+   <post_text>U/L</post_text>
+  </input>
+ </question>
+</form>

@@ -1,0 +1,72 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-expand name="page_layout_admin">
+ <al-setarg name="title"><al-value expr="config.syndrome_label" /></al-setarg>
+  <table border="0" cellpadding="2" class="gridtab">
+   <thead>
+    <tr>
+     <al-expand name="sort_header" />
+     <th class="center buttons">
+      <al-input name="add" class="smallbutt" type="submit" value="New" />
+     </th>
+    </tr>
+   </thead>
+   <al-if expr="paged_search.has_pages()">
+    <tfoot class="darkest">
+     <tr><td colspan="8"><al-expand name="page_select" /></td></tr>
+    </tfoot>
+   </al-if>
+   <tbody>
+    <al-for iter="synd_i" expr="page">
+     <al-exec expr="synd = synd_i.value()" />
+     <al-if expr="synd_i.index() & 1">
+      <tr>
+     <al-else>
+      <tr class="darker">
+     </al-if>
+      <td class="center">
+       <al-value expr="synd.priority" />
+      </td>
+      <td>
+       <al-if expr="synd.active()">
+        <al-value expr="synd.name" />
+       <al-else>
+        <strike><al-value expr="synd.name" /></strike>
+       </al-if>
+      </td>
+      <td>
+       <al-value expr="groups_pt[synd.syndrome_id].comma_list('group_name')" />
+      </td>
+      <td nowrap class="center">
+       <al-for vars="l" expr="synd.desc_status()">
+        <al-value expr="l" /><br>
+       </al-for>
+      </td>
+      <td class="center buttons">
+       <al-input nameexpr="'edit:%s' % synd.syndrome_id" 
+            class="smallbutt" type="submit" value="Edit" />
+      </td>
+     </tr>
+    </al-for>
+   </tbody>
+  </table>
+</al-expand>
+

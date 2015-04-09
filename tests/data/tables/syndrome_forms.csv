@@ -1,0 +1,4 @@
+syndrome_forms_id,syndrome_id,form_label
+1,1,sars_exposure
+2,2,sars_exposure
+3,2,hospital_admit

@@ -1,0 +1,25 @@
+update persons set last_update=(select max(event_timestamp) from user_log join cases using (case_id) where cases.person_id = persons.person_id and event_type like 'persons[%' group by person_id);
+
+svn cat -r 1581 casemgr/schema/schema.py > /tmp/x.py && (cd /tmp && PYTHONPATH=/usr/lib/cgi-bin/collection/ python -ic 'import x, sys, cocklebur.dbobj.table_describer, poobah;cocklebur.dbobj.table_describer.execute=poobah.e;s=x.define_db("::x:");s.get_table("persons").db.db_has_relation = lambda n: False;s.get_table("form_defs").create()')
+
+
+Diagnosing object leaks (app/app.py main loop):
+
+    import gc
+    print >> sys.stderr, 'collect', gc.collect()
+    print >> sys.stderr, 'objects', len(gc.get_objects())
+    #print >> sys.stderr, 'template cache', len(app._CachingTemplateLoaderMixin__cache)
+    #print >> sys.stderr, 'template cache', len(app._CachingTemplateLoaderMixin__cache)
+    #print >> sys.stderr, 'macros', len(app._ResourceMixin__macros)
+    #print >> sys.stderr, 'lookups', len(app._ResourceMixin__lookups)
+    #print >> sys.stderr, 'tags', len(app._ResourceMixin__tags)
+
+Checklist for adding new demographic fields:
+
+ * add column (and index) to casemgr/schema/schema.py
+ * add migration logic to tools/compile_db.py (pre_upgrade_schema)
+ * add field to casemgr/demogfields.py
+ * add field to casemgr/person.py, Person.person_attrs and to_query
+ * add field to casemgr/report/reportfilters.py
+ * add field to casemgr/cases.py CaseBase.new
+ * update tests (particularly tests/report.py and tests/export.py)

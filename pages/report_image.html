@@ -1,0 +1,35 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-expand name="page_layout_banner">
+ <al-setarg name="title"></al-setarg>
+ <al-if expr="imagefile.endswith('.png')">
+  <al-img expr="appath('scratch', imagefile)" />
+ <al-elif expr="imagefile.endswith('.svg')">
+  <al-object dataexpr="appath('scratch', imagefile)" 
+   height="600" width="800" type="image/svg+xml" />
+ <al-elif expr="imagefile.endswith('.png')">
+  <al-object dataexpr="appath('scratch', imagefile)" type="application/pdf" />
+ <al-elif expr="imagefile.endswith('.ps')">
+  <al-object dataexpr="appath('scratch', imagefile)" type="application/postscript" />
+ </al-if>
+ <br>
+ <al-a expr="appath('scratch', imagefile)" type="application/unknown">Save As</al-a>
+</al-expand>

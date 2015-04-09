@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<form name='sars_onset' form_type='case' allow_multiple='False'>
+ <label>Onset symptoms</label>
+ <question>
+  <label>Highest temperature since onset of symptoms:</label>
+  <input name='symptoms_HighestTemp' type='BodyTemperatureInput'>
+   <summary>highest temp</summary>
+  </input>
+ </question>
+ <question>
+  <label>Does the patient have a cough?</label>
+  <input name='symptoms_Cough' type='RadioList'>
+   <choices>
+    <choice name='True'>Yes</choice>
+    <choice name='False'>No</choice>
+    <choice name='Tubed'>Ventilated/paralysed</choice>
+    <choice name='Unknown'>Unknown</choice>
+    <choice name='None'>Not answered</choice>
+   </choices>
+  </input>
+ </question>
+ <question>
+  <label>Shortness of breath/difficulty breathing?</label>
+  <input name='symptoms_SOB' type='YesNo'>
+   <summary>difficulty breathing</summary>
+  </input>
+ </question>
+ <question>
+  <label>Signs of pneumonia?</label>
+  <input name='symptoms_Pneumonia' type='RadioList'>
+   <choices>
+    <choice name='Clinical'>Clinical</choice>
+    <choice name='Radiographic'>Radiographic</choice>
+    <choice name='Both'>Clinical and radiographic</choice>
+    <choice name='Unknown'>Unknown</choice>
+    <choice name='None'>Not answered</choice>
+   </choices>
+  </input>
+ </question>
+ <question>
+  <label>Adult Respiratory Distress Syndrome (ARDS)?</label>
+  <input name='symptoms_ARDS' type='YesNo' />
+ </question>
+ <question>
+  <label>Other symptoms or relevant findings:</label>
+  <input name='symptoms_Other' type='TextArea' />
+ </question>
+</form>

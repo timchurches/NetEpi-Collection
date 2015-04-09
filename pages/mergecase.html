@@ -1,0 +1,119 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-include name="demogfields.html" />
+
+<al-expand name="page_layout_banner">
+ <al-setarg name="title">Merge records</al-setarg>
+ <al-exec expr="field_rows = selcasemerge.personfields_rows_and_cols()" />
+ <al-expand name="demogfields_text" />
+
+  <table class="duperes">
+  <thead>
+   <tr class="top">
+    <td align="right">Source:</td>
+    <th style="min-width: 16em;">A
+     <al-if expr="casemerge.case_a.deleted">
+      <br>DELETED
+      <al-if expr="casemerge.case_a.delete_reason"> - <span class="smaller"><al-value expr="casemerge.case_a.delete_reason" /></span></al-if>
+     </al-if>
+    </th>
+    <th style="min-width: 16em;">B
+     <al-if expr="casemerge.case_b.deleted">
+      <br>DELETED
+      <al-if expr="casemerge.case_b.delete_reason"> - <span class="smaller"><al-value expr="casemerge.case_b.delete_reason" /></span></al-if>
+     </al-if>
+    </th>
+    <th>Edit</th>
+    <th>Clear</th>
+   </tr>
+  </thead>
+  <tfoot>
+   <tr>
+    <td colspan="5">
+     <table width="100%">
+      <tr>
+       <td align="right">
+        <al-input name="showmerge" type="submit" class="butt" 
+          value="Show Merge" />
+        <script>enterSubmit('appform', 'showmerge');</script>
+       </td>
+      </tr>
+     </table>
+    </td>
+   </tr>
+  </tfoot>
+  <tbody>
+   <tr>
+    <th class="label">
+     <al-value expr="casemerge.demogfield('case_id').label" />
+    </th>
+    <al-td classexpr="casemerge.css_a">
+     <al-input type="radio" value="a" name="casemerge.keep" />
+     <al-value expr="casemerge.case_a.case_id" />
+    </al-td>
+    <al-td classexpr="casemerge.css_b">
+     <al-input type="radio" value="b" name="casemerge.keep" />
+     <al-value expr="casemerge.case_b.case_id" />
+    </al-td>
+    <td></td>
+    <td></td>
+   </tr>
+   <al-for iter="f_i" expr="casemerge.fields">
+    <al-exec expr="mc = f_i.value()" />
+    <al-if expr="mc.conflict"><tr class="warn"><al-else><tr></al-if>
+     <th class="label">
+      <al-label><al-value expr="mc.label" /></al-label>
+     </th>
+     <al-td classexpr="casemerge.css_a">
+      <al-exec expr="value_a = mc.outtrans(casemerge.case_a)" />
+      <al-if expr="value_a">
+       <al-if expr="mc.show_radio">
+        <al-input type="radio" value="a" nameexpr="mc.source_field" />
+       </al-if>
+       <al-value expr="value_a" />
+      </al-if>
+     </al-td>
+     <al-td classexpr="casemerge.css_b">
+      <al-exec expr="value_b = mc.outtrans(casemerge.case_b)" />
+      <al-if expr="value_b">
+       <al-if expr="mc.show_radio">
+        <al-input type="radio" value="b" nameexpr="mc.source_field" />
+       </al-if>
+       <al-value expr="value_b" />
+      </al-if>
+     </al-td>
+     <td class="user">
+      <al-if expr="mc.field is not None">
+       <al-exec expr="field = mc.field" />
+       <al-value lookup="field_render" expr="field.render" />
+      </al-if>
+     </td>
+     <td align="center">
+      <al-if expr="mc.field is not None">
+       <al-if expr="mc.show_radio">
+        <al-input type="radio" value="d" nameexpr="mc.source_field" /></td>
+       </al-if>
+      </al-if>
+    </tr>
+   </al-for>
+  </tbody>
+ </table>
+</al-expand>

@@ -1,0 +1,232 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-macro name="form_edit_input">
+      <table border="0" width="100%">
+       <al-exec expr="input = question.inputs[input_number]" />
+       <al-exec expr="name = 'question.inputs[%d]' % input_number" />
+
+       <tr>
+        <al-comment><!-- input type --></al-comment>
+        <td>
+         <al-select nameexpr="name + '.want_type'" onchange="submit();">
+          <al-for iter="g_i" expr="input.input_groups">
+           <al-if expr="isinstance(g_i.value()[1], list)">
+            <al-optgroup labelexpr="g_i.value()[0]">
+             <al-for iter="gi_i" expr="g_i.value()[1]">
+              <al-option labelexpr="gi_i.value()[1]" 
+                         valueexpr="gi_i.value()[0]" />
+             </al-for>
+            </al-optgroup>
+           <al-else>
+            <al-option labelexpr="g_i.value()[1]" 
+                       valueexpr="g_i.value()[0]" />
+           </al-if>
+          </al-for>
+         </al-select>
+        </td>
+       </tr>
+       <al-comment><!-- input options --></al-comment>
+       <tr>
+        <td colspan="1">
+         <table width="100%" border="0">
+          <al-if expr="input.error">
+           <tr>
+            <td colspan="5" bgcolor="orange" align="center">
+             <b><al-value expr="input.error" /></b>
+            </td>
+           </tr>
+          </al-if>
+          <tr>
+           <td class="prompt">Column name:</td>
+           <td colspan="4" width="100%">
+            <al-input type="text" size="30" nameexpr="name + '.column'" 
+             disabledbool="input.locked_column()" />
+           </td>
+          </tr>
+          <tr>
+           <td class="prompt">Input label:</td>
+           <td colspan="4" width="100%">
+            <al-input type="text" size="30" nameexpr="name + '.label'" />
+           </td>
+          </tr>
+          <tr>
+           <td class="prompt">Required:</td>
+           <td colspan="4" width="100%">
+            <al-input type="radio" nameexpr="name + '.required'" value="True" /> Yes
+            <al-input type="radio" nameexpr="name + '.required'" value="False" /> No
+           </td>
+          </tr>
+          <tr>
+           <td class="prompt">In summary?:</td>
+           <td colspan="4" width="100%">
+            <al-input type="radio" nameexpr="name + '.summarise'" value="True" /> Yes
+            <al-input type="radio" nameexpr="name + '.summarise'" value="False" /> No
+           </td>
+          </tr>
+          <al-for iter="fs" expr="input.fields">
+           <al-exec expr="f = fs.value()" />
+           <al-if expr="f.has(input)">
+            <tr>
+             <td class="prompt"><al-value expr="f.label" />:</td>
+             <td colspan="4" width="100%">
+              <al-input type="text" size="30" nameexpr="'%s.%s' % (name, f.name)" />
+             </td>
+            </tr>
+           </al-if>
+          </al-for>
+
+          <al-exec expr="options = input.default.get_options()" />
+          <al-for iter="default_i" expr="options">
+           <tr>
+            <al-if expr="default_i.index() == 0">
+             <al-td class="prompt" rowspanexpr="len(options)">
+              Default value:
+             </al-td>
+            </al-if>
+            <td colspan="3" bgcolor="#ffbbcc">
+             <al-input type="radio" nameexpr="name + '.default.type'" 
+              valueexpr="default_i.value()[0]" />&nbsp;
+             <al-value expr="default_i.value()[1]" />
+             <al-if expr="default_i.value()[0] == 'value'">
+              : <al-input type="text" nameexpr="name + '.default.value'" />
+             </al-if>
+            </td>
+           </tr>
+          </al-for>
+
+          <al-if expr="input.has_choices()">
+           <al-comment><!-- input options - choices --></al-comment>
+           <tr>
+            <td class="prompt">Choices:</td>
+            <td colspan="3">
+             <al-input type="hidden" nameexpr="name + '.choice_order'" />
+             <al-table idexpr="'choices%s' % input_number">
+              <tr>
+               <td width="24" align="right" valign="middle">
+                 <al-input type="image" alt="Add"
+                     srcexpr="appath('images/add-s.png')"
+                     nameexpr="'op:choice:add:%s' % input_number" />
+               </td>
+               <td class="choice">Key</td>
+               <td class="choice" width="100%">Label</td>
+              </tr>
+              <al-for iter="choice_i" expr="input.edit_choices">
+               <al-exec expr="choice_name = '%s:%s' % (input_number, choice_i.index())" />
+               <al-tr idexpr="'choice:' + choice_name">
+                <td><button class="move-handle">&#9672;</button></td>
+                <td class="choice">
+                 <al-input type="text" size="12" 
+                  nameexpr="name + '.edit_choices[%d].key' % choice_i.index()" />
+                </td>
+                <td class="choice">
+                 <al-input type="text" style="width: 16em;"
+                  nameexpr="name + '.edit_choices[%d].label' % choice_i.index()" />
+                </td>
+                <td width="24" align="right">
+                  <al-input type="image" alt="Delete"
+                      srcexpr="appath('images/button-del.png')"
+                      nameexpr="'op:choice:del:' + choice_name" />
+                </td>
+               </al-tr>
+              </al-for>
+             </al-table>
+             <script>
+              rowMover('<al-value expr="'choices%s' % input_number" />',
+                       '<al-value expr="name + '.choice_order'" />');
+             </script>
+            </td>
+           </tr>
+
+           <al-if expr="input.has_direction()">
+            <tr>
+             <td class="prompt">Horizontal:</td>
+             <td colspan="4" width="100%">
+              <al-input type="radio" value="horizontal" onchange="submit();"
+                 nameexpr="name + '.direction'" />
+               &nbsp;Yes&nbsp;&nbsp;
+              <al-input type="radio" value="vertical" onchange="submit();"
+                 nameexpr="name + '.direction'" />
+               &nbsp;No&nbsp;&nbsp;
+              <al-input type="radio" value="auto" onchange="submit();"
+                 nameexpr="name + '.direction'" />
+               &nbsp;Auto
+             </td>
+            </tr>
+           </al-if>
+           <al-if expr="input.has_choices()">
+            <tr>
+             <td class="prompt">Skips:</td>
+             <td colspan="4" width="100%">
+              <table width="100%">
+               <tr>
+                <td width="24" align="right" valign="middle">
+                  <al-input type="image" alt="Add"
+                      srcexpr="appath('images/add-s.png')"
+                      nameexpr="'op:cond:add:%s' % input_number" />
+                </td>
+                <td class="choice">Name</td>
+                <td class="choice">Choice Keys</td>
+               </tr>
+               <al-for iter="skip_i" expr="input.skips">
+                <al-exec expr="skip = skip_i.value()" />
+                <al-exec expr="skip_name = '%s.skips[%s]' % (name, skip_i.index())" />
+                <tr>
+                 <td class="choice">&nbsp;</td>
+                 <td>
+                  <al-input type="text" nameexpr="skip_name + '.name'" /><br>
+                  <al-input type="radio" value=""
+                     nameexpr="skip_name + '.not_selected'" />
+                   &nbsp;trigger if selected<br>
+                  <al-input type="radio" value="True"
+                     nameexpr="skip_name + '.not_selected'" />
+                   &nbsp;trigger if NOT selected<br>
+                  <al-input type="checkbox" value="True"
+                     nameexpr="skip_name + '.skip_remaining'" />
+                   &nbsp;skip remaining inputs<br>
+                  <al-input type="checkbox" value="True"
+                     nameexpr="skip_name + '.show_msg'" />
+                   &nbsp;show message<br>
+                 </td>
+                 <td>
+                  <al-for iter="skipvalue_i" expr="input.choicevalues()">
+                   <al-input type="checkbox" nameexpr="skip_name + '.values'"
+                     valueexpr="skipvalue_i.value()" list />
+                      &nbsp;<al-value expr="skipvalue_i.value()" /><br>
+                  </al-for>
+                 </td>
+                 <td width="24" align="right">
+                   <al-input type="image" alt="Delete"
+                       srcexpr="appath('images/button-del.png')"
+                       nameexpr="'op:cond:del:%s:%s' % (input_number, skip_i.index())" />
+                 </td>
+                </tr>
+               </al-for>
+              </table>
+             </td>
+            </tr>
+           </al-if>
+          </al-if>
+
+         </table>
+        </td>
+       </tr>
+      </table>
+</al-macro>

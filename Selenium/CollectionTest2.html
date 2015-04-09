@@ -1,0 +1,510 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!--
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+-->
+
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <title>NetEpi Collection Test 2 - user account creation and manipulation tests</title>
+  <!-- Test of account request/enabling functions.
+       Designed to be run using Selenium v0.3 or later. -->
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+  <tbody>
+    <tr>
+      <td rowspan="1" colspan="3">NetEpi Collection Test 2<br>
+      </td>
+    </tr>
+    <!-- Go to login page -->
+    <tr>
+      <td>open</td>
+      <td>../../cgi-bin/casemgr/app.py</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyLocation</td>
+      <td>/cgi-bin/casemgr/app.py</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>NetEpi Collection<br>
+      </td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>register</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Register for an account</td>
+      <td>&nbsp;</td>
+    </tr>
+    <!-- Now change user's details -->
+    <tr>
+      <td>type</td>
+      <td>username</td>
+      <td>selenium_test_user</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>fullname</td>
+      <td>Selenium Test User</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>role</td>
+      <td>Just testing...</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>pwda</td>
+      <td>sn33P</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>pwdb</td>
+      <td>sn33P</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>email</td>
+      <td>selenium@netepi.info</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>phone_wk</td>
+      <td>1234 5678</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>phone_mbl</td>
+      <td>04123456789</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>phone_hm</td>
+      <td>9876 5432</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>phone_fax</td>
+      <td>5432 9876</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>update</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Password must be at least 6 characters</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>pwda</td>
+      <td>sn33Py</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>pwdb</td>
+      <td>sn33Py</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>update</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>NetEpi Collection<br>
+      </td>
+      <td>&nbsp;</td>
+    </tr>
+    <!-- Now try to log in as new user -->
+    <tr>
+      <td>type</td>
+      <td>user</td>
+      <td>selenium_test_user</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>password</td>
+      <td>sn33Py</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>login</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>User not enabled</td>
+      <td>&nbsp;</td>
+    </tr>
+    <!-- Now enable the new user -->
+    <tr>
+      <td>open</td>
+      <td>../../cgi-bin/casemgr/admin.py</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyLocation</td>
+      <td>/cgi-bin/casemgr/admin.py</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>NetEpi Collection<br>
+      </td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>ADMINISTRATION<br>
+      </td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>user</td>
+      <td>admin</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>password</td>
+      <td>sn00Py</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>login</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Administration</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>by form name</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>user_search_name</td>
+      <td>selenium_test_user</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>user_search_go</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Selenium Test User</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>edit_user_0</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>User 'selenium_test_user'</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>click</td>
+      <td>user_enabled</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>update</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Cannot enable a user who is not a member of at least one unit</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>pt_search.search_term</td>
+      <td>airport*</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>pt_search_go</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Airport Medical Centre</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>add_0</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>user.role</td>
+      <td>Just testing....</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>update</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>back</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>logout</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>NetEpi Collection<br>
+      </td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>ADMINISTRATION<br>
+      </td>
+      <td>&nbsp;</td>
+    </tr>
+    <!-- Now test the newly enabled user. -->
+    <tr>
+      <td>open</td>
+      <td>../../cgi-bin/casemgr/app.py</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyLocation</td>
+      <td>/cgi-bin/casemgr/app.py</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>NetEpi Collection<br>
+      </td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>user</td>
+      <td>selenium_test_user</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>password</td>
+      <td>sn33Py</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>login</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Welcome Selenium Test User<br>
+      </td>
+      <td>&nbsp;</td>
+    </tr>
+
+    <!-- Log out and try to re-register as same user -->
+    <tr>
+      <td>clickAndWait</td>
+      <td>logout</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Your session is now closed.</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>register</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Register for an account</td>
+      <td>&nbsp;</td>
+    </tr>
+    <!-- Now change user's details -->
+    <tr>
+      <td>type</td>
+      <td>username</td>
+      <td>selenium_test_user</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>fullname</td>
+      <td>Selenium Test User</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>role</td>
+      <td>Just testing...</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>pwda</td>
+      <td>sn33Py</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>pwdb</td>
+      <td>sn33Py</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>email</td>
+      <td>selenium@netepi.info</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>phone_wk</td>
+      <td>1234 5678</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>phone_mbl</td>
+      <td>04123456789</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>phone_hm</td>
+      <td>9876 5432</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>phone_fax</td>
+      <td>5432 9876</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>update</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td> Sorry, that user name is already used - pick another</td>
+      <td>&nbsp;</td>
+    </tr>
+
+    <!-- OK, delete the test user account. -->
+    <tr>
+      <td>open</td>
+      <td>../../cgi-bin/casemgr/admin.py</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyLocation</td>
+      <td>/cgi-bin/casemgr/admin.py</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>NetEpi Collection<br>
+      </td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>ADMINISTRATION<br>
+      </td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>user</td>
+      <td>admin</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>password</td>
+      <td>sn00Py</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>login</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Administration</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>by form name</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>user_search_name</td>
+      <td>selenium_test_user</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>user_search_go</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Selenium Test User</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>delete_user_0</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>update</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>logout</td>
+      <td>&nbsp;</td>
+    </tr>
+
+  </tbody>
+</table>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-expand name="page_layout_admin">
+ <al-setarg name="title"><al-value expr="config.unit_label" /></al-setarg>
+  <table border="0" class="gridtab">
+   <thead class="darkest">
+    <al-if expr="paged_search.has_pages()">
+     <tr><td colspan="7"><al-expand name="page_select" /></td></tr>
+    </al-if>
+    <tr>
+     <al-expand name="sort_header" />
+     <th style="text-align: center;">
+       <al-input class="smallbutt" name="add:" type="submit" value="New" />
+     </th>
+    </tr>
+   </thead>
+   <tfoot class="darkest">
+    <al-if expr="paged_search.has_pages()">
+     <tr><td colspan="7"><al-expand name="page_select" /></td></tr>
+    </al-if>
+    <tr>
+     <td colspan="7" align="left" class="darkest">
+      <table width="100%" cellspacing="0" cellpadding="0" border="0">
+       <tr>
+        <td align="left">
+         Select
+         <al-input name="select_all" class="smallbutt" 
+          type="submit" value="All" />
+         <al-input name="select_none" class="smallbutt" 
+          type="submit" value="None" whitespace />
+        </td>
+        <td align="center">
+         Selected <al-value expr="config.unit_label.lower()" /> to/from <al-value expr="config.group_label.lower()" />
+         <al-select name="select_group_id" optionexpr="option_groups" />
+         <al-input name="select_group:add" class="butt" 
+          type="submit" value="Add" />
+         <al-input name="select_group:del" class="butt" 
+          type="submit" value="Remove" />
+        </td>
+       </tr>
+      </table>
+     </td>
+    </tr>
+   </tfoot>
+   <tbody>
+    <al-for iter="units_i" expr="paged_search.result_page()">
+     <al-exec expr="unit = units_i.value()" />
+     <al-if expr="units_i.index() & 1">
+      <tr>
+     <al-else>
+      <tr class="darker">
+     </al-if>
+      <td>
+       <al-input name="selected" type="checkbox" 
+        valueexpr="unit.unit_id" list="list" />
+      </td>
+      <td><al-value expr="unit.name" /></td>
+      <td><al-value expr="unit.street_address" /></td>
+      <td><al-value expr="unit.enabled" lookup="boolean" /></td>
+      <td><al-value expr="groups_pt[unit.unit_id].comma_list('group_name')" /></td>
+      <td align="center" nowrap>
+       <al-input nameexpr="'edit:%s' % unit.unit_id" 
+            class="smallbutt" type="submit" value="Edit" />
+      </td>
+     </tr>
+    </al-for>
+    <al-if expr="paged_search.error">
+     <tr>
+      <td colspan="7" class="reverr">
+       <al-value expr="paged_search.error" />
+      </td>
+     </tr>
+    </al-if>
+   </tbody>
+  </table>
+</al-expand>
+

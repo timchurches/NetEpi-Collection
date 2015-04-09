@@ -1,0 +1,108 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-macro name="result_buttons">
+       <td class="buttcol" align="right">
+        <al-if expr="name">
+         <al-input type="submit" class="butt" 
+          expr="label" nameexpr="name" idexp="name" />
+        <al-elif expr="label">
+         <al-value expr="label" />
+        <al-else>
+         &nbsp;
+        </al-if>
+       </td>
+</al-macro>
+
+<al-expand name="page_layout_banner">
+ <al-setarg name="title">
+  <al-value expr="search.search_ops.title" />
+ </al-setarg>
+ <al-expand name="confirm_or_error">
+  <al-exec expr="result_page = search.result.result_page()" />
+  <div class="right">Select:&nbsp;<al-input type="submit" class="smallbutt" name="selectnone" value="None" /><al-input type="submit" class="smallbutt" name="selectall" value="All" /></div>
+  <al-if expr="search.result.description">
+   <div class="pagesubtitle"><al-value expr="search.result.description" /></div>
+  </al-if>
+  <div class="searchinfo">Search took 
+  <al-value expr="'%.2f' % search.result.search_time" /> seconds and
+  returned <al-value expr="search.result.result_count()" /> persons (<al-value
+  expr="search.result.pages()" /> pages). This page took 
+  <al-value expr="'%.2f' % search.result.page_time" /> seconds.</div>
+  <table width="100%" border="0" class="searchres" cellspacing="0">
+   <thead>
+    <al-exec expr="name, label = search.result.edit_button()" />
+    <al-if expr="name">
+     <td></td>
+     <al-expand name="result_buttons" />
+     <td></td>
+    </al-if>
+    <tr><td colspan="3"><al-expand name="page_select" /></td></tr>
+   </thead>
+   <tfoot>
+    <tr><td colspan="3"><al-expand name="page_select" /></td></tr>
+   </tfoot>
+   <tbody>
+    <al-for iter="person_i" expr="result_page">
+     <al-exec expr="_person = person_i.value()" />
+     <tr class="person">
+      <td colspan="2">
+       <al-value expr="_person.summary()" />
+      </td>
+      <al-exec expr="name, label = _person.button(case)" />
+      <al-expand name="result_buttons" />
+     </tr>
+     <al-for iter="case_i" expr="_person.cases">
+      <al-exec expr="_case = case_i.value()" />
+      <al-if expr="_case.case_row.deleted"><tr class="deletedcase"><al-else><tr class="case"></al-if>
+       <td class="caseinfo">
+        <al-value expr="_case.summary()" />
+       </td>
+       <al-exec expr="name, label = _case.button(case)" />
+       <td class="select">
+        <al-if expr="name">
+         <al-input type="checkbox" list name="search.result.page_selected" 
+          valueexpr="_case.case_id" />
+        </al-if>
+       </td>
+       <al-expand name="result_buttons" />
+      </tr>
+     </al-for>
+    </al-for>
+   </tbody>
+  </table>
+
+  <table width="100%">
+   <tr>
+    <td colspan="3" class="fauxrule"></td>
+   </tr>
+   <tr>
+    <td align="left"></td>
+    <td align="right">
+     <al-exec expr="name, label = search.result.new_button()" />
+     <al-if expr="name">
+      <al-input type="submit" class="bigbutt" 
+       expr="label" nameexpr="name" idexp="name" />
+     </al-if>
+    </td>
+   </tr>
+  </table>
+ </al-expand>
+</al-expand>

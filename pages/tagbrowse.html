@@ -1,0 +1,48 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-include name="demogfields.html">
+<al-include name="taskbanner.html" />
+<al-expand name="page_layout_banner">
+ <al-setarg name="title">Tags</al-setarg>
+ <al-expand name="taskbanner" />
+ <al-if expr="case">
+  <al-exec expr="field_rows = case.rows_and_cols('form')" />
+  <al-if expr="case.deleted"><div class="deleted"><al-else><div></al-if>
+   <al-expand name="demogfields_text" />
+  </div>
+ </al-if>
+ <table class="tagbrowse">
+  <tr>
+   <th colspan="3"><al-value expr="tagbrowse_title" /></th>
+   <th><al-input type="submit" class="smallbutt" name="edit:" value="New"></th>
+  </tr>
+  <al-for vars="tag" expr="casetags.tags()">
+   <tr>
+    <td class="tag-checkbox">
+     <al-input type="checkbox" name="tags" valueexpr="tag.tag" list /></td>
+    <td class="tag-tag"><al-value expr="tag.tag" /></td>
+    <td class="tag-notes">
+     <al-if expr="tag.notes"><al-value expr="tag.notes" /></al-if></td>
+    <td><al-input type="submit" class="smallbutt" nameexpr="'edit:%s' % tag.tag_id" value="Edit"></td>
+   </tr>
+  </al-for>
+ </table>
+</al-expand>

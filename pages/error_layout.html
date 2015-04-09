@@ -1,0 +1,66 @@
+<al-macro name="error_layout">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" 
+   "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+-->
+<al-comment><!--
+    Note that this template is run with albatross.SimpleContext
+    and consequently most context attributes are missing. See
+    casemgr/handle_exception.py for more details.
+--></al-comment>
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Script-Type" content="text/javascript">
+  <meta name="robots" content="noindex,nofollow">
+  <al-link rel="shortcut icon" hrefexpr="'/%s/images/favicon.ico' % appname" type="image/x-icon">
+  <script type="text/javascript">document.cookie='submit_time=';</script>
+  <style type="text/css" media="all">
+   <!-- @import "/<al-value expr='appname' />/style.css"; -->
+  </style>
+  <title><al-usearg name="title" /> - <al-value expr="apptitle" /></title>
+ </head>
+ <body>
+  <form method="post">
+   <table class="login" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+     <td class="lhs logo">
+      <al-img expr="'/%s/images/netepi-bb.png' % appname" alt="logo" />
+     </td>
+     <td class="rhs">
+      <div class="title">
+       <al-value expr="apptitle" />
+      </div>
+      <div class="subtitle">
+       <al-value expr="subbanner" />
+      </div>
+     </td>
+    </tr>
+    <tr>
+     <td class="lhs"></td>
+     <td class="rhs msg">
+      <al-usearg />
+     </td>
+    </tr>
+   </table>
+  </form>
+ </body>
+</html>
+</al-macro>

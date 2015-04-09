@@ -1,0 +1,43 @@
+if [ -z "$1" ]; then
+    echo "Usage: $0 <database>" >&2;
+    exit 1;
+fi
+dir=userdata
+if [ ! -d "$dir" ]; then
+    echo "Data dir $dir does not exist?"
+    exit 1
+fi
+echo "Loading from $dir"
+psql -f - -q $1 << EOF
+
+\qecho === deleting existing user structures
+begin;
+delete from unit_groups where unit_id = 0 and group_id = 0;
+delete from unit_users where unit_id = 0 and user_id = 0;
+delete from groups where group_id = 0;
+delete from units where unit_id = 0;
+delete from users where user_id = 0;
+
+\qecho === groups
+\copy groups from '${dir}/groups' using delimiters '|'
+
+\qecho === users
+\copy users from '${dir}/users' using delimiters '|'
+
+\qecho === units
+\copy units from '${dir}/units' using delimiters '|'
+
+\qecho === unit_groups
+\copy unit_groups from '${dir}/unit_groups' using delimiters '|'
+
+\qecho === unit_users
+\copy unit_users from '${dir}/unit_users' using delimiters '|'
+
+SELECT setval('seq_user_id_users', (SELECT max(user_id) FROM users));
+SELECT setval('seq_unit_id_units', (SELECT max(unit_id) FROM units));
+SELECT setval('seq_group_id_groups', (SELECT max(group_id) FROM groups));
+SELECT setval('seq_unit_groups_id_unit_groups', 
+              (SELECT max(unit_groups_id) FROM unit_groups));
+SELECT setval('seq_unit_user_id_unit_users', 
+              (SELECT max(unit_user_id) FROM unit_users));
+commit;

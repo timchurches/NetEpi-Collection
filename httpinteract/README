@@ -1,0 +1,54 @@
+NetEpi Network Interactivity Tester
+===================================
+
+LICENSE
+=======
+
+All material associated with "NetEpi" is Copyright (C) 2004-2006 Health
+Administration Corporation (New South Wales Department of Health) and
+others (see the CONTRIBUTORS file for details).
+
+NetEpi is licensed under the terms of the Health Administration
+Corporation Open Source License Version 1.2 (HACOS License V1.2), the
+full text of which can be found in the LICENSE file provided with NetEpi.
+
+PREREQUISITES
+=============
+
+Python 2.3 or above
+
+    http://www.python.org/
+
+PyPgSQL:
+
+    http://pypgsql.sourceforge.net/
+
+Mochikit (version 1.2 or above)
+
+    http://mochikit.com/
+
+INSTALLATION
+============
+
+Install MochiKit
+
+    Unpack tarball, copy the directory packed/MochiKit and it's contents
+    to the root of your system htdocs directory (it should be accessible
+    as http://website_address/MochiKit/MochiKit.js).
+
+Install httpinteract:
+
+    Make a directory "httpinteract" in your system htdocs directory,
+    and copy the following files to it:
+
+        httpinteract.css
+        httpinteract.js
+        index.html
+
+    Copy httpinteract.cgi to your system cgi-bin directory and check
+    it has execute and read permissions for your web user. You may wish
+    to edit this file and change the "sleep", "motd", "server_send" or
+    "client_send" parameters.
+
+    Edit "schema", check the webuser variable is correct for your system, 
+    then run the script as a DBA user (probably root).

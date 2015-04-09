@@ -1,0 +1,53 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation and others. 
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-expand name="page">
+   <al-setarg name="title">
+    Step 3: Number of diagnoses made
+   </al-setarg>
+  <table class="detail">
+   <thead>
+    <tr>
+     <th></th>
+     <al-for iter="d_i" expr="labsurv.TestDiags.diagnoses">
+      <th><al-value expr="d_i.value()[1]" /></th>
+     </al-for>
+    </tr>
+   </thead>
+   <tbody>
+    <al-for iter="t_i" expr="report.test_diags">
+     <al-exec expr="test = t_i.value()" />
+     <tr>
+      <td class="rowlabel"><al-value expr="test.label" /></td>
+      <al-for iter="d_i" expr="test.diagnoses">
+       <td><al-input nameexpr="'report.test_diags[%d].counts[%d]' % (t_i.index(), d_i.index())" /></td>
+      </al-for>
+     </tr>
+    </al-for>
+   </tbody>
+  </table>
+  <al-setarg name="buttons">
+   <table class="buttons">
+    <tr>
+     <td align="left"><al-input type="submit" name="back" value="<< Back" /></td>
+     <td align="right"><al-input type="submit" name="next" value="Next >>" /></td>
+    </tr>
+   </table>
+  </al-setarg>
+</al-expand>

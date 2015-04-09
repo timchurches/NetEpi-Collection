@@ -1,0 +1,161 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-lookup name="field_render">
+ <al-item expr="'value'">
+  <al-div idexpr="field.field">
+   <al-value expr="eval(field.field)" />
+  </al-div>
+ </al-item>
+
+ <al-item expr="'textinput'">
+  <al-input nameexpr="field.field" idexpr="field.field" 
+   disabledbool="field.disabled" />
+ </al-item>
+
+ <al-item expr="'textarea'">
+  <al-textarea rows="4" nameexpr="field.field" idexpr="field.field" 
+   disabledbool="field.disabled" />
+ </al-item>
+
+ <al-item expr="'checkbox'">
+  <al-input type="checkbox" class="autowidth" value="True"
+   nameexpr="field.field" idexpr="field.field" 
+   disabledbool="field.disabled" />
+ </al-item>
+
+ <al-item expr="'short_radio'">
+  <al-for iter="i" expr="field.optionexpr()">
+   <al-exec expr="value, label = i.value()" />
+   <al-input type="radio" class="autowidth"
+    nameexpr="field.field" idexpr="field.field"
+    valueexpr="value">&nbsp;<al-value expr="label" />&nbsp;&nbsp;
+  </al-for>
+ </al-item>
+
+ <al-item expr="'datetimeinput'">
+  <al-input nameexpr="field.field" idexpr="field.field" 
+   calendarformatexpr="field.format()"
+   disabledbool="field.disabled" />
+ </al-item>
+
+ <al-item expr="'select'">
+  <al-select nameexpr="field.field" idexpr="field.field"
+    optionexpr="field.optionexpr()" disabledbool="field.disabled" />
+ </al-item>
+
+ <al-item expr="'select_syndrome'">
+  <al-if expr="syndromes">
+   <al-select nameexpr="field.field" idexpr="field.field"
+     optionexpr="syndromes.anyoptions()" 
+     disabledbool="field.disabled or search.syndrome_id" />
+  </al-if>
+ </al-item>
+
+ <al-item expr="'case_dob'">
+  <al-exec expr="agestr = field.age_if_dob(__ctx__.locals)" />
+  <al-if expr="not agestr">
+   <al-input 
+    calendarformatexpr="field.format()"
+    nameexpr="field.field"
+    idexpr="field.field" disabledbool="field.disabled" />
+  <al-else>
+   <div class="short">
+    <al-input 
+     calendarformatexpr="field.format()"
+     nameexpr="field.field"
+     idexpr="field.field" disabledbool="field.disabled" />
+   </div>Age: <al-value expr="agestr" />
+  </al-if>
+ </al-item>
+
+ <al-item expr="'tags'">
+  <div class="fieldandbutt">
+   <div class="andbutt">
+    <al-input type="submit" name="tagbrowse" value="Browse" />
+   </div>
+   <div class="fieldand">
+    <al-input class="thebutt" nameexpr="field.field" idexpr="field.field" 
+     disabledbool="field.disabled" />
+   </div>
+  </div>
+ </al-item>
+
+</al-lookup>
+
+<al-macro name="demogfields">
+  <table class="labelform" width="99%">
+   <al-for vars="group" expr="render_fields.grouped()">
+    <al-if expr="group.label">
+     <al-tbody class="grouplabel" idexpr="'label_%s' % group.name">
+      <tr>
+       <th colspan="4">
+        <al-span class="foldicon" idexpr="'icon_%s' % group.name" />
+        <al-value expr="group.label" />
+       </th>
+      </tr>
+     </al-tbody>
+    </al-if>
+    <al-tbody class="details" idexpr="'fold_%s' % group.name">
+     <al-for iter="field_row_i" expr="group.rows_and_cols()">
+      <tr>
+       <al-for iter="field_i" expr="field_row_i.value()">
+        <al-exec expr="field = field_i.value()" />
+        <td class="label">
+         <al-label forexpr="field.field">
+          <al-value expr="field.label" />
+         </al-label>
+        </td>
+        <td class="field">
+         <al-value lookup="field_render" expr="field.render" />
+        </td>
+       </al-for>
+      </tr>
+     </al-for>
+    </al-tbody>
+   </al-for>
+  </table>
+  <al-for vars="group" expr="render_fields.grouped()">
+   <al-if expr="group.name">
+    <script type="text/javascript"><al-value noescape expr="'linkfold(%r,true);' % group.name" /></script>
+   </al-if>
+  </al-for>
+</al-macro>
+
+<al-macro name="demogfields_text">
+  <table class="labeltext">
+   <al-for iter="field_row_i" expr="field_rows">
+    <tr>
+     <al-for iter="field_i" expr="field_row_i.value()">
+      <al-exec expr="field = field_i.value()" />
+      <td class="label">
+        <al-value expr="field.label" />
+      </td>
+      <td class="field">
+       <al-exec expr="value = field.outtrans(__ctx__.locals)" />
+       <al-if expr="value">
+        <al-value expr="field.outtrans(__ctx__.locals)" />
+       </al-if>
+      </td>
+     </al-for>
+    </tr>
+   </al-for>
+  </table>
+</al-macro>

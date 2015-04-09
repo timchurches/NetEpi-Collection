@@ -1,0 +1,364 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-macro name="search_err">
+   <tr><td></td><td colspan="3" class="err"><al-usearg /></td></tr>
+</al-macro>
+
+<al-macro name="rights_admin">
+  <tbody>
+   <tr>
+    <td class="op">Rights</td>
+    <td class="ilabel">
+     <label for="view_rights">view rights</label>
+    </td>
+    <td>
+     <al-select id="view_right" name="view_right"
+      optionexpr="rights_options" style="width: 100%;" />
+    </td>
+    <td></td>
+    <td class="buttons">
+     <al-input id="view_rights" name="view_rights" class="smallbutt" type="submit" value="View" />
+    </td>
+   </tr>
+  </tbody>
+</al-macro>
+
+<al-macro name="user_admin">
+  <tbody>
+   <tr>
+    <td rowspan="5" class="op">User</td>
+    <td class="ilabel">
+     <label for="admin_search.user.name">by user name</label>
+    </td>
+    <td class="inputs">
+     <al-input id="admin_search.user.name" name="admin_search.user.name" 
+      class="inputs" type="text" />
+    </td>
+    <td rowspan="4" class="iopts">
+     <label><al-input name="admin_search.user.enabled" type="radio" 
+      id="admin_search.user.enabled" value="enabled" />Enabled</label><br>
+     <label><al-input name="admin_search.user.enabled" type="radio" 
+      id="admin_search.user.disabled" value="disabled" />Disabled</label><br>
+     <label><al-input name="admin_search.user.enabled" type="radio" 
+      id="admin_search.user.both" value="either" />Either</label><br>
+     <label><al-input name="admin_search.user.enabled" type="radio" 
+      id="admin_search.user.deleted" value="deleted" />Deleted</label><br>
+    </td>
+    <td rowspan="4" class="buttons">
+     <al-input name="search:user" class="smallbutt" type="submit" value="Find" /><br />
+     <al-input name="new:user" class="smallbutt" type="submit" value="New" />
+    </td>
+   </tr>
+   <tr>
+    <td class="ilabel">
+     <label for="admin_search.user.fullname">by full name</label>
+    </td>
+    <td class="inputs">
+     <al-input id="admin_search.user.fullname" name="admin_search.user.fullname" 
+      class="inputs" type="text" />
+    </td>
+   </tr>
+   <tr>
+    <td class="ilabel">
+     <label for="admin_search.user.title">by title</label>
+    </td>
+    <td class="inputs">
+     <al-input id="admin_search.user.title" name="admin_search.user.title" 
+      class="inputs" type="text" />
+    </td>
+   </tr>
+   <tr>
+    <td class="ilabel">
+     <label for="admin_search.user.unit">by <al-value expr="config.unit_label.lower()" /></label>
+    </td>
+    <td class="inputs">
+     <al-input id="admin_search.user.unit" name="admin_search.user.unit" 
+      class="inputs" type="text" />
+    </td>
+   </tr>
+   <tr>
+    <td class="ilabel">
+     <label for="admin_search.user.sponsor">by sponsor</label>
+    </td>
+    <td class="inputs">
+     <al-input id="admin_search.user.sponsor" name="admin_search.user.sponsor" 
+      class="inputs" type="text" />
+    </td>
+   </tr>
+   <al-expand name="search_err"><al-value expr="admin_search.user.error" /></al-expand>
+  </tbody>
+</al-macro>
+
+<al-macro name="unit_admin">
+  <tbody>
+   <tr>
+    <td class="op"><al-value expr="config.unit_label" /></td>
+    <td class="ilabel">
+     <label for="admin_search.unit.name">by <al-value expr="config.unit_label.lower()" /> name</label>
+    </td>
+    <td class="inputs">
+     <al-input id="admin_search.unit.name" name="admin_search.unit.name" type="text" />
+    </td>
+    <td class="iopts">
+     <label><al-input name="admin_search.unit.enabled" type="radio" 
+      id="admin_search.unit_enabled" value="enabled" />Enabled</label><br />
+     <label><al-input name="admin_search.unit.enabled" type="radio" 
+      id="admin_search.unit_disabled" value="disabled" />Disabled</label><br />
+     <label><al-input name="admin_search.unit.enabled" type="radio" 
+      id="admin_search.unit_both" value="either" />Either</label>
+    </td>
+    <td class="buttons">
+     <al-input name="search:unit" class="smallbutt" type="submit" value="Find" /><br />
+     <al-input name="new:unit" class="smallbutt" type="submit" value="New" />
+    </td>
+   </tr>
+   <al-expand name="search_err"><al-value expr="admin_search.unit.error" /></al-expand>
+  </tbody>
+</al-macro>
+
+<al-macro name="group_admin">
+  <tbody>
+   <tr>
+    <td class="op">
+      <al-value expr="config.group_label" />
+    </td>
+    <td class="inputs" colspan="2">
+     <al-select id="admin_search.group_id" name="admin_search.group_id"
+      optionexpr="group_options" style="width: 100%;" />
+    </td>
+    <td></td>
+    <td class="buttons">
+     <al-input name="search:group" class="smallbutt" type="submit" value="Edit" /><br />
+     <al-input name="new:group" class="smallbutt" type="submit" value="New" /><br />
+    </td>
+   </tr>
+   <al-expand name="search_err"><al-value expr="admin_search.group.error" /></al-expand>
+  </tbody>
+</al-macro>
+
+<al-macro name="queue_admin">
+  <tbody>
+   <tr>
+    <td class="op">Task Queue</td>
+    <td class="ilabel">
+     <label for="admin_search.queue.name">by queue name</label>
+    </td>
+    <td class="inputs">
+      <al-input id="admin_search.queue.name" name="admin_search.queue.name" type="text" />
+    </td>
+    <td></td>
+    <td class="buttons">
+     <al-input name="search:queue" class="smallbutt" type="submit" value="Find" /><br />
+     <al-input name="new:queue" class="smallbutt" type="submit" value="New" /><br />
+    </td>
+   </tr>
+   <al-expand name="search_err"><al-value expr="admin_search.queue.error" /></al-expand>
+  </tbody>
+</al-macro>
+
+<al-macro name="form_admin">
+  <tbody>
+   <tr>
+    <td rowspan="2" class="op">Form</td>
+    <td class="ilabel">
+     <label for="admin_search.form.form">by form name</label>
+    </td>
+    <td class="inputs">
+     <al-input id="admin_search.form.form" name="admin_search.form.form" type="text" />
+    </td>
+    <td rowspan="2"></td>
+    <td rowspan="2" class="buttons">
+     <al-input name="search:form" class="smallbutt" type="submit" value="Find" /><br />
+     <al-input name="new:form" class="smallbutt" type="submit" value="New" /><br />
+    </td>
+   </tr>
+   <tr>
+    <td class="ilabel">
+     <label for="admin_search.form.syndrome_id">by <al-value expr="config.syndrome_label.lower()" /></label>
+    </td>
+    <td class="inputs">
+     <al-select id="admin_search.form.syndrome_id" 
+              name="admin_search.form.syndrome_id" 
+        optionexpr="synd_options" />
+    </td>
+   </tr>
+   <al-expand name="search_err"><al-value expr="admin_search.form.error" /></al-expand>
+  </tbody>
+</al-macro>
+
+<al-macro name="syndrome_admin">
+  <tbody>
+   <tr>
+    <td class="op"><al-value expr="config.syndrome_label" /></td>
+    <td class="ilabel">
+     <label for="admin_search.syndrome.name">by name</label>
+    </td>
+    <td class="inputs">
+     <al-input id="admin_search.syndrome.name" name="admin_search.syndrome.name" type="text" />
+    </td>
+    <td class="iopts">
+     <label><al-input name="admin_search.syndrome.enabled" type="radio" 
+      id="admin_search.syndrome.enabled" value="enabled" />Enabled</label><br>
+     <label><al-input name="admin_search.syndrome.enabled" type="radio" 
+      id="admin_search.syndrome.disabled" value="disabled" />Disabled</label><br>
+     <label><al-input name="admin_search.syndrome.enabled" type="radio" 
+      id="admin_search.syndrome.both" value="either" />Either</label><br>
+    </td>
+    <td class="buttons">
+     <al-input name="search:syndrome" class="smallbutt" type="submit" value="Find" /><br>
+     <al-input name="new:syndrome" class="smallbutt" type="submit" value="New" />
+    </td>
+   </tr>
+   <al-expand name="search_err"><al-value expr="admin_search.syndrome.error" /></al-expand>
+  </tbody>
+</al-macro>
+
+<al-macro name="bulletin_admin">
+  <tbody>
+   <tr>
+    <td rowspan="3" class="op">Bulletin</td>
+    <td class="ilabel">
+     <label for="admin_search.bulletin.title">by title/synopsis</label>
+    </td>
+    <td class="inputs">
+      <al-input id="admin_search.bulletin.title" name="admin_search.bulletin.title" type="text" />
+    </td>
+    <td rowspan="3"></td>
+    <td rowspan="3" class="buttons">
+     <al-input name="search:bulletin" class="smallbutt" type="submit" value="Find" /><br />
+     <al-input name="new:bulletin" class="smallbutt" type="submit" value="New" /><br />
+    </td>
+   </tr>
+   <tr>
+    <td class="ilabel">
+     <label for="admin_search.bulletin.before">posted before</label>
+    </td>
+    <td class="inputs">
+     <al-input id="admin_search.bulletin.before" name="admin_search.bulletin.before" 
+      type="text" calendarformatexpr="datetime.mx_parse_datetime.format" />
+    </td>
+   </tr>
+   <tr>
+    <td class="ilabel">
+     <label for="admin_search.bulletin.after">posted after</label>
+    </td>
+    <td class="inputs">
+     <al-input id="admin_search.bulletin.after" name="admin_search.bulletin.after" 
+      type="text" calendarformatexpr="datetime.mx_parse_datetime.format" />
+    </td>
+   </tr>
+   <al-expand name="search_err"><al-value expr="admin_search.bulletin.error" /></al-expand>
+  </tbody>
+</al-macro>
+
+<al-macro name="sys_admin">
+  <tbody>
+   <tr>
+    <td rowspan="6" class="op">System</td>
+    <td class="ilabel" colspan="3">
+     <label for="demog_fields">demographic fields</label>
+    </td>
+    <td class="buttons">
+     <al-input id="demog_fields" name="demog_fields" class="smallbutt" type="submit" value="Edit" />
+    </td>
+   </tr>
+   <tr>
+    <td class="ilabel" colspan="3">
+     <label for="contact_types">contact types</label>
+    </td>
+    <td class="buttons">
+     <al-input id="contact_types" name="contact_types" class="smallbutt" type="submit" value="Edit" />
+    </td>
+   </tr>
+   <tr>
+    <td class="ilabel" colspan="3">
+     <label for="case_status">case status</label>
+    </td>
+    <td class="buttons">
+     <al-input id="case_status" name="case_status" class="smallbutt" type="submit" value="Edit" />
+    </td>
+   </tr>
+   <tr>
+    <td class="ilabel" colspan="3">
+     <label for="case_assignment">case assignment</label>
+    </td>
+    <td class="buttons">
+     <al-input id="case_assignment" name="case_assignment" class="smallbutt" type="submit" value="Edit" />
+    </td>
+   </tr>
+   <tr>
+    <td class="ilabel" colspan="3">
+     <label for="address_states">states</label>
+    </td>
+    <td class="buttons">
+     <al-input id="address_states" name="address_states" class="smallbutt" type="submit" value="Edit" />
+    </td>
+   </tr>
+   <tr>
+    <td class="ilabel" colspan="3">
+     <label for="system_log">system log</label>
+    </td>
+    <td class="buttons">
+     <al-input id="system_log" name="system_log" class="smallbutt" type="submit" value="View" />
+    </td>
+   </tr>
+  </tbody>
+</al-macro>
+
+<al-macro name="admin_line">
+   <tr><td class="spacer" colspan="5"></td></tr>
+</al-macro>
+
+<al-expand name="page_layout_admin">
+ <al-setarg name="title">Menu</al-setarg>
+  <table border="0" class="admin-m">
+   <al-expand name="group_admin" />
+   <al-expand name="admin_line" />
+   <al-expand name="syndrome_admin" />
+   <al-expand name="admin_line" />
+   <al-expand name="form_admin" />
+   <al-expand name="admin_line" />
+   <al-expand name="unit_admin" />
+   <al-expand name="admin_line" />
+   <al-expand name="user_admin" />
+   <al-expand name="admin_line" />
+   <al-expand name="rights_admin" />
+   <al-expand name="admin_line" />
+   <al-expand name="queue_admin" />
+   <al-expand name="admin_line" />
+   <al-expand name="bulletin_admin" />
+   <al-expand name="admin_line" />
+   <al-expand name="sys_admin" />
+   <al-expand name="admin_line" />
+   <tr>
+    <td colspan="4" align="center">
+     <div class="smaller">
+      Logged in as <al-value expr="_credentials.user.fullname">. For
+      assistance, please contact <al-value expr="helpdesk_contact" noescape />.
+     </div>
+    </td>
+    <td class="buttons">
+     <al-input name="reset" class="smallbutt" type="submit" value="Clear" />
+    </td>
+   </tr>
+  </table>
+  <script>enterBodySubmit('appform');</script>
+</al-expand>

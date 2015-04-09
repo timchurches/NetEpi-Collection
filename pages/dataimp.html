@@ -1,0 +1,272 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-include name="tabs.html">
+
+<al-macro name="dataimp_sel">
+ <table border="0" class="gridbox">
+  <al-exec expr="available = editor.available()" />
+  <tr>
+   <th colspan="3" align="left">
+    Load an existing ruleset:
+   </th>
+  </tr>
+  <al-if expr="available">
+   <al-for iter="a_i" expr="available">
+    <al-exec expr="id, name = a_i.value()" />
+    <tr>
+     <td width="16"></td>
+     <td class="line"><al-value expr="name" /></td>
+     <td class="line" align="right">
+      <al-input type="submit" nameexpr="'load:%s' % id" 
+                 value="Use" class="butt" /></td>
+    </tr>
+   </al-for>
+  <al-else>
+   <tr>
+    <td width="16"></td>
+    <td colspan="2">
+     <b>No import rules are defined for this 
+      <al-value expr="config.syndrome_label" />.</b>
+    </td>
+   </tr>
+  </al-if>
+  <tr>
+   <th colspan="3" align="left">
+    Or create a new ruleset:
+   </th>
+  </tr>
+  <tr>
+   <td colspan="2"></td>
+   <td align="right">
+    <al-input type="submit" name="new" value="New" class="butt" />
+   </td>
+  </tr>
+  <tr>
+   <th colspan="3" align="left">
+    Or import an XML ruleset definition:
+   </th>
+  </tr>
+  <tr>
+   <td width="16"></td>
+   <td colspan="2" align="right">
+    <al-input type="file" name="imprules_file" size="40" class="file">
+    <al-input type="submit" name="imprules" value="Import" class="butt">
+   </td>
+  </tr>
+ </table> 
+</al-macro>
+
+<al-macro name="dataimp_params">
+ <al-input type="submit" class="right bigbutt danger" name="delete"
+        value="Delete Ruleset" />
+ <table border="0">
+   <tr>
+    <td><label for="name">Rule set name:</label></td>
+    <td><al-input size="30" name="editor.importrules.name" id="name" /></td>
+   </tr>
+   <tr>
+    <td><label for="mode">Column mode:</label></td>
+    <td>
+     <al-input type="radio" name="editor.importrules.mode" id="mode"
+       value="named" />&nbsp;Named&nbsp;&nbsp;
+     <al-input type="radio" name="editor.importrules.mode" id="mode"
+       value="positional" />&nbsp;Positional
+    </td>
+   </tr>
+   <tr>
+    <td><label for="encoding">Data source encoding:</label></td>
+    <td>
+     <al-select name="editor.encoding" style="min-width: 10em;" id="encoding"
+      optionexpr="editor.encodings" />
+    </td>
+   </tr>
+   <tr>
+    <td><label for="fieldsep">Field separator:</label></td>
+    <td>
+     <al-select name="editor.fieldsep" style="min-width: 10em;"
+      optionexpr="editor.fieldseps" id="fieldsep" />
+    </td>
+   </tr>
+   <tr>
+    <td><label for="srclabel">Data source name:</label></td>
+    <td>
+     <al-input name="editor.importrules.srclabel"
+      style="min-width: 10em;" id="srclabel" />
+    </td>
+   </tr>
+   <tr>
+    <td><label for="conflicts">Conflicting records:</label></td>
+    <td>
+     <al-input type="radio" name="editor.importrules.conflicts" id="conflicts" 
+      value="ignore" />&nbsp;Ignore&nbsp;&nbsp;
+     <al-input type="radio" name="editor.importrules.conflicts" id="conflicts" 
+      value="duplicate" />&nbsp;Duplicate&nbsp;&nbsp;
+    </td>
+   </tr>
+ </table>
+</al-macro>
+
+<al-macro name="dataimp_fields">
+ <table border="0" class="gridbox">
+  <al-exec expr="view = editor.view(dataimp_src)" />
+  <al-if expr="view.unused_cols">
+   <tr><td colspan="3" class="rule"></td></tr>
+   <tr>
+    <th colspan="3" align="left">
+     Unused source columns:
+    </th>
+   </tr>
+   <tr>
+    <td colspan="3" align="left" class="srcsel">
+     <table>
+      <al-for iter="row_i" expr="view.unused_cols" cols="6">
+       <tr>
+        <al-for vars="col" expr="row_i.value()">
+         <td>
+          <label>
+           <al-input name="srcsel" valueexpr="col" type="radio" whitespace />
+           <al-value expr="col" />
+          </label>
+         </td>
+        </al-for>
+       </tr>
+      </al-for>
+     </table>
+    </td>
+   </tr>
+  </al-if>
+  <al-for vars="group" iter="group_i" expr="view">
+   <tr><td colspan="3" class="rule"></td></tr>
+   <tr>
+    <th colspan="3" align="left">
+     <al-if expr="group.name">
+      <al-input nameexpr="'del_form:%s' % group.name" class="smallbutt right"
+           type="submit" value="Del" />
+     </al-if>
+     <al-value expr="group.label" />
+    </th>
+   </tr>
+   <al-if expr="group">
+    <tr>
+     <th align="left">Target</th>
+     <th align="left">Action</th>
+     <th></th>
+    </tr>
+    <al-for vars="field" iter="field_i" expr="group">
+     <tr>
+      <td class="line"><al-value expr="field.label" /></td>
+      <td class="line"><al-value expr="field.action_desc" /></td>
+      <td class="line"><al-input type="submit" class="smallbutt"
+       nameexpr="'edit:%s:%s' % (group.name, field.name)" value="Edit" /></td>
+     </tr>
+    </al-for>
+   </al-if>
+   <tr>
+    <th colspan="3" align="right">
+     Add target: <al-select name="add_field" list
+      optionexpr="group.add_options" onchange="submit();" />
+     <al-if expr="not has_js">
+      <al-input type="submit" name="add_field_but" value="Add" />
+     </al-if>
+    </th>
+   </tr>
+  </al-for>
+  <al-if expr="view.add_options">
+   <tr><td colspan="3" class="rule"></td></tr>
+   <tr>
+    <th colspan="3" align="left">
+     Add form:&nbsp;<al-select name="add_form" 
+      optionexpr="view.add_options" onchange="submit();" />
+     <al-if expr="not has_js">
+      <al-input type="submit" name="add_form_but" value="Add" />
+     </al-if>
+    </th>
+   </tr>
+  </al-if>
+ </table>
+</al-macro>
+
+<al-macro name="dataimp_filters">
+</al-macro>
+
+<al-macro name="dataimp_upload">
+ <table valign="baseline">
+  <tr>
+    <th align="left" colspan="2">Upload a new file:</th>
+  </tr>
+  <tr>
+   <th>&nbsp;</th>
+   <td><al-input class="file" type="file" name="src_file" size="40" />
+       <al-input type="submit" class="butt" name="upload" value="Upload" /></td>
+  </tr>
+  <al-if expr="not dataimp_src">
+   <tr>
+    <th align="left" colspan="2">No file is currently selected.</th>
+   </tr>
+  <al-else>
+   <tr>
+    <th align="left" nowrap>Current file:</th>
+    <td>
+     <al-value expr="dataimp_src.name" /> (<al-value expr="dataimp_src.size" /> bytes)
+    <td>
+   </tr>
+   <tr>
+    <th align="left" nowrap></th>
+    <td>
+     <al-if expr="dataimp_src.preview">
+      <al-value expr="dataimp_src.preview.n_cols" /> columns,
+      <al-value expr="dataimp_src.preview.n_rows" /> rows
+     </al-if>
+    <td>
+   </tr>
+   <tr>
+    <th align="left" nowrap>Uploaded:</th>
+    <td><al-value expr="dataimp_src.received" /></td>
+   </tr>
+  </al-if>
+ </table>
+</al-macro>
+
+<al-expand name="page_layout_banner">
+ <al-setarg name="title">Import <al-value expr="editor.syndrome().name" /> data</al-setarg>
+ <al-exec expr="tabs = dataimp_tabs" />
+ <al-expand name="left-tabs">
+  <al-expand name="confirm_or_error">
+   <al-lookup expr="dataimp_tabs.selected">
+    <al-item expr="'select'">
+     <al-expand name="dataimp_sel" />
+    </al-item>
+    <al-item expr="'params'">
+     <al-expand name="dataimp_params" />
+    </al-item>
+    <al-item expr="'fields'">
+     <al-expand name="dataimp_fields" />
+    </al-item>
+    <al-item expr="'filters'">
+     <al-expand name="dataimp_filters" />
+    </al-item>
+    <al-item expr="'upload'">
+     <al-expand name="dataimp_upload" />
+    </al-item>
+   </al-lookup>
+  </al-expand>
+ </al-expand>
+</al-expand>

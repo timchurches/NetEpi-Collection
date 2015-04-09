@@ -1,0 +1,71 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-expand name="page_layout_admin">
+ <al-setarg name="title"><al-value expr="title" /></al-setarg>
+  <table border="0" class="gridtab">
+   <thead class="darkest">
+    <al-if expr="paged_search.has_pages()">
+     <tr><td colspan="6"><al-expand name="page_select" /></td></tr>
+    </al-if>
+    <tr>
+     <al-expand name="sort_header" />
+     <th style="text-align: center;">
+       <al-input class="butt" name="add:" type="submit" value="New User" />
+     </th>
+    </tr>
+   </thead>
+   <al-if expr="paged_search.has_pages()">
+    <tfoot class="darkest">
+     <tr><td colspan="6"><al-expand name="page_select" /></td></tr>
+    </tfoot>
+   </al-if>
+   <tbody>
+    <al-for iter="users_i" expr="paged_search.result_page()">
+     <al-exec expr="user = users_i.value()" />
+     <al-if expr="users_i.index() & 1">
+      <tr>
+     <al-else>
+      <tr class="darker">
+     </al-if>
+      <td><al-value expr="user.enabled" lookup="boolean" /></td>
+      <td><al-value expr="user.username" /></td>
+      <td><al-value expr="user.fullname" /></td>
+      <td><al-value expr="user.title" /></td>
+      <td><al-value expr="users_units[user.user_id].comma_list('name')" /></td>
+      <td align="center" nowrap>
+       <al-input nameexpr="'edit:%s' % user.user_id" 
+            class="smallbutt" type="submit" value="Edit" />
+       <al-input nameexpr="'showlogs:%s' % user.user_id" 
+            class="smallbutt" type="submit" value="Logs" />
+      </td>
+     </tr>
+    </al-for>
+    <al-if expr="paged_search.error">
+     <tr>
+      <td colspan="6" class="reverr">
+       <al-value expr="paged_search.error" />
+      </td>
+     </tr>
+    </al-if>
+   </tbody>
+  </table>
+</al-expand>
+

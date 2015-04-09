@@ -1,0 +1,33 @@
+include config.py
+include CHANGES
+include CONTRIBUTORS
+include install.py
+include liccheck.py
+include test.py
+include LGPL.txt
+include Trac_licence.txt
+include LICENCE
+include README
+include README.mac
+include README.selinux
+include Makefile
+include MANIFEST.in
+recursive-include app *
+recursive-include pages *
+recursive-include casemgr *.py README
+recursive-include cocklebur *.py Makefile
+recursive-include doc *
+recursive-include forms *
+recursive-include httpinteract *
+recursive-include images *
+recursive-include load *
+recursive-include mail *
+recursive-include Selenium *.html *.py
+recursive-include simpleinst *
+recursive-include tests *.py *.csv *.form
+recursive-include tools *
+recursive-include wiki *
+recursive-include LiveCD *
+recursive-include labsurv *
+prune simpleinst/build
+global-exclude *.pyc *.swp *.bak *,cover *~ .\#* .xvpics/* .cvsignore

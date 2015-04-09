@@ -1,0 +1,193 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-include name="search_pt.html" />
+
+<al-expand name="page_layout_admin">
+ <al-setarg name="title"><al-value expr="ue.title" /></al-setarg>
+  <table border="0" class="admin-u">
+   <tr>
+    <td colspan="2">
+     <table width="100%" cellpadding="0" cellspacing="0" border="0">
+      <tr>
+       <th width="100%">
+        <al-if expr="ue.user.deleted">View DELETED user<al-else>Edit user</al-if>
+       </th>
+       <al-if expr="not ue.user.is_new()">
+        <th align="right">
+         <al-input type="submit" class="butt" name="view_log" value="View Log" />
+        </th>
+       </al-if>
+      </tr>
+     </table>
+    </td>
+   </tr>
+   <tr>
+    <td align="right">Username:</td>
+    <td><al-input name="ue.user.username" size="40"
+      disabledbool="ue.user.deleted" /></td>
+   </tr>
+   <tr>
+    <td align="right">Full name:</td>
+    <td><al-input name="ue.user.fullname" size="40"
+      disabledbool="ue.user.deleted" /></td>
+   </tr>
+   <tr>
+    <td align="right">Sponsor:</td>
+    <td><al-if expr="ue.sponsor"><al-value expr="ue.sponsor.fullname" /> (<al-value expr="ue.sponsor.username" />)<al-else>None</al-if></td>
+   </tr>
+   <al-if expr="not ue.user.deleted">
+    <tr>
+     <td align="right">Enabled:</td>
+     <td align="left">
+      <al-input id="user_enabled" name="ue.user.enabled" type="radio" value="True">Yes&nbsp;
+      <al-input id="user_disabled" name="ue.user.enabled" type="radio" value="">No
+     </td>
+    </tr>
+    <tr>
+     <td align="right">Locked due to bad password:</td>
+     <al-if expr="ue.lock_remain()">
+      <td bgcolor="#ffcccc">
+        <al-input class="right butt" type="submit" name="reset_attempts" value="Reset" />
+        Yes - <al-value expr="ue.lock_remain()" /> remain
+      </td>
+     <al-else>
+      <td>No</td>
+     </al-if>
+    </tr>
+    <tr>
+     <td align="right">Rights:</td>
+     <td align="left">
+      <table width="100%" class="gridtab" cellpadding="2" style="text-align: center;">
+       <tr>
+        <al-for iter="u_i" expr="units">
+         <th><al-value expr="u_i.value().name" /></th>
+        </al-for>
+        <th>User</th>
+        <th style="text-align: left;" width="100%">Right</th>
+       </tr>
+       <al-for iter="r_i" expr="credentials.Rights.available">
+        <tr class="darker">
+         <al-for iter="u_i" expr="units">
+          <td>
+           <al-input type="checkbox" name="unitrights" disabled
+             checkedbool="r_i.value().right in u_i.value().rights" />
+          </td>
+         </al-for>
+         <td>
+          <al-input type="checkbox" name="ue.rights" list
+           valueexpr="r_i.value().right" />
+         </td>
+         <td align="left">
+          <al-value expr="r_i.value().label" />
+          <al-if expr="r_i.value().desc">
+           <span class="smaller"> (<al-value expr="r_i.value().desc"/>)</span>
+          </al-if>
+         </td>
+        </tr>
+       </al-for>
+      </table>
+     </td>
+    </tr>
+    <tr>
+     <td align="right">New Password:</td>
+     <td><al-input type="password" name="ue.pwd.new_a" size="12" /></td>
+    </tr>
+    <tr>
+     <td align="right">Retype New Password:</td>
+     <td><al-input type="password" name="ue.pwd.new_b" size="12" /></td>
+    </tr>
+    <tr>
+     <td align="right"><al-value expr="config.unit_label" />:</td>
+     <td>
+      <al-expand name="search_pt">
+       <al-setarg name="left_title"><al-value expr="config.unit_label" /></al-setarg>
+       <al-setarg name="left_row"><al-value expr="row.name" /></al-setarg>
+       <al-setarg name="right_title">Add/Search</al-setarg>
+       <al-setarg name="right_row"><al-value expr="row.name" /></al-setarg>
+      </al-expand>
+     </td>
+    </tr>
+   </al-if>
+   <tr>
+    <td align="right">Job Title:</td>
+    <td><al-input name="ue.user.title" size="40"
+      disabledbool="ue.user.deleted" /></td>
+   </tr>
+   <tr>
+    <td align="right">Agency/Employer:</td>
+    <td><al-input name="ue.user.agency" size="40"
+      disabledbool="ue.user.deleted" /></td>
+   </tr>
+   <tr>
+    <td align="right">Expertise:</td>
+    <td><al-input name="ue.user.expertise" size="40"
+      disabledbool="ue.user.deleted" /></td>
+   </tr>
+   <tr>
+    <td align="right">e-mail:</td>
+    <td><al-input name="ue.user.email" size="40"
+      disabledbool="ue.user.deleted" /></td>
+   </tr>
+   <tr>
+    <td align="right">Work Phone:</td>
+    <td><al-input name="ue.user.phone_work" size="40"
+      disabledbool="ue.user.deleted" /></td>
+   </tr>
+   <tr>
+    <td align="right">Mobile Phone:</td>
+    <td><al-input name="ue.user.phone_mobile" size="40"
+      disabledbool="ue.user.deleted" /></td>
+   </tr>
+   <tr>
+    <td align="right">Home phone:</td>
+    <td><al-input name="ue.user.phone_home" size="40"
+      disabledbool="ue.user.deleted" /></td>
+   </tr>
+   <tr>
+    <td align="right">Fax:</td>
+    <td><al-input name="ue.user.phone_fax" size="40"
+      disabledbool="ue.user.deleted" /></td>
+   </tr>
+   <tr>
+    <td colspan="2" class="darkest">
+     <al-expand name="confirm_or_error">
+      <table width="100%" cellpadding="0" cellspacing="0">
+       <tr>
+        <td align="center" width="100%">
+         <al-if expr="ue.user.deleted">
+          <al-input class="butt danger" name="undelete" type="submit" value="undelete" />
+         <al-else>
+          <al-input class="butt danger" name="delete" type="submit" value="delete" />
+         </al-if>
+        </td>
+        <td align="right">
+         <al-if expr="not ue.user.deleted">
+          <al-input class="butt" name="update" type="submit" value="Save" />
+          <script>enterSubmit('appform', 'update');</script>
+         </al-if>
+        </td>
+       </tr>
+      </table>
+     </al-expand>
+    </td>
+   <tr>
+  </table>
+</al-expand>

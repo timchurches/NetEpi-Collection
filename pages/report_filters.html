@@ -1,0 +1,191 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-lookup name="report_filter">
+ <al-item expr="'checkboxes'">
+  <al-for iter="ci" expr="edit_filter.options()">
+   <al-input type="checkbox" name="edit_filter.values" list
+     valueexpr="ci.value()[0]" />&nbsp;<al-value expr="ci.value()[1]" />
+     &nbsp;&nbsp;
+  </al-for>
+ </al-item>
+ <al-item expr="'select'">
+  <al-select name="edit_filter.value" optionexpr="edit_filter.options()" />
+ </al-item>
+ <al-item expr="'multiselect'">
+  <al-select name="edit_filter.values" multiple size="6"
+   optionexpr="edit_filter.options()" />
+ </al-item>
+ <al-item expr="'range'">
+  <table border="0">
+   <tr>
+    <td>From</td>
+    <td>
+     <al-if expr="edit_filter.date_format()">
+      <al-input type="text" calendarformatexpr="edit_filter.date_format()"
+       name="edit_filter.from_value" />
+     <al-else>
+      <al-input type="text" name="edit_filter.from_value" />
+     </al-if>&nbsp;</td>
+    <td nowrap>
+      Incl. from?</td>
+    <td><al-input type="checkbox" value="True"
+      name="edit_filter.incl_from" /></td>
+   </tr>
+   <tr>
+    <td>To</td>
+    <td>
+     <al-if expr="edit_filter.date_format()">
+      <al-input type="text" calendarformatexpr="edit_filter.date_format()"
+       name="edit_filter.to_value" />
+     <al-else>
+      <al-input type="text"
+       name="edit_filter.to_value" />
+     </al-if>
+    </td>
+    <td nowrap>
+      Incl. to?</td>
+    <td><al-input type="checkbox" value="True"
+      name="edit_filter.incl_to" /></td>
+   </tr>
+  </table>
+ </al-item>
+ <al-item expr="'pattern'">
+  <al-input type="text" name="edit_filter.value" />
+ </al-item>
+ <al-item expr="'commalist'">
+  <al-input type="text" name="edit_filter.value" />
+  &nbsp;(comma-separated list)
+ </al-item>
+ <al-item expr="'pattern'">
+  <al-input type="text" name="edit_filter.value" /><br>
+  <div class="smaller">(pattern: ? - any single character, * - any run of characters)</div>
+ </al-item>
+ <al-item expr="'phonetic'">
+  <al-input type="text" name="edit_filter.value" />&nbsp;<al-input type="checkbox" name="edit_filter.phonetic" value="True">&nbsp;Phonetic
+ </al-item>
+ <al-item expr="'caseset'">
+  Caseset: <al-value expr="edit_filter.caseset" />
+ </al-item>
+</al-lookup>
+
+<div id="filter_select">
+ <al-for vars="token, path, node" expr="reportparams.walk_filters()">
+  <al-lookup expr="token">
+   <al-item expr="'open'">
+    <div class="rfilter">
+     <span class="rconj"><al-value expr="node.op.upper()" /></span>
+   </al-item>
+   <al-item expr="'clause'">
+    <al-if expr="node is edit_filter">
+     <div class="rclause rselected">
+      <b><al-value expr="node.label()" /></b> <al-value expr="node.desc()" />
+     </div>
+    <al-else>
+     <al-div class="clickable rclause" idexpr="'filteredit:' + path">
+      <b><al-value expr="node.label()" /></b> <al-value expr="node.desc()" />
+     </al-div>
+    </al-if>
+   </al-item>
+   <al-item expr="'op'">
+    <div class="rop"><al-value expr="node.op.lower()" /></div>
+   </al-item>
+   <al-item expr="'close'">
+    <al-span class="clickable rop" idexpr="'filteradd:' + path">
+     add expression</al-span>
+    <al-span class="clickable rop" idexpr="'filterconj:' + path">
+     change conjunction</al-span>
+    </div>
+   </al-item>
+  </al-lookup>
+ </al-for>
+</div>
+<script>clicktab('filter_select', 'appform')</script>
+
+<al-if expr="add_filter">
+ <table class="edit-filter">
+  <tr>
+   <th>Group</th>
+   <td>
+    <al-select name="add_filter.group" optionexpr="add_filter.groups()" onchange="submit();" />
+   </td>
+  </tr>
+  <al-if expr="add_filter.has_field()">
+   <tr>
+    <th>Field</th>
+    <td>
+     <al-select name="add_filter.field" optionexpr="add_filter.fields()" onchange="submit();" />
+    </td>
+   </tr>
+   <al-if expr="add_filter.field">
+    <tr>
+     <th>Matching</th>
+     <td>
+      <al-select name="add_filter.op" optionexpr="add_filter.field_ops()" />
+     </td>
+    </tr>
+   </al-if>
+  </al-if>
+  <tr>
+   <td>
+    <al-input name="filterclose" type="submit" class="butt" value="Cancel" />
+   </td>
+   <td align="right">
+    <al-input name="filteraddexpr" type="submit" class="butt" value="Add" />
+   </td>
+  </tr>
+ </table>
+<al-elif expr="edit_filter">
+ <table class="edit-filter">
+  <tr>
+   <th nowrap>Edit Field</th>
+   <td>
+    <al-input class="danger right butt" name="filterdelete" type="submit" value="Delete" />
+    <al-value expr="edit_filter.label()" />
+   </td>
+  </tr>
+  <tr>
+   <th>Group</th>
+   <td>
+    <al-value expr="edit_filter.form_label()" />
+   </td>
+  </tr>
+  <al-if expr="edit_filter.allow_negate()">
+   <tr>
+    <th>Negate</th>
+    <td>
+     <al-input type="checkbox" value="True" name="edit_filter.negate" />
+    </td>
+   </tr>
+  </al-if>
+  <tr>
+   <th>Values</th>
+   <td>
+    <al-value expr="edit_filter.get_markup()" lookup="report_filter" />
+   </td>
+  </tr>
+  <tr>
+   <td></td>
+   <td align="right">
+    <al-input name="filterclose" type="submit" class="butt" value="Done" />
+   </td>
+  </tr>
+ </table>
+</al-if>

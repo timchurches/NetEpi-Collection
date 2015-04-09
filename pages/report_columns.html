@@ -1,0 +1,161 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-macro name="reportcolselect">
+ <al-for iter="col_i" expr="outgroup">
+  <tr>
+   <td></td>
+   <td width="28" valign="middle">
+     <al-if expr="col_i.index()">
+      <al-input type="image" alt="up"
+            srcexpr="appath('images/button-up.png')"
+            nameexpr="'col:up:%s:%s' % (og_idx, col_i.index())" />
+     <al-else>
+      <al-img alt="nil" expr="appath('images/button-nil.png')" />
+     </al-if>
+     <al-if expr="col_i.index() < len(outgroup) - 1">
+      <al-input type="image" alt="down"
+            srcexpr="appath('images/button-down.png')"
+            nameexpr="'col:dn:%s:%s' % (og_idx, col_i.index())" />
+     </al-if>
+   </td>
+   <td><al-value expr="col_i.value().canonical_label()" /></td>
+   <td><al-input nameexpr="'reportparams.outgroups[%s][%s].label' % (og_idx, col_i.index())" /></td>
+   <td>
+    <al-input type="submit" class="butt" 
+    nameexpr="'col:del:%s:%s' % (og_idx, col_i.index())" value="Delete" />
+   </td>
+  </tr>
+ </al-for>
+ <tr>
+  <td colspan="4" align="right">
+   <al-select nameexpr="'reportparams.outgroups[%s].addcol' % og_idx" 
+    onchange="submit();" optionexpr="outgroup.available_cols()" />
+  </td>
+  <td>
+   <al-input type="submit" class="butt" 
+    nameexpr="'col:add:%s' % og_idx" value="Add" />
+  </td>
+ </tr>
+</al-macro>
+
+<al-macro name="reportdemogcols">
+ <table>
+  <al-for iter="og_i" expr="reportparams.outgroups">
+   <al-exec expr="outgroup = og_i.value()" />
+   <al-exec expr="og_idx = og_i.index()" />
+   <al-if expr="outgroup.is_caseperson">
+    <tr> 
+     <td width="28" valign="middle">
+       <al-if expr="reportparams.has_up(og_idx)">
+        <al-input type="image" alt="up"
+              srcexpr="appath('images/button-up.png')"
+              nameexpr="'col:gup:%s' % (og_idx)" />
+       <al-else>
+        <al-img alt="nil" expr="appath('images/button-nil.png')" />
+       </al-if>
+       <al-if expr="reportparams.has_dn(og_idx)">
+        <al-input type="image" alt="down"
+              srcexpr="appath('images/button-down.png')"
+              nameexpr="'col:gdn:%s' % (og_idx)" />
+       </al-if>
+     </td>
+     <th colspan="3"><al-value expr="outgroup.initial_label" /></th>
+     <td>
+      <al-if expr="og_idx">
+       <al-input type="submit" class="butt" 
+        nameexpr="'col:gdel:%s' % og_idx" value="Delete Row" />
+      <al-else>
+       <al-input type="submit" class="butt" 
+        nameexpr="'col:clear:%s' % og_idx" value="Clear All" />
+      </al-if>
+     </td>
+    </tr>
+    <al-if expr="og_idx > 0">
+     <tr>
+      <td></td>
+      <td colspan="3">
+       <al-input type="text" nameexpr="'reportparams.outgroups[%s].label' % og_idx" style="width: 100%;" />
+      </td>
+     </tr>
+    </al-if>
+    <al-expand name="reportcolselect" />
+
+    <tr><td colspan="5"><hr></td></tr>
+   </al-if>
+  </al-for>
+  <tr>
+   <td align="right" colspan="4"></td>
+   <td><al-input type="submit" class="butt" name="addcaseperson" value="Add" /></td>
+  </tr>
+ </table>
+</al-macro>
+
+<al-macro name="reportformcols">
+ <al-if expr="reportparams.available_col_forms()">
+  <table>
+   <al-for iter="og_i" expr="reportparams.outgroups">
+    <al-exec expr="outgroup = og_i.value()" />
+    <al-exec expr="og_idx = og_i.index()" />
+    <al-if expr="outgroup.is_form">
+     <tr> 
+      <td width="28" valign="middle">
+        <al-if expr="reportparams.has_up(og_idx)">
+         <al-input type="image" alt="up"
+               srcexpr="appath('images/button-up.png')"
+               nameexpr="'col:gup:%s' % (og_idx)" />
+        <al-else>
+         <al-img alt="nil" expr="appath('images/button-nil.png')" />
+        </al-if>
+        <al-if expr="reportparams.has_dn(og_idx)">
+         <al-input type="image" alt="down"
+               srcexpr="appath('images/button-down.png')"
+               nameexpr="'col:gdn:%s' % (og_idx)" />
+        </al-if>
+      </td>
+      <th colspan="3" align="left">
+       <al-value expr="outgroup.initial_label" />
+      </th>
+      <td><al-input type="submit" class="butt" 
+        nameexpr="'col:gdel:%s' % og_idx" value="Delete Form" /></td>
+     </tr>
+     <tr>
+      <td></td>
+      <td colspan="3">
+       <al-input type="text" nameexpr="'reportparams.outgroups[%s].label' % og_idx" style="width: 100%;" />
+      </td>
+     </tr>
+     <al-expand name="reportcolselect" />
+
+     <tr><td colspan="5"><hr></td></tr>
+    </al-if>
+   </al-for>
+   <tr>
+    <td align="right" colspan="4">
+     <al-select name="add_form" onchange="submit();"
+      optionexpr="reportparams.available_col_forms()" />
+    </td>
+    <td><al-input type="submit" class="butt" name="addformbutt" value="Add" /></td>
+   </tr>
+  </table>
+ <al-else>
+  <b>No forms are available</b>
+ </al-if>
+</al-macro>

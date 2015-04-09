@@ -1,0 +1,8 @@
+base=/usr/src/oc/health
+master_iso=${base}/data/ubuntu-7.10-desktop-i386.iso
+seed_pgdump=${base}/data/LiveCD.pgdump
+collection_src=${base}/Collection
+flash_tar=${base}/data/install_flash_player_9_linux.tar.gz
+video=${base}/data/video
+documentation=${base}/doc/NetEpi-CaseMgr-Docs
+fastcgi_url="http://www.fastcgi.com/dist/mod_fastcgi-2.4.6.tar.gz"

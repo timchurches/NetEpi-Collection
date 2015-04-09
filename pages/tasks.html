@@ -1,0 +1,144 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-expand name="page_layout_banner">
+ <al-setarg name="title">
+  <al-if expr="paged_search.case_id is None">
+   Tasks
+  <al-else>
+   Tasks for Case System ID <al-value expr="paged_search.case_id" />
+  </al-if>
+ </al-setarg>
+ <al-exec expr="result_page = paged_search.result_page(_credentials)" />
+ <span class="smaller">Search took 
+ <al-value expr="'%.2f' % paged_search.search_time" /> seconds and
+ returned <al-value expr="paged_search.result_count()" /> tasks (<al-value
+ expr="paged_search.pages()" /> pages). This page took 
+ <al-value expr="'%.2f' % paged_search.page_time" /> seconds.</span>
+ <div class="boxed">
+  <label for="view_type">View: </label>
+  <al-select id="view_type" name="paged_search.params.view_type" 
+   optionexpr="paged_search.user_views(_credentials)" onchange="submit();" />&nbsp;
+  <label for="order_by">Order by: </label>
+  <al-select id="order_by" name="paged_search.params.order_by" 
+   optionexpr="paged_search.orders" onchange="submit();" />&nbsp;
+  <span class="smaller">
+   <label for="include_completed">Include completed: </label>
+   <al-input id="include_completed" type="checkbox" onclick="submit();"
+    name="paged_search.params.include_completed" value="True" />&nbsp;
+   <label for="include_future">Include future: </label>
+   <al-input id="include_future" type="checkbox" onclick="submit();"  
+    name="paged_search.params.include_future" value="True" />&nbsp;
+   <label for="include_deleted_cases">Include deleted: </label>
+   <al-input id="include_deleted_cases" type="checkbox" onclick="submit();"
+    name="paged_search.params.include_deleted_cases" value="True" />&nbsp;
+  </span>
+  <al-if expr="not has_js">
+   <al-input type="submit" name="update" class="butt" value="Refresh" />
+  </al-if>
+ </div>
+ <al-if expr="paged_search.error">
+  <div class="reverr"><al-value expr="paged_search.error" /></div>
+ <al-else>
+  <table class="searchres" cellspacing="0" cellpadding="2">
+    <thead>
+     <tr><td colspan="11"><al-expand name="page_select" /></td></tr>
+     <tr>
+      <th>Task Id</th>
+      <th>Assignee</th>
+      <th>Start in/by</th>
+      <th>Complete in/by</th>
+      <th>Description</th>
+      <th>Notes</th>
+      <th>Case</th>
+      <th>Action</th>
+      <th>Originator/Assigner</th>
+      <th></th>
+     </tr>
+    </thead>
+    <tfoot>
+     <tr><td colspan="11"><al-expand name="page_select" /></td></tr>
+    </tfoot>
+    <tbody>
+     <al-for iter="task_i" expr="result_page">
+      <al-exec expr="rtask = task_i.value()" />
+      <al-if expr="task_i.index() & 1"><tr class="darker"><al-else><tr></al-if>
+       <td><al-value expr="rtask.task_id" /></td>
+       <td><al-value expr="rtask.assignee" /></td>
+       <al-td bgcolorexpr="rtask.active_color">
+        <al-value expr="rtask.active_relative" />
+       </al-td>
+       <al-td bgcolorexpr="rtask.complete_color">
+        <al-value expr="rtask.complete_relative" />
+       </al-td>
+       <td><al-value expr="rtask.task_description" /></td>
+       <td class="smaller">
+        <al-if expr="rtask.annotation">
+         <al-value expr="rtask.annotation" />
+        </al-if>
+       </td>
+       <td class="smaller">
+        <b>Case: </b><al-value expr="rtask.case_summary" />
+       </td>
+       <td><al-value expr="rtask.action_summary" /></td>
+       <td>
+        <al-if expr="rtask.originator and rtask.assigner and rtask.originator != rtask.assigner">
+         <al-value expr="rtask.originator.username" />/<br>
+        </al-if>
+        <al-if expr="rtask.assigner">
+         <al-value expr="rtask.assigner.username" /><br>
+         <al-value expr="rtask.assignment_date" />
+        </al-if>
+       </td>
+       <td align="right">
+        <al-if expr="paged_search.allow_edit">
+         <al-input type="submit" class="smallbutt" value="Edit" 
+          nameexpr="'edit:%s' % rtask.task_id" />
+        <al-else>
+         <al-if expr="rtask.action in tasks.action_dispatchable">
+          <al-if expr="paged_search.viewonly">
+           <al-input type="submit" class="smallbutt" value="View" 
+            nameexpr="'go:%s' % rtask.task_id" />
+          <al-else>
+           <al-if expr="rtask.completed_date">
+            <al-input type="submit" class="butt" value="Re-open" 
+             nameexpr="'go:%s' % rtask.task_id" />
+           <al-else>
+            <al-input type="submit" class="smallbutt" value="Go" 
+             nameexpr="'go:%s' % rtask.task_id" />
+           </al-if>
+          </al-if>
+         </al-if>
+        </al-if>
+        <al-if expr="rtask.locked_by">
+         <div class="danger smaller">
+          In use by
+          <al-value expr="rtask.locked_by.username" whitespace /> 
+          <al-value expr="rtask.locked_relative" />
+         </div>
+        </al-if>
+       </td>
+      </tr>
+     </al-for>
+    </tbody>
+  </table>
+ </al-if>
+</al-expand>
+

@@ -1,0 +1,69 @@
+<al-require version="2">
+
+<al-macro name="page">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" 
+   "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation and others. 
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+-->
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Script-Type" content="text/javascript">
+  <meta name="robots" content="noindex,nofollow">
+  <al-link rel="shortcut icon" hrefexpr="appath('images','favicon.ico')" type="image/x-icon">
+  <al-script srcexpr="appath('helpers.js')" type="text/javascript"></al-script>
+  <style type="text/css" media="all">
+   <!-- @import "/<al-value expr='appname' />/style.css"; -->
+  </style>
+  <title><al-value expr="apptitle" /></title>
+ </head>
+ <body>
+  <al-setdefault name="rtitle" />
+  <al-setdefault name="buttons" />
+  <al-form name="appform" method="post" autocomplete="off">
+   <div class="banner">
+    <al-img expr="appath('images','banner.jpg')" border="0" alt="" />
+    <al-button onclickexpr="'pophelp(%r, %r);' % (appath('help.html'), __page__)" id="help"><al-img expr="appath('images','help-g.png')" border="0" alt="Help" /></al-button>
+    <h1><al-value expr="apptitle" /></h1>
+    <div class="floatright"><al-usearg name="rtitle"></div>
+    <h2>
+     <al-if expr="report.lab">
+      <al-value expr="report.lab" /> report for week ending 
+      <al-value expr="report.week" /><br>
+     </al-if>
+     <al-usearg name="title" />
+    </h2>
+    <div class="clear"></div>
+   </div>
+   <al-if expr="msgs">
+    <al-for iter="m_i" expr="msgs">
+     <al-exec expr="lvl, msg = m_i.value()" />
+     <al-div classexpr="lvl + '-msg'"><al-value expr="msg" /></al-div>
+    </al-for>
+    <al-exec expr="msgs = []" />
+   </al-if>
+   <div class="content">
+    <al-usearg />
+    <script type="text/javascript">enterSubmit('appform', 'next');</script>
+   </div>
+   <al-usearg name="buttons" />
+  </al-form>
+ </body>
+</html>
+</al-macro>

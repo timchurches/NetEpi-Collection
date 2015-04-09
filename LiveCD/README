@@ -1,0 +1,23 @@
+=== WARNING === WARNING === WARNING === WARNING === WARNING === WARNING ===
+This directory contains a script and associated assets used in creating
+the NetEpi LiveCD on Debian or Ubuntu linux systems. These should
+only be used by expert users who have a comprehensive understanding
+of the script's functionality. Misuse *will* corrupt your system
+installation. They are not necessary for routine NetEpi use or
+installation.
+=== WARNING === WARNING === WARNING === WARNING === WARNING === WARNING ===
+
+
+
+= TIPS ========================================================================
+
+Booting resulting image:
+
+    sudo modprobe kqemu
+    qemu -m 512 -cdrom ubuntu-6.10-desktop-i386-NetEpi.iso
+
+Chroot into under-construction root:
+
+    sudo chroot netepi-live-work/ubuntu-root-new bash
+
+

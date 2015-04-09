@@ -1,0 +1,1919 @@
+/*
+ *  The contents of this file are subject to the HACOS License Version 1.2
+ *  (the "License"); you may not use this file except in compliance with
+ *  the License.  Software distributed under the License is distributed
+ *  on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+ *  implied. See the LICENSE file for the specific language governing
+ *  rights and limitations under the License.  The Original Software
+ *  is "NetEpi Collection". The Initial Developer of the Original
+ *  Software is the Health Administration Corporation, incorporated in
+ *  the State of New South Wales, Australia.
+ *  
+ *  Copyright (C) 2004-2011 Health Administration Corporation, Australian
+ *  Government Department of Health and Ageing, and others.
+ *  All Rights Reserved.
+ *
+ *  Contributors: See the CONTRIBUTORS file for details of contributions.
+ */
+
+body {
+    margin: 0px;
+    background-color: white;
+    color: black;
+    font-size: 10pt;
+    font-family: "Verdana", "Arial", sans-serif;
+}
+
+input, textarea, select {
+    font-size: 100%;
+    font-family: "Verdana", "Arial", sans-serif;
+}
+input[type="submit"], input[type="button"] {
+    padding: 1px 2px;
+}
+input:focus, textarea:focus {
+    background-color: #fffae7;
+}
+
+/* Banner */
+
+.pagebanner {
+    width: 100%;
+    background: #f8f8f8 url('/{{APPNAME}}/images/title-gradient.png') repeat-y top right;
+    border-collapse: collapse;
+    border-bottom: 1px solid #ccc;
+}
+.pagebanner .logo img {
+    margin: 0 1em;
+    border: none;
+}
+.pagebanner .title {
+    width: 100%;
+    vertical-align: middle;
+    color: #888;
+}
+.pagebanner .title .apptitle {
+    font-size: 30px;
+    font-style: italic;
+}    
+.pagebanner .title .subbanner {
+    font-size: 10px;
+    font-style: italic;
+}
+    
+.pagebanner td {
+    font-size: 110%;
+    vertical-align: middle;
+    padding-right: 6px;
+    padding-left: 6px;
+}
+.pagebanner .quick-search {
+    width: 8em;
+}
+.pagebanner .sublink {
+    background-color: #ccf;
+}
+
+/* Common page elements */
+.err {
+    font-size: 110%;
+    font-weight: bold;
+    color: #f88;
+    background-color: inherit;
+}
+
+.reverr {
+    font-size: 110%;
+    font-weight: bold;
+    color: white;
+    background-color: #f88;
+    text-align: center;
+    border: 1px solid red;
+}
+
+.reverr input {
+    width: 18ex;
+}
+
+.redbox {
+    border: 2px solid red;
+    text-align: center;
+    margin: 0.2ex 1em 0.2ex 1em;
+    background: #fee;
+    color: #800;
+}
+
+.boxed {
+    display: block;
+    width: 100%;
+    border: 1px solid #ccc;
+    background-color: #eee;
+    padding: 0.2ex 1ex 0.2ex 1ex;
+}
+
+.right {
+    display: block;
+    float: right;
+}
+
+.deleted {
+    background: url("/{{APPNAME}}/images/deletedbg.png") repeat scroll;
+}
+
+.required {
+    font-weight: bold;
+    color: #c33;
+}
+
+.onerequired {
+    font-weight: bold;
+    color: #fc0;
+}
+
+.preview {
+    max-height: 20ex;
+    overflow: auto;
+    border: 1px inset #ccc;
+}
+
+.selector {
+    border: 2px solid #fc0;
+    margin: -2px;
+    background: #fea;
+}
+
+button#help {
+    background-color: transparent;
+    border: none;
+}
+
+.wikitext p, .wikitext ul {
+    margin: 0 0 1ex 0;
+}
+
+.wikihelp {
+    border: 2px solid #800;
+    background: #fee;
+    font-weight: bold;
+    font-size: 1em;
+    width: 2em !important;
+    color: #800;
+    padding: 2px;
+    margin: 2px;
+}
+.wikihelp:hover {
+    cursor: pointer;
+}
+
+.page-select {
+    width: 100%;
+}
+
+/* Delete buttons */
+.danger {
+    background: #fbb;
+    border: 2px outset red;
+    padding-left: 0.5ex;
+    padding-right: 0.5ex;
+}
+
+.smaller {
+    font-size: 83%;
+    font-weight: normal;
+}
+
+a:link, a:visited {
+    text-decoration: underline;
+    color: black;
+    background-color: inherit;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+.input-hint {
+    color: #888;
+}
+
+/* submit button pretending to be a link */
+.sublink {
+    border: none;
+    color: #008;
+    background: white;
+    font-weight: bold;
+    width: auto;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible;                 /* Otherwise padding is erratic in IE */
+}
+.sublink:hover {
+    text-decoration: underline;
+}
+.sublink:focus {
+    background: white !important;
+}
+/* link that submits */
+.linksub:link, .linksub:visited {
+    color: #008 !important;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 0 1em;
+}
+.linksub:hover {
+    text-decoration: underline;
+}    
+.clickable:hover, .clicktab td:hover {
+    background-color: #fffae7 !important;
+    cursor: pointer;
+}
+.foldicon {
+    display: none;
+    position: relative;
+    width: 1em;
+    float: left;
+    font-weight: bold;
+    text-align: center;
+    color: #88f;
+}
+.toptable td, .toptable th {
+    vertical-align: top;
+}
+
+.buttonbar {
+    padding: 0;
+}
+.buttonbar table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}    
+.buttonbar .input {
+    font-size: 83%;
+}
+.buttonbar .ll {
+    text-align: left;
+    width: 33%;
+}    
+.buttonbar .mm {
+    text-align: center;
+    width: 34%;
+}
+.buttonbar .rr {
+    text-align: right;
+    width: 33%;
+}
+.menubar {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    background: #ddf;
+    border: solid #aaa;
+    border-width: 1px 0px;
+}
+.menubar td {
+    vertical-align: middle;
+    white-space: nowrap;
+    padding: 0;
+    height: 3ex;
+}
+.menubar input, .menubar select {
+    padding: 0;
+    margin: 0;
+    font-size: 90% !important;
+}
+.menubar .sublink {
+    background-color: #ddf !important;
+    margin: 0 1em !important;
+}
+.menubar .mbsb {
+    min-width: 2em;
+}
+.menubar .mbl {
+    text-align: left;
+    width: 25%;
+}
+.menubar .mbm {
+    text-align: center;
+    width: 50%;
+}
+.menubar .mbr {
+    text-align: right;
+    width: 25%;
+}
+.menubar .mbp {
+    margin: auto;
+    border-collapse: collapse;
+}    
+.menubar .mbp .mbpt {
+    padding: 0 0.2em;
+    background-color: #bbf;
+    color: #44f;
+}
+    
+/* By default, disabled inputs are hard to read in Firefox, this tweak makes
+ * them more readable, but renders Safari, Opera and Konqueror unreadable:
+ * input[disabled], select[disabled], textarea[disabled] {
+ *    background-color: #eee;
+ *    color: #444;
+ *    border: 1px dotted #444;
+ *}
+ */
+
+.content {
+    margin: 1ex;
+}
+.scroll-content {
+    margin: 1ex;
+    overflow: auto;
+}
+
+
+.pagetitle {
+    margin: 1ex 1em;
+    border-bottom: 1px solid #888;
+    font-size: 120%;
+    font-weight: bold;
+}
+
+h3 {
+    font-size: 100%;
+    font-weight: bold;
+    margin: 0.5ex 0 0.5ex 0;
+}
+
+.copyright {
+    margin-top: 1ex;
+    font-size: 83%;
+}
+
+.fauxrule {
+    height: 1px;
+    background-color: #f9c;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.debug {
+    clear: both;
+    font-size: 83%;
+    background-color: #eee;
+    color: #c88;
+    border-top: 1px solid #888;
+    margin: 1ex;
+    padding: 1ex;
+}
+
+.buttons {
+    margin: 0;
+    padding: 0;
+}
+
+/* Four "standardised" button sizes */
+.smallbutt {
+    font-size: 83%;
+    width: 4em;
+}
+.butt {
+    font-size: 83%;
+    width: 7.2em;
+}
+.bigbutt {
+    font-size: 83%;
+    width: 10em;
+}
+.file {
+    font-size: 83%;
+}
+
+.err-msg {
+    color: #c00;
+    background-color: #fee;
+    border: 1px solid #c00;
+    border-left: 0.5em solid #c00;
+    margin-top: 0.5ex;
+    font-weight: bold;
+    padding-left: 0.5em;
+}
+.warn-msg {
+    color: #e80;
+    background-color: #fed;
+    border: 1px solid #e80;
+    border-left: 0.5em solid #e80;
+    margin-top: 0.5ex;
+    font-weight: bold;
+    padding-left: 0.5em;
+}
+.info-msg {
+    color: #080;
+    background-color: #efe;
+    border: 1px solid #080;
+    border-left: 0.5em solid #080;
+    margin-top: 0.5ex;
+    font-weight: bold;
+    padding-left: 0.5em;
+}
+
+.adminbox {
+    color: #888;
+    background-color: #ddd;
+    border: 1px solid #888;
+    border-top: none;
+    border-left: 1ex solid #888;
+    padding-left: 1ex;
+    padding-right: 1ex;
+}
+
+/* "Dialog" for confirming non-reverseable actions */
+.centbox {
+    width: 70%;
+    background-color: #fcc;
+    border: 2px solid red;
+    color: #800;
+    text-align: center;
+    margin: 3ex auto 3ex auto;
+    padding-bottom: 2ex;
+    font-size: 110%;
+}
+.centbox h1 {
+    border-bottom: 2px solid red;
+    background-color: #f88;
+    font-size: 100%;
+    padding: 0;
+    margin: 0;
+    margin-bottom: 2ex;
+}
+.centbox .file {
+    width: auto;
+}
+.centbox .quote {
+    width: 80%;
+    margin: 1ex auto 1ex auto;
+    background-color: #fee;
+    border: 2px solid #800;
+    padding: 1ex;
+}
+.centbox .quote h1 {
+    background: inherit;
+    color: inherit;
+    margin: 0;
+    border: none;
+}
+
+.key {
+    display: block;
+    float: right;
+    text-align: left;
+    font-size: 73%;
+    width: 20em;
+    padding: 0 1em 1em 1em;
+}
+
+.key thead th {
+    text-align: center;
+}
+.key th, .key td {
+    vertical-align: top;
+    text-align: left;
+}
+
+
+/* Home page elements */
+.helpdesk {
+    font-style: italic;
+    font-size: 83%;
+    padding-left: 1ex;
+}
+
+/* Left 20% Right 80% two column layout, absolutely position (no size) */
+.left20 {
+    position: absolute;
+    height: 100%;
+    width: 20%;
+}
+.right80 {
+    position: absolute;
+    width: 80%;
+    left: 20%;
+}
+/* Two column, 50:50 */
+.twocols {
+    width: 100%;
+    border-collapse: collapse;
+}
+.twocols .leftcol {
+    width: 50%;
+    vertical-align: top;
+    padding: 0 0.5ex 0 1ex;
+}
+.twocols .rightcol {
+    width: 50%;
+    vertical-align: top;
+    padding: 0 1ex 0 0.5ex;
+}
+
+/* Home page */
+
+.userdetails {
+    border-bottom: 2px solid #ddd;
+    background: #eee;
+    white-space: nowrap;
+    width: 100%;
+    font-size: 83%;
+    border-collapse: collapse;
+}
+.userdetails label {
+    font-weight: bold;
+}
+.userdetails td {
+    padding: 2px 1ex;
+    white-space: nowrap;
+}
+.userdetails select {
+    border: none;
+    background: #eee;
+}
+/*      syndromes */
+.syndlist {
+    padding: 0 1em 0 1.5em;
+}
+.syndlist .syndrome {
+    margin: 2ex 0;
+}
+.syndlist .syndrome .foldicon {
+    position: absolute;
+    margin-left: -1em;
+    width: 1em;
+    font-weight: bold;
+    font-size: 120%;
+}
+.syndlist .syndrome .info {
+    float: right;
+    margin: -3px 1em 0 0;
+}
+.syndlist .syndrome h1 {
+    font-size: 120%;
+    margin: 0 2.5em 0 0;
+    border-bottom: 1px solid #ccc;
+}
+.syndlist .syndrome .actions {
+    background-color: #f8f8f8;
+}
+.syndlist .syndrome .detail {
+    clear: both;
+}
+.syndlist .syndrome .count {
+    font-size: 83%;
+    clear: both;
+}
+.syndlist .syndrome .actions .sl-action {
+    float: left;
+    color: #88c;
+    margin-right: 2em !important;
+    position: relative;
+}
+.sl-action .sla-more {
+    font-size: 90%;
+}
+.sl-action .sublink {
+    color: #88c;
+    left: 0;
+}
+.sl-action .sublink:hover {
+    background-color: #fffae7 !important;
+    text-decoration: underline !important;
+}
+.sl-action .mb_items {
+    display: none;
+    white-space: nowrap;
+    position: absolute;
+    border: 1px solid #88c;
+    background: #f8f8f8;
+    padding: 1px;
+    outline: 0;
+}
+.sl-action .mb_items input {
+    margin: 0;
+    padding: 0;
+    background: #f8f8f8;
+}
+
+.top-tasks {
+    width: 100%;
+    border-collapse: collapse;
+}
+.top-tasks th {
+    border-bottom: 1px solid #ccc;
+    text-align: left;
+    font-size: 120%;
+    padding: 0;
+}
+.top-tasks td {
+    padding: 0;
+    vertical-align: baseline;
+}
+.top-tasks .desc {
+    padding-left: 1em;
+    color: #824;
+}
+    
+.recent-activity {
+    width: 100%;
+    border-collapse: collapse;
+}
+.recent-activity th {
+    border-bottom: 1px solid #ccc;
+    text-align: left;
+    font-size: 120%;
+    padding: 0;
+}
+.recent-activity td {
+    padding: 0;
+    vertical-align: baseline;
+}
+
+
+/* Search and case details - two columns of label/input pairs */
+.labeltext {
+    width: 100%;
+}
+.labeltext .label {
+    padding-left: 1em;
+    width: 20%;
+    vertical-align: top;
+}
+.labeltext .field {
+    background: #eee;
+    border: 1px solid #ccc;
+    width: 30%;
+    vertical-align: top;
+}
+.labelform {
+    width: 100%;
+}
+.labelform .label {
+    width: 20%;
+    vertical-align: top;
+}
+.labelform .label label {
+    margin-top: 0.3ex;
+    margin-left: 1em;
+    display: block;
+}
+.labelform .field {
+    width: 30%;
+    vertical-align: top;
+}
+.labelform .field input, .labelform .field select, .labelform .field textarea {
+    width: 98%;
+}
+.labelform .field .autowidth {
+    width: auto;
+}
+
+.labelform .field .short {
+    width: 10em;
+    float: left;
+    margin-right: 1em;
+}
+.labelform .grouplabel th {
+    text-align: left;
+    color: #888;
+    background: #f8f8f8;
+    border-bottom: 1px solid #ddd;
+}
+.fieldandbutt {
+    position: relative;
+}
+.fieldandbutt .fieldand {
+    margin-right: 5em;
+    padding-right: 2px;
+}
+.fieldandbutt .fieldand input {
+    width: 98% !important;
+}
+.fieldandbutt .andbutt {
+    position: absolute;
+    right: 0;
+    bottom: 1px;
+    width: 5em;
+}
+.fieldandbutt .andbutt input {
+    width: 100% !important;
+    font-size: 83%;
+}
+
+/* user details - like the above but only one column of label/input pairs */
+.widelabelform {
+}
+.widelabelform td {
+    vertical-align: top;
+}
+.widelabelform th {
+    font-weight: bold;
+    background-color: #ccc;
+    padding-left: 1ex;
+    text-align: left;
+}
+.widelabelform .label {
+    background-color: #eee;
+    padding: 0 1ex 0 1ex;
+    border-right: 2px solid #ccc;
+    line-height: 3ex;
+}
+.widelabelform .field input, .widelabelform .field select, .widelabelform .field textarea {
+    width: 30em;
+}
+.widelabelform .butt {
+    font-size: 83%;
+    width: 7.2em;
+}
+.widelabelform .autowidth * {
+    width: auto;
+}
+
+.bulletin-list {
+    padding: 0 1em;
+    overflow: hidden;
+}
+.bulletin-list .item {
+    font-size: 83%;
+    margin: 0 0 4ex 0;
+}
+.bulletin-list .item h1 {
+    font-size: 120%;
+    font-weight: bold;
+    margin: 0.5ex 0;
+}
+
+.bulletin-list .more {
+    float: right;
+    vertical-align: text-bottom;
+}
+
+.bulletin-list .date {
+    clear: both;
+    font-style: italic;
+    float: right;
+    margin: 0.5ex 0;
+    color: #888;
+}
+
+.bulletin-list .synopsis {
+    clear: both;
+    color: #040;
+}
+
+.bulletin-detail {
+    margin: 4em;
+    padding: 4em;
+    width: 70%;
+    text-align: left;
+    background-color: #cfc;
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    border-style: dashed;
+    border-color: black;
+}
+
+.bulletin-detail .head {
+}
+
+.bulletin-detail .body {
+    background-color: #ddf;
+    color: black;
+}
+
+/* Centered login page */
+.login {
+    margin-top: 4em;
+    margin-left: 0;
+    margin-right: 10%;
+    empty-cells: show;
+}
+
+.login a {
+    text-decoration: none;
+}
+
+.login .lhs {
+    text-align: right;
+    padding-right: 1ex;
+    width: 30%;
+}
+
+.login .rhs {
+    padding-left: 1ex;
+    border-left: 2px solid #888;
+}
+
+.login .logo {
+    height: 12em;
+}
+
+.login .title {
+    font-size: 30pt;
+    padding-bottom: 0.5ex;
+    margin-bottom: 0.5ex;
+    border-bottom: 4px solid #888;
+}
+
+.login .subtitle {
+}
+
+.login .copyright {
+    font-size: 83%;
+}
+
+.login .prompt {
+}
+
+.login .prompt input, .login .prompt select {
+ width: 30ex;
+}
+
+.login .apply {
+ height: 5em;
+}
+.login .help {
+    font-size: 83%;
+}
+.login .dedication {
+    height: 10em;
+    font-size: 83%;
+}
+
+.login .logout {
+    background-color: #fcc;
+    border-left: 2px solid #f88;
+    padding: 0.5em;
+}
+
+.login .msg {
+    color: #080;
+    background-color: #efe;
+    border-left: 1ex solid #080;
+    padding: 0.5em;
+    margin-top: 0.5ex;
+}
+
+/* Forms list */
+.formslist {
+    width: 100%;
+    background-color: #fed;
+    font-size: 83%;
+}
+.formslist th {
+    background-color: #db8;
+    text-align: left;
+    padding-left: 1ex;
+    padding-right: 1ex;
+    border-top: 2px solid white;
+}
+.formslist .deleted {
+    font-size: 83%;
+    color: #888;
+}
+.formslist .formname {
+    font-weight: bold;
+}
+.formslist .formid {
+    background-color: #fed;
+    border-right: 1px solid #db8;
+    text-align: center;
+    white-space: nowrap;
+}
+.formslist td {
+    padding-left: 1ex;
+    padding-right: 1ex;
+    background-color: white;
+    vertical-align: baseline;
+    border-bottom: 2px solid #db8;
+}
+
+/* Syndrome form */
+.syndrome-form {
+}
+
+.syndrome-form .heading {
+    text-align: left;
+    font-size: 110%;
+    font-weight: bold;
+    background-color: #fbe;
+    border-bottom: 1px solid #f9c;
+}
+.syndrome-form .section {
+    text-align: left;
+    font-size: 110%;
+    font-weight: bold;
+    vertical-align: top;
+    background-color: #ffe6f9;
+}
+
+.syndrome-form .subsection {
+    text-align: left;
+    font-size: 110%;
+    font-weight: bold;
+    vertical-align: top;
+    background-color: #ffe6f9;
+}
+
+.syndrome-form .question0 {
+    text-align: left;
+}
+.syndrome-form .question1 {
+    text-align: left;
+    background-color: #fff7f7;
+}
+
+.syndrome-form .disabledq {
+    background-color: #ccc;
+}
+
+.syndrome-form .qtext {
+    vertical-align: top;
+}
+
+.syndrome-form .number {
+    vertical-align: top;
+    padding-right: 0.5em;
+}
+
+.syndrome-form .inputs {
+    vertical-align: top;
+}
+.syndrome-form .reqinp {
+    background-color: #eef;
+}
+.syndrome-form .errinp {
+    background-color: #fee;
+}
+.syndrome-form .error {
+    background-color: #fcc;
+    color: red;
+    font-size: 83%;
+}
+
+.syndrome-form .infobut {
+    float: right;
+    padding-right: 1ex;
+}
+
+.syndrome-form .info {
+    border: 1px solid gray;
+    background-color: #ddd;
+    padding: 1ex;
+}
+
+.syndrome-form .pretext, .syndrome-form .posttext {
+    font-size: 83%;
+}
+.syndrome-form .skiptext {
+    font-size: 83%;
+    font-weight: bold;
+    color: #008;
+}
+
+.syndrome-form .line {
+    background-color: #fdd;
+    padding: 0px;
+    margin: 0.5ex 0 0.5ex 0;
+    height: 1px;
+}
+
+.syndrome-form .submit {
+}
+
+/* Data export, select print forms */
+.selexp {
+    border-spacing: 12px;
+}
+.selexp td {
+    vertical-align: top;
+}
+.selexp .wide * {
+    width: 35em;
+}
+.selexp td td {
+    vertical-align: baseline;
+}
+
+/* Participation table search */
+.pt-search {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #a8a;
+    background-color: #fcf;
+}
+.pt-search .title th, .pt-search .title td {
+    vertical-align: middle;
+}
+.pt-search .pane {
+    width: 50%;
+    vertical-align: top;
+}
+.pt-search .pane table {
+    width: 100%;
+    margin: 0;
+    background-color: #fdf;
+    border: 1px solid #a8a;
+}
+.pt-search .pane table td {
+    vertical-align: middle;
+}
+
+/* Participation table selector */
+.pt-sel {
+    width: 100%;
+    border: 1px solid #aaa;
+    border-collapse: collapse;
+}
+.pt-sel th {
+    width: 50%;
+    padding-left: 0.2em;
+}
+.pt-sel td {
+    text-align: center;
+}
+.pt-sel select {
+    width: 100%;
+}
+.pt-sel input {
+    width: 8em;
+}
+
+/* Dupe check results */
+.duperes {
+}    
+.duperes .gray {
+    color: #888;
+}
+.duperes tr {
+    background-color: #eef;
+}
+.duperes td table tr {
+    background-color: inherit;
+}
+.duperes .warn {
+    background-color: #fec;
+}
+.duperes th {
+    background-color: #bbf;
+    text-align: left;
+}
+.duperes th, .duperes td {
+    padding-left: 0.5ex;
+    padding-right: 0.5ex;
+}
+.duperes .indent {
+    width: 2em;
+    background-color: white;
+}
+.duperes .subhead th {
+    background-color: #ddf;
+    border-bottom: 1px solid #bbf;
+}
+.duperes .forminput {
+    padding: 0;
+}
+.duperes .forminput .syndrome-form {
+    margin: 0;
+    padding: 0;
+}
+.duperes .forminput .syndrome-form .reqinp {
+    background-color: #dff;
+}
+.duperes .darker {
+    background-color: #ddf;
+}
+.duperes .user input, .duperes .user select, .duperes .user textarea {
+    width: 20em;
+}
+.duperes .excluded {
+    font-size: 83%;
+    font-weight: bold;
+    background-color: #bbc;
+}
+.duperes .label {
+    padding-left: 1ex;
+    background-color: #ccf;
+    border-right: 2px solid #aaf;
+    text-align: left;
+}
+.duperes .op {
+    background-color: #bef;
+    text-align: center;
+    border: 2px solid #aaf;
+    padding: 0 1ex 0 1ex;
+}
+.duperes .top th {
+    text-align: center;
+    border-bottom: 2px solid #aaf;
+    background-color: #ccf;
+}
+
+.search {
+    border-left: 4px solid #f9c;
+    color: #a06;
+    margin-top: 1ex;
+}
+.search .flag {
+    font-size: 100%;
+    font-weight: bold;
+    background-color: #ffe8f8;
+    padding-left: 1em;
+    margin: 0;
+}
+.search .pickset td {
+    vertical-align: baseline;
+}
+.search .pickset .pspane {
+    width: 50%;
+    padding-left: 2em;
+}
+.search .pickset th {
+    text-align: left;
+    padding-left: 1em;
+}
+
+/* Search results */
+.searchinfo {
+    font-size: 83%;
+    clear: both;
+}
+.searchres {
+    background-color: #eef;
+    color: inherit;
+    empty-cells: show;
+}
+
+.searchres thead, .searchres tfoot {
+    background-color: #bbf;
+}
+.searchres th {
+    text-align: left;
+    border-top: 1px solid black;
+    color: inherit;
+}
+.searchres td {
+    vertical-align: top;
+}
+.searchres .darker {
+    background-color: #ddf;
+}
+.searchres .page-select {
+    background-color: #ccf;
+}
+.searchres .person {
+    background-color: #ddf;
+    color: inherit;
+}
+.searchres .person td {
+    border-top: 2px solid black;
+}
+.searchres .select {
+    width: 1em;
+    vertical-align: middle;
+    padding: 0 1ex 0 1ex;
+}
+.searchres .case td {
+    background-color: #fde;
+    border-top: 1px solid #bbb;
+}
+.searchres .deletedcase td {
+    background-color: #fde;
+    border-top: 1px solid #bbb;
+    color: #888;
+}
+.searchres .caseinfo {
+    padding-left: 2ex;
+}
+.searchres .buttcol {
+    text-align: right;
+    vertical-align: middle;
+    font-size: 83%;
+    width: 7.2em;
+}
+.searchres .buttcol .butt {
+    width: 100%;
+    font-size: 100%;
+}
+
+/* Task related info gets it's own styling */
+.task {
+    color: #008;
+    background-color: #eef;
+    border-left: 1ex solid #008;
+    padding-left: 1ex;
+    margin-bottom: 1ex;
+}
+.task th {
+    text-align: left;
+}
+.task td {
+    vertical-align: top;
+}
+.task .fauxrule {
+    height: 1px;
+    background-color: #bbd;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.task .fill {
+    width: 100%;
+}
+
+/* Case Contacts list */
+.casecontacts {
+    width: 100%;
+    padding-left: 1em;
+    padding-right: 1em;
+    empty-cells: show;
+    border-spacing: 0;
+}
+.casecontacts th {
+    vertical-align: top;
+    text-align: left;
+    border-bottom: 1px solid black;
+    background-color: #fd8;
+}
+.casecontacts td {
+    vertical-align: top;
+    padding-left: 0.2em;
+    padding-right: 0.2em;
+    background-color: #feb;
+}
+.casecontacts .row td {
+    border-bottom: 1px solid #ccc;
+}
+.casecontacts .select {
+    background-color: #ddf;
+}
+.casecontacts .buttcol {
+    text-align: right;
+}
+.casecontacts .page-select {
+    background-color: #ccf;
+}
+
+.choosenewcontact {
+    width: 100%;
+    empty-cells: show;
+    border-collapse: collapse;
+    padding-right: 1em;
+}
+.choosenewcontact td {
+    background-color: #eee;
+    text-align: left;
+    vertical-align: baseline;
+    border-bottom: 2px solid white;
+    padding: 2px;
+}
+.choosenewcontact .name {
+    font-weight: bold;
+}
+.choosenewcontact .buttcol {
+    text-align: right;
+}
+
+/* Unit user admin */
+.adminusers {
+    background-color: #ffe;
+    color: inherit;
+    text-align: left;
+}
+.adminusers thead th {
+    background-color: #ddb;
+    color: inherit;
+    text-align: left;
+    font-weight: bold;
+}    
+.adminusers td {
+    vertical-align: top;
+}
+.adminusers .darker {
+    background-color: #eed;
+    color: inherit;
+}
+
+/* LHS tabs, as used by the report editor */
+.ltab {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+.ltab .tabcontent {
+    vertical-align: top;
+    background: #eee;
+    padding: 1ex;
+    border-left: 2px solid #888;
+}
+.ltab .tabs {
+    vertical-align: top;
+    border-right: 2px solid #888;
+    padding: 0;
+}
+.ltab .tabs input {
+    display: block;
+    position: relative;
+    font-size: 83%;
+    left: 2px;
+    height: 3em;
+    width: 100%;
+    background: #bbf;
+    border: 2px solid #888;
+    margin-bottom: 2px;
+    padding: 0;         /* kills some very strange opera behaviour */
+    font-weight: bold;
+    margin-left: auto;  /* minimises effect of buggy width calculations */
+}
+.ltab .tabs input:hover {
+    background: #dde;
+}
+.ltab .tabs .selected {
+    background: #eee;
+    border-right-color: #eee;
+}
+.ltab .tabs .act {
+    height: 2em;
+    position: relative;
+    left: -2px;
+    border: 2px solid #888;
+    background: #aaa;
+}
+.ltab .tabs .danger {
+    background: #d88;
+}
+.ltab br {
+    line-height: 1ex;
+}
+.tabcontent .gridbox {
+    border-collapse: collapse;
+}
+.tabcontent .gridbox .line {
+    background: #ddd;
+    border: solid #eee;
+    border-width: 2px 0 2px 0;
+    padding: 2px;
+}
+.tabcontent .gridbox th {
+    background: #ccc;
+    border: solid #ccc;
+    border-width: 3px 0 3px 0;
+}
+.tabcontent .gridbox .rule {
+    height: 3px;
+    background: #aaa;
+    border-top: 3px solid #eee;
+}
+
+.rfields {
+}
+.rfields th {
+    white-space: nowrap;
+    vertical-align: baseline;
+    text-align: left;
+}
+.rfields td {
+    vertical-align: baseline;
+}
+.rfields .rmw {
+    min-width: 30em;
+}
+.rfields td textarea {
+    vertical-align: text-top;
+    margin-top: -2px;
+}
+.rfields .wide {
+    width: 100%;
+}
+.rfields .wide * {
+    width: 100%;
+}
+.rfields table td {
+    vertical-align: baseline;
+}
+
+.minselect select {
+    min-width: 40em;
+}
+
+.rfilter {
+    border: 2px solid #88c;
+    margin: 1.5ex 1ex 1ex 1ex;
+    padding-top: 0.5ex;
+}
+.rfilter .rconj {
+    color: #88c;   
+    font-weight: bold;
+    font-size: 83%;
+    margin-top: -2ex;
+    height: 2.5ex;
+    margin-left: 2ex;
+    background-color: #eee;
+    position: absolute;
+    padding: 0 0.5ex;
+}
+
+.rfilter .rclause {
+    border: 2px solid #c88;
+    padding: 2px 0.5ex;
+    text-align: left;
+    background: #fee;
+    margin: 1ex;
+    position: relative;
+}
+.rfilter .rselected {
+    background: #fcc !important;
+}
+.rfilter .reditbut {
+    float: right;
+    background: #fee;
+}
+.rfilter .radd {
+    background: inherit;
+    padding: 1ex;
+}
+.rfilter .rop {
+    color: #00c;
+    text-align: left;
+    font-weight: bold;
+    font-size: 83%;
+    margin: 1ex;
+}
+.edit-filter {
+    border: 2px solid #c88;
+    padding: 2px 0.5ex;
+    text-align: left;
+    background: #fcc;
+    margin: 1ex;
+    position: relative;
+}
+.edit-filter td, .edit-filter th {
+    vertical-align: baseline;
+}
+.edit-filter td textarea, .edit-filter td select {
+    vertical-align: text-top;
+    margin-top: -1px;
+}
+
+/* top tabs, as used in the dataimport editor */
+
+.ttabs {
+    border-bottom: 2px solid #888;
+}
+.ttabs input {
+    height: 2em;
+    width: 11em;
+    border: solid #888;
+    border-width: 2px 2px 0px 2px;
+    margin-right: 0.5ex;
+    margin-left: 0.5ex;
+    padding-left: 0.5ex;
+    padding-right: 0.5ex;
+    font-weight: bold;
+    background: #bbf;
+}
+.ttabs input:hover {
+    background: #dde;
+}
+.ttabs .curr {
+    background: white;
+    border-bottom: none;
+    position: relative;
+    top: 2px;
+}
+.ttabs .initial {
+    background: #bff;
+}
+
+.imp-preview {
+    float: right; 
+    border: 1px solid black; 
+    background: #eee; 
+    text-align: center;
+    margin: 1em;
+}
+.edit-imp-field {
+}
+.edit-imp-field .eif-label {
+    font-style: italic;
+    font-size: 83%;
+    font-weight: bold;
+}
+.edit-imp-field label {
+    font-weight: bold;
+    color: #888;
+}
+
+.admin-content {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Main Admin screen elements */
+.admin-m {
+}
+
+.admin-m .op {
+    text-align: center;
+    width: 6em;
+    font-size: 120%;
+}
+.admin-m .ilabel {
+    width: 20ex;
+    text-align: right;
+    padding-right: 3px;
+}
+.admin-m .iopts {
+    text-align: left;
+    white-space: nowrap;
+}
+.admin-m .iopts label input {
+    padding-right: 0.2em;
+}
+.admin-m label {
+    font-size: 83%;
+}
+.admin-m .inputs * {
+    width: 60ex;
+}
+.admin-m .buttons {
+    text-align: center;
+}
+.admin-m .spacer {
+    padding: 0px;
+    margin: 0px;
+    height: 1px;
+    background-color: #fbb;
+    color: inherit;
+}
+
+/* Admin users, units, groups and forms search result */
+.gridtab {
+    background-color: #ffe;
+    text-align: left;
+    border-collapse: collapse;
+    margin: 0 1em 1ex 0;
+}
+.gridtab tbody td {
+    padding: 0 0.3em;
+    border: 1px solid #ddc;
+    vertical-align: baseline;
+}
+.gridtab .darker {
+    background-color: #eed;
+}
+.gridtab .darkest, .gridtab thead th, .gridtab thead td, 
+        .gridtab th, .gridtab tfoot th, .gridtab tfoot td {
+    border: 1px solid #bba;
+    background-color: #ddb;
+    padding: 0 0.3em;
+}
+.gridtab table td, .gridtab table th {
+    border: none;
+}
+
+/* Admin edit user, unit, group and form */
+.admin-u {
+    background-color: #ffe;
+    color: inherit;
+    text-align: left;
+    margin: 0 1em 1ex 0;
+    width: 95%;
+}
+
+.admin-u .darker {
+    background-color: #eed;
+    color: inherit;
+}
+.admin-u .highlight {
+    background-color: #fcc;
+    color: inherit;
+}
+.admin-u .darkest {
+    background-color: #ddb;
+    color: inherit;
+}
+.admin-u th {
+    background-color: #ddb;
+    color: inherit;
+    text-align: left;
+    font-weight: bold;
+}
+.admin-u td {
+    vertical-align: top;
+}
+.admin-u ul {
+    margin: 0;
+}
+.admin-u .buttons input {
+    width: 7em;
+    white-space: nowrap;
+}
+.admin-u .center {
+    text-align: center;
+}
+
+/* Admin syndromes */
+.admin-syndromes {
+    background-color: #fff5ff;
+    text-align: left;
+}
+
+.admin-syndromes .darker {
+    background-color: #fcf;
+}
+
+.admin-syndromes th {
+    background-color: #fcf;
+    text-align: left;
+    font-weight: bold;
+}
+
+.admin-syndromes label {
+    height: 100%;
+    display: block;
+    text-align: right;
+    padding-right: 1ex;
+    border-right: 2px solid #fcf;
+    background-color: #fef;
+}
+.admin-syndromes .status {
+    vertical-align: middle;
+    background-color: #fef;
+    border: 2px solid #fcf;
+    text-align: center;
+}
+
+/* Admin form editor */
+.admin-fe {
+    width: 100%;
+    border-collapse: collapse;
+    border: none;
+    text-align: left;
+}
+.admin-fe td {
+    vertical-align: top;
+}
+
+.admin-fe .nav {
+    width: 10em;
+    padding: 0;
+}
+
+.admin-fe .nav .item {
+    display: block;
+    width: 100%;
+    white-space: nowrap;
+}
+
+.formedit {
+    width: 100%;
+    border-collapse: collapse;
+}
+.formedit td {
+    vertical-align: baseline;
+    border: none;
+}
+.formedit .container {
+    font-weight: bold;
+    background-color: #eee;
+}
+.formedit .selecting, .formedit .selecting * {
+    background-color: #fea !important;
+}
+.admin-fe-work {
+    border-collapse: collapse;
+    vertical-align: top;
+    text-align: left;
+    padding: 0;
+    width: 100%;
+    z-index: 1;
+}
+.admin-fe-work td {
+    vertical-align: top;
+}
+.admin-fe-work .section {
+    background-color: #fee;
+    font-weight: bold;
+}
+.admin-fe-work .disabled {
+    background-color: #bbb;
+}
+.admin-fe-work .number {
+    width: 2.5em;
+    font-weight: bold;
+    vertical-align: top;
+}
+.admin-fe-work .question {
+}
+.admin-fe-work .qtext {
+    vertical-align: top;
+}
+.admin-fe-work textarea {
+    width: 98%;
+}
+.admin-fe-work .inputs {
+    vertical-align: top;
+}
+.admin-fe-work .prompt {
+    white-space: nowrap;
+    vertical-align: top;
+}
+
+.admin-fe-work .line {
+    background: url("/{{APPNAME}}/images/plus-line.png") left center;
+    height: 13px;
+    white-space: nowrap;
+    empty-cells: show;
+}
+.admin-fe-work .choice {
+    background-color: #fbb;
+}
+.admin-fe-work .active {
+    background-color: #ffe8e8;
+}
+.admin-fe-work .fe-left {
+    vertical-align: top;
+    width: 49%;
+}
+.admin-fe-work .fe-divide {
+    width: 1%;
+    empty-cells: show;
+}
+.admin-fe-work .fe-right {
+    vertical-align: top;
+    width: 50%;
+}
+.admin-fe-work .pretext, .admin-fe-work .posttext {
+    font-size: 83%;
+}
+.admin-fe-work .skiptext {
+    font-size: 83%;
+    font-weight: bold;
+    color: #008;
+}
+
+.admin-fe-work .preview {
+    background-color: #fcc;
+}
+
+.f-deploy {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #bbb;
+    vertical-align: top;
+    padding: 0;
+}
+.f-deploy th {
+    text-align: center;
+}
+.f-deploy .op {
+    text-align: center;
+    font-weight: bold;
+}
+.f-deploy .add {
+    background-color: #beb;
+}
+.f-deploy .drop {
+    background-color: #ebb;
+}
+.f-deploy .nochange {
+    background-color: #eee;
+}
+.f-deploy .typechange {
+    background-color: #eeb;
+}
+.f-deploy .warning {
+    background-color: #fea;
+}
+.f-deploy .incompatible {
+    background-color: #fc0;
+}
+.f-deploy .unknown {
+    background-color: #ebe;
+}
+
+.dupestat {
+    border-collapse: collapse;
+}
+.dupestat td {
+    border: 0px;
+    border-top: 2px solid #ffa;
+    border-bottom: 2px solid #ffa;
+    padding-left: 1ex;
+    padding-right: 1ex;
+    background-color: #ffc;
+}
+
+.dupecfg {
+    border-collapse: collapse;
+}
+.dupecfg td, .dupecfg th {
+    border: 0px;
+    border-top: 2px solid #aaf;
+    border-bottom: 2px solid #aaf;
+    padding-left: 1ex;
+    padding-right: 1ex;
+}
+.dupecfg label {
+    font-weight: bold;
+}
+.dupecfg thead th {
+    text-align: left;
+    background-color: #ccf;
+    font-weight: bold;
+}
+.dupecfg .group {
+    background-color: #ccf;
+    text-align: left;
+    vertical-align: top;
+}
+.dupecfg .disabled td {
+    background-color: #eef;
+    color: #888;
+}
+.dupecfg .button {
+    text-align: center;
+    background-color: #ccf;
+    padding: 0;
+}
+
+.crosstab {
+    text-align: center;
+    border-collapse: collapse;
+}
+.crosstab .pagehead {
+    font-size: 130%;
+    font-weight: bold;
+    text-align: left;
+    padding-top: 2ex;
+    border: none
+}
+.crosstab .colhead, .crosstab .rowhead {
+    font-size: 110%;
+}
+.crosstab th {
+    padding: 0.3ex;
+}
+.crosstab td {
+    border: 1px solid gray;
+}
+.crosstab .r {
+    border-right: 2px solid gray;
+    text-align: left;
+}
+.crosstab .b {
+    border-bottom: 2px solid gray;
+}
+.crosstab .t {
+    background-color: #ccc;
+    border-bottom: 1px solid gray;
+    border-left: 1px solid gray;
+    border-top: 2px solid gray;
+}
+.crosstab .l {
+    background-color: #ccc;
+    border-top: 2px solid gray;
+    border-left: 2px solid gray;
+    border-right: 1px solid gray;
+}
+.tagbrowse {
+    border-collapse: collapse;
+    padding-left: 1em;
+}
+.tagbrowse th {
+    background-color: #ccf;
+}
+.tagbrowse td {
+    background-color: #eef;
+    border-bottom: 1px solid #ccf;
+    padding: 0 0.4em 0 0.4em;
+}
+.tagbrowse .tag-tag {
+    font-weight: bold;
+}
+.reportbuttons {
+    position: absolute;
+    right: 1em;
+}
+.reportmenu {
+    margin: 0 2em;
+}
+.reportmenu td {
+    vertical-align: baseline;
+}
+.reportmenu .edit {
+    float: right;
+    clear: right;
+    padding-left: 1em !important;
+    font-weight: normal;
+}
+.reportmenu .rtype {
+    font-size: 83%;
+    color: #aaa;
+}

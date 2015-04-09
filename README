@@ -1,0 +1,1002 @@
+NetEpi Collection Version 1.8.4 README
+========================================
+
+LICENCE
+=======
+
+All materials associated with "NetEpi Collection" are Copyright (C) 2004-2010
+Health Administration Corporation (New South Wales Department of Health) and
+others (see the CONTRIBUTORS file for details).
+
+NetEpi Collection is licensed under the terms of the Health Administration
+Corporation Open Source Licence Version 1.2 (HACOS Licence V1.2), the full text
+of which can be found in the LICENCE file provided with NetEpi Collection.
+
+CHANGES TO THIS AND PREVIOUS VERSIONS OF NetEpi Collection
+==========================================================
+
+A summary of changes made in each new version appears in the CHANGES file.
+An exhaustive list of the changes made since the inception of the project
+appears in the CHANGELOG document in doc/ directory contained in this
+distribution.
+
+A NOTE FOR THOSE WISHING TO UPGRADE EARLIER VERSIONS OF NetEpi Collection
+=========================================================================
+
+Users of very early versions of NetEpi Collection - that is, versions released
+prior to May 2005 (Version 0.90) - should consult the developers via email
+for advice on how to proceed with upgrading existing installations.
+
+Users of Version 0.90 or later should carefully read the advice provided
+below (especially the INSTALLATION section). If in doubt, please do not
+hesitate to contact the developers via the netepi-discuss mailing list
+(see below) for advice on upgrading.
+
+DOCUMENTATION AND MANUALS
+=========================
+
+End-user and administrator manuals for NetEpi Collection v1.6 are still
+being updated to reflect new features and changes made since v0.90 was
+released. These updated documents will be available before the end of April
+2010 from the same Google Code and SourceForge sites from which the NetEpi
+distribution tarballs and the manuals for v0.90 are available. Some interim
+documentation of the wiki mark-up feature, which was introduced in Version
+0.94, appears in the doc directory of the distribution.
+
+
+BUG REPORTS, FEATURE REQUESTS AND GENERAL DISCUSSION
+====================================================
+
+Please report all bugs, problems, feature requests and ideas to the
+NetEpi-discuss mailing list. You need to subscribe to this list in
+order to post messages to it - see the list management Web page at:
+
+    http://lists.sourceforge.net/mailman/listinfo/netepi-discuss
+
+
+PREREQUISITES FOR USERS
+=======================
+
+Any recent Web browser (Microsoft Internet Explorer Version 6 or later,
+Mozilla or Firefox Version 3.0 or later, Opera Version 9.0 or later, all
+versions of Safari, all versions of Google Chrome), and a TCP/IP network
+connection (Internet, intranet, VPN, LAN, localhost, etc) to an instance
+of NetEpi Collection installed on a suitable Web server.
+
+Note that there is a known minor problem when Internet Explorer v5.0 is used
+to access NetEpi: if the "Intercept browser BACK button" feature is
+set to ON in the Tools | Preferences page (it is on by default), then
+clicking the browser back button results in a blank page. Clicking the 
+browser reload button fixes the problem. In the Safari browser, 
+if the "Intercept browser BACK button" feature is set to ON, then 
+the browser back button is effectively disabled. If it is set to OFF
+or if Javascript is disabled in the Safari, Konqueror and Opera browsers,
+use of the browser back button may result in unexpected behaviour, which 
+can be avoided by simply using the "<<Back" buttons provided in the NetEpi
+application itself.
+
+In summary, with default settings, the browser back button behaves in an
+intuitive manner when using the NetEpi application in all web browsers
+except Safari. In Safari, the browser back button is effectively disabled
+and users need to use the "<<Back" navigation buttons provided in the
+application itself (which is preferable anyway).
+
+
+NOTES FOR APPLE MAC OS X USERS
+==============================
+
+Please see the accompanying README.mac file for some notes specific to 
+installation on Apple Mac OS X computers.
+
+
+PREREQUISITES FOR SERVER INSTALLATION
+=====================================
+
+0)  A recent Linux, Unix or Apple OS X server (either a dedicated server,
+    which is preferred, or a workstation acting as a server). At this time,
+    running the application under Microsoft Windows is NOT supported.
+
+1)  Apache 2.x Web server or an equivalent HTTP server (needs to be able
+    to run CGI). The web server needs to be secured in the usual fashion
+    if it is to be accessible via the Internet.
+
+2)  Python 2.4 or later. If using Python 2.4, then version 2.4.1
+    or later is required because earlier versions of Python 2.4 have
+    a defect in their regular expression library (bug #1088891), which
+    adversely effects Albatross web template parsing.
+
+    If possible, you should use the python packaged with your server
+    platform (Python comes pre-installed in RedHat, Fedora Core, Debian,
+    Ubuntu and Mac OS).  
+    
+    Alternatively, you can download the Python source and build that:
+
+    Python can be obtained from:
+
+        http://www.python.org/ 
+
+    If you prefer, you can compiled Python from source:
+
+        1) Unpack the Python tar archive (.tgz file) 
+
+        2) As root in the top level directory created by the tar archive: 
+
+            ./configure 
+
+        3) make 
+
+        4) make test 
+
+        5) make install 
+
+        6) check that the python executable is in the default path
+
+3)  Albatross 1.35 or later (Web application framework for Python)
+
+    NOTE: If using Python 2.6, Albatross 1.40 or later is required.
+
+    Albatross may be downloaded from:
+
+        http://www.object-craft.com.au/projects/albatross/ 
+
+        1) Unpack the Albatross tar archive 
+
+        2) As root in the top level directory created by the tar archive: 
+
+            python setup.py install 
+
+        3) The Albatross session server needs to be started in the
+           security context of a non-privileged user (not root or
+           nobody!) - typically you want to start it automatically from
+           an init script which contains a line such as:
+
+            su -s /bin/sh foo -c "\
+                /usr/local/bin/al-session-daemon \
+                    --pidfile=/home/foo/al-session-daemon.pid \
+                    --log=/home/foo/al-session-daemon.log \
+                    start > /dev/null 2>&1" < /dev/null
+
+           where "foo" is the name of the user context in which the
+           session server daemon will run.
+
+4)  eGenix mx tools (specifically mx.DateTime)
+
+    If you are using RedHat or Fedora Core, install the "mx" package via:
+
+        sudo yum install mx
+
+    If you are using Debian or Ubuntu, install "python-egenix-mxdatetime" via:
+
+        sudo apt-get install python-egenix-mxdatetime
+
+    Alternatively, download and install from source:
+
+        http://www.egenix.com/files/python/eGenix-mx-Extensions.html 
+
+        1) Unpack the tar archive 
+
+        2) As root in the top level directory created by the tar archive: 
+
+            python setup.py install
+
+5)  PostgreSQL, minimum 8.1.x, 8.3 or later recommended. We strongly recommend
+    the use of and/or upgrading to the latest available point release
+    (as designated by the third digit in the version number) for a given
+    release version (as designated by the first two version number digits)
+    of PostgreSQL, as later point releases contain important security fixes.
+
+    If your operating system vendor supports PostgreSQL, we recommend using
+    their packages (using yum or apt-get). Make sure that you install packages
+    for the PostgreSQL server, the PostgreSQL client libraries and the
+    PostgreSQL developer libraries (the latter are needed to install pyPgSQL
+    or ocpgdb - see below).  Alternatively, PostgreSQL may be downloaded from:
+
+        http://www.postgresql.org/
+
+        Compile PostgreSQL with defaults. 
+
+        Make sure your PostgreSQL installation has a "root" user that can
+        create new databases and users (issue the command "createuser -a
+        -d root" if needed).
+
+        You will probably also need to edit the PostgreSQL pg_hba.conf 
+	configuration file to allow the user in whose context the web 
+	server (httpd) runs access to the database. For Debian-based systems,
+	something like this may need to be added:
+	
+	    local all www-data sameuser;
+	   
+	Or for Red Hat/Fedora Core-based systems:
+
+	    local all apache sameuser;
+	
+
+6)  A Python-to-PostgreSQL interface module:
+
+ EITHER pyPgSQL Version 2.5.1 or later
+
+    pyPgSQL may be downloaded from:
+
+        http://sourceforge.net/projects/pypgsql/
+
+        1) Unpack the tar archive 
+
+        2) Change into the directory created by the tar archive
+
+        3) As root install the package:
+
+            python setup.py install
+
+ OR ocpgdb
+
+    ocpgdb may be downloaded from:
+
+        http://code.google.com/p/ocpgdb/downloads/list
+
+        1) Unpack the tar archive
+
+        2) Change into the directory created by the tar archive
+
+        3) As root install the package:
+
+            python setup.py install
+
+ (Disclaimer: Andrew McNamara, the principal NetEpi developer, wrote
+  the ocpgdb adaptor module, and naturally we think it is the better
+  of the two adaptor modules listed above.)
+
+7) [optional but strongly recommended] FastCGI
+
+    NetEpi Collection can be deployed using mod_fastcgi for Apache. This
+    provides a very significant improvement in the responsiveness of
+    the application and is recommended for high-volume installations
+    or those with many users. However, FastCGI can be a bit tricky to
+    install (although should not be too hard for most sysadmins).
+
+    Detailed instructions for compiling and installing mod_fastcgi
+    (FastCGI) are beyond the scope of this document - please see the
+    FastCGI Web site at http://www.fastcgi.com for details.
+
+    Once installed, you will need to add some directives to your Apache
+    configuration file. The following are EXAMPLES ONLY of directives,
+    in this case for Apache2 on Fedora Core Linux - you may need slightly
+    different directives for your version of Apache on your server -
+    consult the FastCGI and/or Apache documentation.
+
+    # Dynamic Shared Object (DSO) Support 
+    LoadModule fastcgi_module modules/mod_fastcgi.so
+
+    ScriptAlias /cgi-bin/collection/ "/var/www/cgi-bin/collection/"
+
+    # AddModule mod_fastcgi.c
+    <IfModule mod_fastcgi.c>
+        # is this the best option?
+        FastCgiIpcDir /tmp 
+        FastCgiConfig -idle-timeout 300
+        <Directory /var/www/cgi-bin/collection>
+            AddHandler fastcgi-script .py
+            Options +ExecCGI
+        </Directory>
+    </IfModule>
+
+    Finally, if you run Collection under FastCGI, remember that you need to
+    stop and then restart Apache if you upgrade the Collection application or
+    HTML templates. FastCGI also maintains persistent database connections
+    (one of the reasons it is so much faster than plain CGI), so you
+    will need to stop Apache if you wish to upgrade your database etc.
+
+8)  [optional] MatPlotLib v0.90.x or later
+
+    MatPlotLib may be downloaded from:
+       
+        http://matplotlib.sourceforge.net
+
+    Note that MatPlotLib has several dependencies, and for recent Linux
+    distributions, by far the easiest way to install it is to use a package,
+    which will (or should) automatically resolve the dependencies and install
+    any additional libraries required.  If you choose to build and install
+    MatPlotLib yourself from source please read the MatPlotLib installation
+    notes carefully to ensure that its dependencies on various third-party
+    libraries have been met first (this is likely to include the "dev"
+    or "devel" versions of the cairo, freetype, pango, libpng and zlib
+    libraries).
+    
+    Debian and Ubuntu users can install matplotlib via:
+
+        sudo apt-get install python-matplotlib
+
+    RedHat/CentOS/Fedora Core users can find RPM packages for matplotlib
+    and its dependencies via RPMFind:
+
+        http://www.rpmfind.net/linux/rpm2html/search.php?query=python-matplotlib
+
+    NetEpi Collection will still function perfectly well if you do not
+    install MatPlotLib on your web server, however the epi curve graphs
+    will not be available.
+
+9)  [optional] Graphviz - Graph Visualization Software
+
+    GraphViz source may be downloaded from:
+
+        http://www.graphviz.org/
+
+    For Debian and Ubuntu systems, install via:
+
+        sudo apt-get install graphviz
+
+    RedHat/CentOS/Fedora Core, you will probably need to use the graphviz,
+    graphviz-gd, gtkglext-libs and gts packages from here:
+
+        http://www.graphviz.org/Download_linux_rhel.php
+
+    NetEpi Collection will still function if you do not install GraphViz
+    on your web server, however the case-contact relationship visualisation
+    report graphs will not be available.
+
+10)  [very optional]  Selenium Core 0.8.0 or later
+
+        A work-in-progress Selenium end-to-end test suite is also
+        included. The Selenium tests are useful for verifying the 
+        correct operation of a NetEpi Collection installation, 
+        although their main purpose is to act as a set of regression 
+        tests for NetEpi Collection developers.
+
+        Please see the README file in the Selenium tests directory for 
+        further information.
+
+        To run these tests, you will need the Selenium Core web testing
+        framework, available from:
+
+        http://www.openqa.org/selenium/
+
+        1) Unpack the Selenium distribution, and recursively copy the
+           "selenium" sub-directory to your web server document directory
+           (typically /var/www or /var/www/html).
+
+        2) Copy the contents of the Collection "Selenium" directory to the
+           "tests" sub-directory of the selenium directory on your
+           web server.
+
+        3) Point your browser at http://webserver/selenium/TestRunner.html,
+           where "webserver" is the name of your web server.
+
+        4) Select a test suite, then run the selected test.
+
+        The tests assume a fresh, default Collection installation with a
+        newly initialised database, and with admin user password sn00Py
+        (double zero, not oh oh).
+
+        ***NOTE: please remember to reset the admin password after
+                 you have finished testing!
+
+        The Selenium web testing framework is written in Javascript and
+        runs within your browser. Most modern browsers will work: IE,
+        Firefox and Safari on all supported platforms. Opera doesn't
+        appear to work at this time.
+
+        We strongly recommend that you remove the selenium directory
+        from any production Web server after testing is complete,
+        as it is unknown whether Selenium presents any security holes
+        (probably not, but Selenium is a complex piece of code and is
+        still itself a work-in-progress).
+
+11)  [highly optional] ClientForm & ClientCookie
+
+    A load testing framework is also included, however the tests are currently
+    broken due to a comprehensive redesign of the application interface.  It is
+    included in this distribution as a placeholder, and will be updated in a
+    future release. Please see the README in the load directory for further
+    information. A contribution of fixed or extended load tests is welcome.
+
+    This framework requires:
+
+        ClientForm
+
+            http://wwwsearch.sourceforge.net/ClientForm/
+
+            1) Unpack the tar archive
+
+            2) As root in the top level directory created by the tar archive: 
+
+                python setup.py install
+
+        ClientCookie
+
+            http://wwwsearch.sourceforge.net/ClientCookie/
+
+            1) Unpack the tar archive
+
+            2) As root in the top level directory created by the tar archive: 
+
+                python setup.py install
+
+12) [completely optional] Documentation diagrams are prepared with Dia (0.97):
+
+        http://www.gnome.org/projects/dia/
+
+        (only needed if you wish to modify the diagrams)
+
+13) [entirely optional] Icons, logos and "image" buttons are prepared with 
+    The GIMP:
+
+        http://www.gimp.org/
+
+        (only needed if you wish to modify logos and icons).
+
+
+
+INSTALLATION of NetEpi Collection
+=================================
+
+    Make sure your PostgreSQL installation has a "root" user that can
+    create new databases and users (use "createuser root" if needed).
+
+    To perform a default NetEpi install, simply run "make" in the top
+    level directory as root. The install scripts know default paths and
+    web user names for:
+
+        RedHat Enterprise Linux/Fedora Core Linux
+        Debian Linux (and most derivatives)
+        Apple OS X
+
+    Additional platforms can be added by editing simpleinst/platform.py
+    (If you add entries for other platforms, please let us know so we can
+     include support for those platforms in future releases.)
+
+    The installer will ask for an initial password for the "admin"
+    user. You can change this password from the admin web interface,
+    but this initial password will be required to log in to the admin
+    application.
+
+    A number of parameters can be configured at install time. You can
+    either edit the Makefile and change the "COLLECTION_CONFIG" option,
+    or pass them on the command line:
+
+        make COLLECTION_CONFIG="\
+            appname=foo \
+            dsn='::foo:' \
+            registration_notify='nobody@example.com' \
+            exception_notify='nobody@example.com'"
+
+    After installation, configuration parameters can be changed by
+    editing the "config.py" file in the "collection" cgi-bin directory.
+
+    Configurable parameters include:
+
+        appname (default: "collection")
+            Application name - effects install paths, cookies, etc. The
+            application name must be a valid file name, and must not
+            contain path components (path separators or drive letters).
+
+        apptitle (default: "NetEpi Collection")
+            User visible application name
+
+        cache_form_summaries (default: False)
+            If True, form summaries are only generated when a form is
+            updated. If False, they are generated on demand (which requires
+            loading the form definition and form instances for each summary
+            generated). The main drawback of caching summaries is dates are
+            formatted according to the editing user style preferences, rather
+            than the viewing user's style preference (which can be particularly
+            confusing when one uses date style DMY and the other uses MDY).
+
+        cgi_dir (default is platform dependent)
+            Application scripts and data will be placed into a sub-directory
+            "appname" off this directory.  Default depends on operating
+            system, but is typically something like /usr/lib/cgi-bin or
+            /var/www/cgi-bin.
+
+        compile_py (default: True)
+            If True, the installer will byte-compile all python code after
+            installing it.
+
+        contact_label (default: Association)
+            Controls the presentation name of associations between cases
+            (formerly "contacts"). Note that the application makes a
+            plural form of the label by appending an 's'.
+
+        create_db (default: True)
+            If True, the installer will run the database conditioning tool
+            - if the database already exists, the scheme is upgraded if
+            necessary. If the database does not exist, it is created.
+
+        debug (default: False)
+            If True, enables the display of diagnostic information at
+            the foot of the application page.
+
+        date_style (default: DMY)
+            Determines the default date style (for input and output)
+            for an instance, although it can still be overridden by
+            individual users. "DMY" means "DD/MM/YYYY" format, "MDY"
+            means "MM/DD/YYYY" format and "ISO" means "YYYY-MM-DD" format.
+
+        dsn (default: "::collection:")
+            Data Source Name - describes database host, port, database
+            name, database user and database password. Currently database
+            passwords are not supported - this will change once we have
+            audited where the DSN is exposed.
+
+        dup_per_syndrome (default: False)
+            If set to True, person (duplicate) searching is restricted
+            to the current syndrome, if False, persons associated with
+            any syndrome will be returned.
+
+        enable_matplotlib (default: False)
+            If matplotlib is available, setting this to True will
+            enable additional visualisations (only report epi curve at
+            this time).
+
+        exception_notify (no default - no e-mail notifications)
+            Application exceptions will be e-mailed to this address,
+            if set.  Multiple addresses can be listed, comma separated.
+
+        form_rollforward (default: True)
+            If False, existing forms remain associated with the version
+            of form they were created under.
+
+            If True, the form editor attempts to upgrade data collected
+            by older versions of the form when a new version of the form
+            is deployed. This can fail if the new schema is incompatible
+            with the old (this prevents form deployment, but does not
+            alter the form data).
+
+        group_label (default: Context)
+            Controls the presentation labelling of the "group" entity.
+
+        helpdesk_contact (default: "the NetEpi Helpdesk")
+            Contains a description of the body responsible for supporting
+            the application. Used in the context "please contact ...". 
+            The string can contain HTML elements (for example, a URL or
+            e-mail link).
+
+        html_dir (default is platform dependent)
+            Fixed application content (images, help text, style sheets)
+            will be installed in an "appname" sub-directory of this
+            directory.
+
+        immediate_create (default: True)
+            If True, cases are created when the user clicks the "Create"
+            button on the search result pages.
+
+            If False, the user must explicitly create the case from
+            the case page. This allows the user to review all personal
+            details prior to creating the record, rather than just the
+            summary information shown in the search results.
+
+        install_debug (default: False)
+            Enables debugging output from the installer
+
+        install_logo
+        install_logo_small
+            If set, these specify paths to alternate application logos that
+            will be installed with the application. The first is the login page
+            logo, the second is the logo that appears in every page banner.
+
+        install_verbose (default: False)
+            Enables verbose output from the installer
+
+        login_helpdesk_contact (default: "the NetEpi Helpdesk")
+            Similar to helpdesk_contact, but shown in less secure contexts
+            (login and new user registration) where the disclosure of internal
+            address and phone numbers could be problematic. Contains
+            a description of the body responsible for supporting the
+            application. Used in the context "please contact ...".  The string
+            can contain HTML elements (for example, a URL or e-mail link).
+
+        max_requests (default: 1000)
+            If non-zero, after servicing this many requests, we exit gracefully
+            to minimise the impact of memory fragmentation and object leaks
+            (only relevant for persistent application servers).
+
+        nobble_back_button (default: True)
+            When True, this enables a mechanism that exploits side-effects
+            of the <iframe> tag to intercept the browser <back> button and
+            thus reduce the change of the browser and application getting
+            out of sync.
+
+        notification_host (default: local)
+        notification_port (default: 13535)
+            The optional notification daemon makes certain data changes
+            propagate between application server instances faster. Application
+            processes send the notification daemon messages to announce
+            that a certain object has changed, and all interested clients
+            then receive a copy of this notification, and discard any cached
+            copies of the referenced object.
+
+            notification_host can be set to "none", "local", or an ip address
+            or host name. When set to "none", no notification daemon will be
+            started and time-based cache expiry is used. If set to "local", a
+            daemon local to this instance will be automatically started if one
+            is not already running, with communications occurring over unix
+            domain sockets.  If set to a hostname or ip address, application
+            processes will attempt to connect to that address and no local
+            daemon will be started (use the stand-alone daemon on the server
+            host).
+        
+            When the notification daemon is not local, notification_port sets
+            the port number to use.
+
+            NOTE - the notification daemon protocol is currently
+            unauthenticated - anyone who can connect to the port can generate
+            spurious notification messages, or kill the daemon. By default,
+            the daemon only accepts connections from the local machine. In
+            environments with untrusted users, the notification daemon should
+            not be used at this time (set port to a null string: '').
+
+            NOTE - you must have ONE notification daemon per NetEpi
+            Collection INSTANCE.
+
+        order_syndromes_by (syndrome_id DESC)
+            An SQL "order by" clause used for sorting the presentation
+            of syndromes. Recommended columns are "syndrome_id"
+            (essentially the order in which the syndromes were added),
+            "name" or "post_date". This must be a valid column name from
+            the syndrome_types table. "DESC" can be appended to reverse
+            the sort order.
+
+        person_label (default: Person)
+            Controls the presentation labelling of the "person" entity.
+
+        registration_notify (no default - no e-mail notifications)
+            New user registrations and locked-account notifications will
+            be e-mailed to this address, if set. Multiple addresses can
+            be listed, comma separated.
+
+        session_secret (default: random)
+            This string is mixed with any session data that makes a
+            round trip via the user's browser to prevent unauthorised
+            modifications being made. The string must be kept secret,
+            and should not be shared with other applications.
+
+        session_server (default: "localhost:34343")
+            If set, contains the host and port of the Albatross session
+            server. Server-side sessions will be used. Consult the
+            Albatross documentation for more information on the session
+            server.
+
+            If not set, hidden-field sessions are used - session data
+            will be saved in hidden form fields, and protected from
+            alteration by a cryptographic hash (but are NOT encrypted).
+
+        session_timeout (default: 1200)
+            When using server-side sessions, sessions will expire after
+            this many seconds (both the session server data, and the
+            browser cookie are based on this setting).
+
+        show_all_syndromes (default: False)
+            If True, show all syndromes on main page, not just those the
+            user has access to.
+            
+        subbanner (default: "Network-enabled tools for epidemiology 
+                             and public health practice.")
+            Typically rendered in a smaller font under the apptitle on login
+            and page banner screens.
+
+        syndrome_label (default: "Case Definition")
+            Controls the presentation name of "syndromes". Typical values
+            are "Case Definition", "Syndrome", or "Outbreak ID".
+
+        tabbed_demogfields_threshold (default: 0)
+            When many demographic fields are enabled, the screen can become
+            quite cluttered. If the count of enabled fields exceeds the
+            this threshold, the application switches to a tabbed rendering
+            of the demographic fields, where fields are grouped together by
+            function, and the groups then rendered inside tabs. To disable
+            the tabbed rendering, set to 999.
+
+        tracedb (default: False)
+            If set to True, application SQL queries will be written to
+            the web server error log. This is primarily a developer tool.
+
+        unit_label (default: Role)
+            Controls the presentation labelling of the "unit" entity.
+
+        user_browser (default: True)
+            If True, allow users to view details of other users of the
+            system (subject to that user's privacy settings).
+
+        user_check_interval (default: 30 days)
+            User details check interval in days - if the user has not updated
+            their details in this time, remind them to review them. Set it
+            to 0 to disable this check.
+
+        user_registration_mode (default: 'register')
+            New user registration mode. Choices are:
+
+            none        Users can only be added by admins.
+
+            register    A button on the login page invites the user to
+                        register their details. After registering, their
+                        details are reviewed by an admin prior to their account
+                        being enabled.
+
+            invite      An existing user invites a prospective user onto the
+                        system via a one-time URL that takes the prospective
+                        user to a registration screen.  After registering,
+                        their details are reviewed by an admin prior to their
+                        account being enabled.
+
+            sponsor     An existing user sponsors a prospective user onto the
+                        system via a one-time URL that takes the prospective
+                        user to a registration screen. After registering, the
+                        sponsoring user verifies the identity of the new user
+                        and then enables their access.
+
+        web_user (default is platform dependent)
+            User name to install files as - this should match the user
+            id your web server runs CGI scripts as.
+
+    The installation process creates a minimally populated database. After
+    installation, the web admin interface should be used to create
+    additional units, users and groups of units.
+
+    Note that it is safe to run the installer against an already installed
+    instance of NetEpi Collection v0.90 (released in May 2005) or later,
+    although it is STRONGLY recommended that a backup be performed first:
+    a backup of the relevant Web cgi-bin and html directories as well as a
+    verified "dump" of the database using one of the PostgreSQL dump tools
+    (see the PostgreSQL documentation for details).
+
+    The application should be shut down before running the installer
+    (typically by stopping the web server). The installer will update any
+    application libraries that have changed, rewrite the configuration,
+    upgrade the schema if necessary, and attempt to correct any problems
+    in form registration.  Existing data is generally left alone, except
+    in the case where the installer detects an out of date schema.
+
+    Direct access to the data collected is best done via an ODBC
+    connection, using the PostgreSQL ODBC drivers available from the
+    PostgreSQL Web site. A database user which has only read-only access
+    to the database should probably be used for most ODBC connections.
+
+
+ACCESSING YOUR INSTALLATION of NetEpi Collection
+================================================
+
+If running in FastCGI mode, you should restart the apache daemon (httpd) 
+on your Web server, and access the user and admin apps at URLs similar to
+(substitute the address of your Web server for "www.yourserver.org"):
+
+    http://www.yourserver.org/cgi-bin/collection/app.py
+
+If you are accessing NetEpi across the Internet, you should use SSL by
+substituting https in the above URLs and configuring your web server to
+support SSL. We recommend that you configure Apache to require SSL for all
+interactions with NetEpi.
+
+Note that if the default 'register' mode is used for the
+user_registration_mode configuration option (see above), then the login page
+of NetEpi Collection allows potential users to apply for a user account.
+This new user application process is, by necessity, unauthenticated, and is
+therefore potentially vulnerable to abuse by third parties who may waste
+time and resources by submitting false account applications. To protect
+against this, it is strongly recommended that if NetEpi is deployed on the
+Internet, and if 'register' mode is used, then an additional layer of http
+basic authentication is employed using a single username/password pair that
+can be shared between all legitimate users (and emailed to new users to allow
+them to apply for their accounts). Note that this is merely an additional
+"first-order" layer of protection as an adjunct to per-user login names and
+passwords, which should NOT be shared between users or emailed around. x.509
+certificates installed in client browsers could also be used for this purpose.
+
+The 'invite' and 'sponsor' modes for the user_registration_mode option
+were introduced to avoid the need for such additional layers of password
+protection and to reduce the likelihood of new account "phishing"
+attempts by imposters.
+
+The following directives can be added to your Apache configuration to
+provide a more convenient URL to access the applications (the directory
+paths may need to be changed to suit your configuration):
+
+    <Directory /var/www/html/collection/>
+        DirectoryIndex /cgi-bin/collection/menu.py
+    </Directory>
+
+This directive will result in a menu page being shown on access to
+
+    http://www.yourserver.org/collection/
+
+
+BACKUPS
+=======
+
+    The system administrator needs to consider how backups of the
+    database are to be performed - we suggest use of the PostgreSQL
+    pg_dump command to dump the database to a file which will then be
+    backed up as you would normally back up files.  There is no need to
+    shut down the database to do back-ups, provided that you use pg_dump,
+    so these backups can be scheduled as cron jobs and the dump file
+    copied to another machine etc. Ability to restore from the pg_dump
+    files should be tested, regularly, of course.
+
+    As of version 0.93 of NetEpi Collection, it is no longer necessary to 
+    additionally backup the form definitions, as these are now stored in
+    the database itself. However, it may be wise to store backups of 
+    XML exports of the form definitions from time-to-time. These can be
+    obtained via the form editor in the admin application.
+
+    We do not recommend backing up the PostgreSQL data-files directly,
+    as the format of these changes between PostgreSQL versions, and the
+    database must be shut down for the duration of the dump to get a
+    consistent representation of the database.
+
+    After restoring a database dump (with pg_restore), the installer 
+    should be run again to ensure that the forms are correctly registered,
+    and that the application schema is up to date.
+
+
+Stand-alone Notification Daemon
+===============================
+
+When the application is being served by multiple machines, a single
+notification daemon should be shared by all the servers. Set the
+notification_host configuration option to the name or IP address of the
+server that runs the daemon, and start the daemon explicitly:
+
+    casemgr/notification/daemon --listen <ip_addr> --port <port> --bg
+
+NOTE - the notification daemon protocol is currently unauthenticated - anyone
+who can connect to the port can generate spurious notification messages,
+or kill the daemon. By default, the daemon only accepts connections from the
+local machine. In environments with untrusted users, the notification daemon
+should not be used in stand-alone mode at this time (set notification_port
+to a null string: '' or leave notification_host set to the default 'local').
+
+Client interactivity reporting
+==============================
+
+The application uses some client-side JavaScript to collection data on
+the "interactivity" of the application - specifically, the time taken
+from the submission of a request to the resulting page "on load" event
+firing. This includes a round trip across the network, the application
+run time, and the time taken for the browser to render the page. The
+application run time is also recorded separately. This data is written
+to the web error long on the NEXT interaction with the server. The client
+reports look like:
+
+    client report: start=1184734979 ip=127.0.0.1 server=0.056 client=0.411 page=tools
+
+A tool, tools/client_report.py is supplied to extract these lines from
+the error log and either write them to a CSV file, load them into a
+NetEpi Analysis dataset, or plot them via MatPlotLib. For example,
+to extract the reports in CSV format to stdout:
+
+    python tools/client_report.py --csv /var/log/apache2/error.log*
+
+To load the reports into a NetEpi Analysis dataset:
+
+    python tools/client_report.py \
+        --dsname=clientreports \
+        --dslabel='NetEpi Collection client reports' \
+        --dspath=SOOM_objects -v \
+        /var/log/apache2/error.log*
+
+To plot the reports, starting from the beginning of 2008, grouped by
+application page, for the "collection" instance:
+
+    python tools/client_report.py \
+        --plot --start 2008-1-1 --groupby page --filter inst=collection \
+        /var/log/apache2/error.log*
+
+For more options, see the usage message:
+
+    python tools/client_report.py --help
+
+
+seed_db
+=======
+
+    NOTE: This tool has not been kept up to date, and it no longer works
+          with current versions of NetEpi Collection.
+
+    For test (NOT production) installations the tools/seed/seed_db script
+    can be used to install some sample users and units. Note that the
+    sample users all have random passwords - before they can be used,
+    the administrator will need to set their password to a known string. 
+
+    To load the sample data, as root (or the DBA user):
+
+        sh tools/seed/seed_db <database_name>
+
+    NOTE: The installer must now be run again to fully register the forms
+    and case definitions added by seed_db (see the Installation section
+    above). If you omit this step, application exceptions will occur when
+    the user attempts to fill in a form - running the installer will fix this.
+
+===============================================================================
+
+Directories:
+
+    app                 application & fixed components (online help, images)
+    pages               page templates and presentation logic
+    casemgr             application "business" logic
+    cocklebur           db and form abstractions
+    config.py           application site configuration
+    doc                 system manager and developer documentation
+    forms               example forms
+    labsurv             weekly respiratory virus laboratory surveillance app
+    httpinteract        Javascript tool to collect client network statistics
+    images              logo xcf (gimp) files
+    install.py          installer rules
+    load                load testing tools
+    mail                e-mail templates
+    Selenium            Selenium-based web test
+    simpleinst          installer libraries
+    tests               unit tests
+    tools               miscellaneous installation and other tools
+        seed                database seed files
+    wiki                files from Trac to support wiki mark-up of text
+    
+Additionally, the LiveCD directory contains a script and associated
+assets used in creating the NetEpi LiveCD on Debian or Ubuntu
+Linux systems. These should only be used by expert users who have a
+comprehensive understanding of the script's functionality. Misuse *will*
+corrupt your system installation. They are not necessary for routine
+NetEpi use or installation.
+
+===============================================================================
+
+e-mail templates:
+
+The "mail" directory contains the default templates for notification
+e-mails generated by the system, formated as RFC822 messages. It is
+possible (but not recommended) to change these templates for specific
+circumstances, although care must be taken to maintain the correct format.
+
+Variables available for substitution into the templates are formated as
+{{variable_name}}, and vary from template to template but all include:
+
+    Configuration variables
+    {{time}}
+    {{datetime}}
+    {{date}}
+
+Where the message concerns a user, additional variables are available:
+
+    {{username}}
+    {{fullname}}
+    {{title}}
+    {{agency}}
+    {{phone_work}}
+    {{phone_mobile}}
+    {{email}}.
+
+The templates are:
+
+    exception_notify
+
+        Sent to the configured exception_notify address when an error
+        occurs in the application logic. Additional variables include
+        the details of the {{exception}}.
+
+    register_invite
+
+        Sent to a prospective user when an user invites them to register
+        to use the system. Additional variables include details of the
+        registering user, a URL that takes the user to the registration
+        page {{url}}, and the {{enable_key}}. In some contexts, it may be
+        undesirable to include the URL of the application - the template
+        can be edited to remove this.
+
+    registration_notify
+
+        Sent to the configured registration_notify address when a
+        new user registers to use the system.  Additional variables
+        include {{sponsor}}, and details of the registering user.
+
+    too_many_attempts
+
+        Sent to the configured registration_notify address when a
+        user makes too many attempts to log in with an incorrect
+        password. Additional variables include details of the user.
+
+The sender for generated e-mails can be overridden by inserting a "From"
+header as the first line in the template, for example:
+
+    From: NetEpi Collection <netepi@your.domain>
+    To: {{exception_notify}}
+    Subject: [{{appname}}] Uncaught exception report ({{datetime}})
+
+    {{exception}}
+
+Other RFC822 headers, such as Reply-to: can be overridden in a similar way.

@@ -1,0 +1,78 @@
+Installing NetEpi Collection under Apple Mac OS X
+=================================================
+
+Please read the README file first.
+
+Note - these instructions assume the user has advanced command line system
+administration knowledge, and are not for the faint of heart.
+
+ 1) Install PostgreSQL
+
+    We recommend using the Unified Installer Disk Image from:
+
+        http://www.postgresqlformac.com/
+
+    It may also be possible to use the OS X PostgreSQL packages from the
+    PostgreSQL project, although we haven't tested this:
+    
+        http://www.postgresql.org/download/macosx
+
+    The Fink and MacPorts systems also provide PostgreSQL packages.
+
+ 2) install Albatross
+
+    Download the Albatross tar-ball from:
+
+        http://www.object-craft.com.au/projects/albatross/download.html
+
+    Unpack it to a directory then, in that directory, run:
+
+        sudo python setup.py install
+
+    For instructions on configuring the Albatross session server to
+    start at boot, see the file mac/README in the Albatross directory.
+
+ 3) install eGenix mx Base
+
+        sudo easy_install egenix-mx-base
+
+ 4) install ocpgdb
+
+        sudo easy_install ocpgdb
+
+ 5) configure web server
+  
+     a) turn on Personal Web Sharing (System Preferences->Sharing)
+
+ 6) Optionally install mod_fastcgi (improves application speed considerably):
+ 
+    1) download the Apache mod_fastcgi module source:
+
+        http://www.fastcgi.com/dist/mod_fastcgi-2.4.6.tar.gz
+
+    2) unpack the tar file, and change into the resulting directory
+
+    3) compile the module:
+
+        apxs -o mod_fastcgi.so -c *.c
+
+    4) install the module:
+  
+        apxs -i -a -n fastcgi mod_fastcgi.so
+
+    5) create /etc/apache2/other/fastcgi.conf and add the following:
+
+        # AddModule mod_fastcgi.c
+        <IfModule mod_fastcgi.c>
+            # is this the best option?
+            FastCgiIpcDir /tmp 
+            FastCgiConfig -idle-timeout 300
+            <Directory /Library/WebServer/CGI-Executables/collection>
+                AddHandler fastcgi-script .py
+                Options +ExecCGI
+            </Directory>
+        </IfModule>
+
+    6) reload apache:
+
+        apachectl configtest && apachectl graceful                                        

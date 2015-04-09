@@ -1,0 +1,62 @@
+Using NetEpi Collection accounts for authentication under Apache
+================================================================
+
+The supplied mod_auth_pgsql contains modifications to support
+NetEpi's password hashing mechanism to allow NetEpi Collection
+accounts to be used to authenticate access under Apache.
+
+Once compiled and installed under Apache (see instructions within
+mod_auth_pgsql for details) the following configuration options
+become available:
+
+    Auth_PG_hash_type NETEPI
+    Auth_PG_netepi_old_passwords [on|off]
+
+A new 'NETEPI' value may be specified to Auth_PG_hash_type to
+supplement the existing password hashing mechanism.
+
+The Auth_PG_netepi_old_passwords option is provided to allow NetEpi
+Collection password created with version of NetEpi Collection earlier
+than 1.5 to work.  This option is off by default and must be
+explicitly enabled.
+
+NOTE: In addition to these options, additional (existing) mod_auth_pgsql
+options must be supplied to allow correct use of the NetEpi Collection
+database schema.  See the example.
+
+Example
+-------
+
+The following example .htaccess file, when placed in a directory
+and Apache is correctly configured, allows units 5, 11 and 12 access.
+
+    AuthName "NetEpi protected area"
+    AuthType Basic
+
+    # conventional db options
+    Auth_PG_host the_db_host
+    Auth_PG_user the_db_user
+    Auth_PG_pwd "the db password"
+    Auth_PG_database netepi
+    Auth_PG_pwd_table users
+    Auth_PG_pwd_whereclause "AND enabled AND NOT deleted"
+    Auth_PG_uid_field username
+    Auth_PG_pwd_field password
+    Auth_PG_hash_type NETEPI
+    #Auth_PG_netepi_old_passwords off
+    
+    # the following allow mod_auth_pgsql to construct correctly formed queries against the db
+    Auth_PG_grp_table "units G JOIN unit_users GU USING (unit_id) JOIN users U USING (user_id)"
+    Auth_PG_grp_whereclause "AND G.enabled AND U.enabled AND NOT U.deleted"
+    Auth_PG_grp_user_field "U.username"
+    Auth_PG_grp_group_field "G.unit_id"
+
+    # and finally the unts to be allowed access
+    Require group 5 11 12
+
+Determining unit ids
+--------------------
+
+The following query will show unit names and their associated ids:
+
+    select unit_id, name from units;

@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<form name='hospital_admit' form_type='case' allow_multiple='True'>
+ <label>Hospital Admission (SARS)</label>
+ <question>
+  <label>Hospitalised</label>
+  <input name='admission_hospitalised' type='YesNo'>
+   <summary>hospitalised</summary>
+  </input>
+ </question>
+ <question>
+  <label>Date hospitalised:</label>
+  <input name='admission_date' type='DateInput'>
+   <summary>admitted</summary>
+  </input>
+ </question>
+ <question>
+  <label>Date discharged:</label>
+  <input name='admission_discharge_date' type='DateInput'>
+   <summary>discharged</summary>
+  </input>
+ </question>
+ <question>
+  <label>Hospital name:</label>
+  <input name='admission_hospital' type='TextInput' />
+ </question>
+ <question>
+  <label>Length of hospitalisation:</label>
+  <input name='admission_stay' type='IntInput'>
+   <post_text>days</post_text>
+  </input>
+ </question>
+ <question>
+  <label>Isolation</label>
+  <input name='admission_isolation' type='YesNo' />
+ </question>
+ <question>
+  <label>Mechanical Ventilation</label>
+  <input name='admission_mech_vent' type='YesNo' />
+ </question>
+ <question>
+  <label>Aerosol producing procedures</label>
+  <input name='admission_aerosol' type='YesNo' />
+  <input name='admission_aerosol_detail' type='TextInput'>
+   <pre_text>If yes, specify:</pre_text>
+  </input>
+ </question>
+ <question>
+  <label>ICU admission</label>
+  <input name='admission_icu' type='YesNo' />
+  <input name='admission_icu_stay' type='IntInput'>
+   <pre_text>If yes, length of stay:</pre_text>
+  </input>
+ </question>
+ <question>
+  <label>Co-morbidities</label>
+  <input name='admission_co_morb' type='TextArea' />
+ </question>
+</form>

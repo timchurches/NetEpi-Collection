@@ -1,0 +1,185 @@
+/*
+ *  The contents of this file are subject to the HACOS License Version 1.2
+ *  (the "License"); you may not use this file except in compliance with
+ *  the License.  Software distributed under the License is distributed
+ *  on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+ *  implied. See the LICENSE file for the specific language governing
+ *  rights and limitations under the License.  The Original Software
+ *  is "NetEpi Collection". The Initial Developer of the Original
+ *  Software is the Health Administration Corporation, incorporated in
+ *  the State of New South Wales, Australia.
+ *  
+ *  Copyright (C) 2004-2011 Health Administration Corporation and others. 
+ *  All Rights Reserved.
+ *
+ *  Contributors: See the CONTRIBUTORS file for details of contributions.
+ */
+
+body {
+    font-size: 10pt;
+    padding: 0;
+    margin: 0;
+}
+
+.banner {
+    background: #eee;
+    padding: 1em;
+    border-bottom: 2px solid #ccc;
+}
+
+.banner img {
+    float: left;
+    border: 2px solid #aaa;
+    margin-top: -0.5em;
+    margin-right: 1em;
+    margin-bottom: -0.5em;
+}
+
+.banner h1 {
+    margin: 0;
+    font-size: 130%;
+    font-weight: bold;
+}
+
+.banner h2 {
+    border-top: 2px solid #ccc;
+    margin: 0;
+    margin-top: 2px;
+}
+
+.banner .clear {
+    line-height: 1px;
+    display: block;
+    clear: both;
+}
+
+h2 {
+    font-size: 100%;
+    font-weight: bold;
+}
+
+.content {
+    padding: 1em;
+    clear: both;
+}
+
+.err-msg {
+    color: #c00;
+    background-color: #fee;
+    border: 1px solid #c00;
+    border-left: 0.5em solid #c00;
+    margin-top: 0.5ex;
+    font-weight: bold;
+    padding-left: 1ex;
+}
+.info-msg {
+    color: #080;
+    background-color: #efe;
+    border: 1px solid #080;
+    border-left: 0.5em solid #080;
+    margin-top: 0.5ex;
+    font-weight: bold;
+    padding-left: 1ex;
+}
+
+input[type="submit"], input[type="button"] {
+    width: 8em;
+    font-size: 83%;
+}
+input:focus {
+    background-color: #ffe;
+}
+@media print {
+    input[type="submit"], input[type="button"], button#help {
+        display: none;
+    }
+}
+
+
+button#help {
+    float: right;
+    padding: 0;
+    background-color: transparent;
+    border: none;
+}
+button#help img {
+    padding: 0;
+    border: 0;
+    margin: 0;
+}
+
+.floatright {
+    display: block;
+    float: right;
+}
+
+.detail {
+    border-collapse: collapse;
+    width: 100%;
+}
+.detail th, .detail td {
+    /*border: 1px solid black;*/
+}
+.detail .rowlabel {
+    font-size: 83%;
+    font-weight: bold;
+    text-align: right;
+}
+.detail td {
+    text-align: center;
+}
+.detail input {
+    width: 90%;
+}
+
+.grid {
+    border-collapse: collapse;
+}
+.grid td {
+    border: 1px solid black;
+    padding: 2px;
+}
+.grid thead th {
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    border-bottom: 3px double black;
+    font-size: 83%;
+    background-color: #eee;
+    padding: 2px;
+}
+.grid thead td {
+    border: none;
+}
+.grid tbody th {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    border-right: 3px double black;
+    text-align: right;
+    padding: 2px;
+    padding-right: 1ex;
+    font-size: 83%;
+    background-color: #eee;
+}
+.rtable td {
+    text-align: right;
+}
+
+.buttons {
+    clear: both;
+    width: 100%;
+    background: #eee;
+    padding: 0.5em;
+    border-top: 2px solid #ccc;
+}
+
+.export {
+    float: right;
+    background: #eee;
+    padding: 0.5em;
+    border: 2px solid #ccc;
+    margin: 0.5em;
+}
+.export h2 {
+    text-align: center;
+    margin-top: 0;
+}

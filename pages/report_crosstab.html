@@ -1,0 +1,67 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-expand name="page_layout_banner">
+ <al-setarg name="title"><al-value expr="crosstab.title" /></al-setarg>
+ <div class="smaller">Report generated: <al-value expr="crosstab.date" /></div>
+ <table class="crosstab clicktab" id="crosstab">
+  <al-for vars="page, page_label" iter="page_i" expr="crosstab.page.options">
+   <al-if expr="1 or not crosstab.suppress_empty_pages or crosstab.tally.get((TOTAL, TOTAL, page))">
+    <al-if expr="page_label">
+     <tr>
+      <al-th class="pagehead" colspanexpr="len(crosstab.col.options)+1">
+       <al-value expr="crosstab.page.label" />: <al-value expr="page_label">
+      </al-th>
+     </tr>
+    </al-if>
+    <tr>
+     <th>&nbsp;</th>
+     <al-th class="colhead" colspanexpr="len(crosstab.col.options)">
+      <al-value expr="crosstab.col.label" />
+     </al-th>
+    </tr>
+    <tr>
+     <th class="rowhead r b"><al-value expr="crosstab.row.label" /></th>
+     <al-for vars="col, col_label" expr="crosstab.col.options">
+      <al-th classexpr="crosstab.style(HEAD, col)">
+       <al-value expr="col_label">
+      </al-th>
+     </al-for>
+    </tr>
+    <al-for vars="row, row_label" iter="row_i" expr="crosstab.row.options">
+     <tr>
+      <al-th classexpr="crosstab.style(row, HEAD)">
+       <al-value expr="row_label">
+      </al-th>
+      <al-for vars="col, col_label" iter="col_i" expr="crosstab.col.options">
+       <al-td idexpr="'key:%d:%d:%d' % (row_i.index(), col_i.index(), page_i.index())" 
+              classexpr="crosstab.style(row, col)">
+        <al-value expr="crosstab.tally.get((row, col, page), '')" />
+       </al-td>
+      </al-for>
+     </tr>
+    </al-for>
+   </al-if>
+  </al-for>
+ </table>
+ <al-input type="hidden" name="key" value="" />
+ <script>clicktab('crosstab', 'appform');</script>
+ 
+</al-expand>

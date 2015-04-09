@@ -1,0 +1,99 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-include name="demogfields.html">
+
+<al-expand name="page_layout_banner">
+ <al-setarg name="title">Merge forms</al-setarg>
+ <al-exec expr="field_rows = formmerge_record.rows_and_cols('form')" />
+ <al-if expr="formmerge_record.deleted"><div class="deleted"><al-else><div></al-if>
+  <al-expand name="demogfields_text" />
+ </div>
+
+ <p>Select an A and B form of the same form type and then select
+ <b>View</b> to see the proposed merge details.</p>
+ <table class="duperes">
+  <thead>
+   <th style="text-align: center;">A</th>
+   <th style="text-align: center;">B</th>
+   <th>Date</th>
+   <th>Summary</th>
+  </thead>
+
+  <tfoot>
+   <tr>
+    <td colspan="4">
+     <table width="100%">
+      <tr>
+       <td align="left">
+        <al-input name="back" type="submit" class="butt" value="Finished" />
+       </td>
+       <td align="right">
+        <al-input name="showmerge" type="submit" class="butt" value="View" />
+       </td>
+      </tr>
+     </table>
+    </td>
+   </tr>
+  </tfoot>
+
+  <tbody>
+   <al-for iter="form_i" expr="formmerge_record.forms">
+    <al-exec expr="form = form_i.value()" />
+    <al-if expr="len(form.summaries) > 1">
+     <tr class="darker">
+      <td colspan="4">
+       <b><al-value expr="form.name" /></b>
+      </td>
+     </tr>
+     <al-for iter="summary_i" expr="form.summaries">
+      <al-exec expr="summary = summary_i.value()" />
+      <al-if expr="form.allow_multiple"><tr><al-else><tr class="warn"></al-if>
+       <td align="center">
+        <al-input name="key_a" type="radio" valueexpr="summary.summary_id" />
+       </td>
+       <td align="center">
+        <al-input name="key_b" type="radio" valueexpr="summary.summary_id" />
+       </td>
+       <td nowrap="nowrap" align="center">
+        <al-if expr="summary.deleted">
+         DELETED<br>
+         <al-if expr="summary.delete_reason">
+          <al-value expr="summary.delete_reason" /><br>
+         </al-if>
+        </al-if>
+        <al-value expr="form_ui.form_id(summary.summary_id)" /><br>
+        <al-value expr="summary.form_date.date()" /><br>
+        <al-value expr="summary.form_date.time()" /><br>
+       </td>
+       <al-if expr="summary.deleted">
+        <td width="100%" class="gray">
+       <al-else>
+        <td width="100%">
+       </al-if>
+        <al-value expr="wiki_oneliner(summary.summary)" noescape="noescape" />
+       </td>
+      </tr>
+     </al-for>
+    </al-if>
+   </al-for>
+  </tbody>
+ </table>
+</al-expand>

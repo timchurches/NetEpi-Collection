@@ -1,0 +1,68 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-expand name="page_layout_banner">
+ <al-setarg name="title">Print <al-value expr="syndromes[forms.syndrome_id].name" /> Forms</al-setarg>
+  <table border="0" class="selexp">
+   <al-if expr="forms.forms">
+    <tr>
+     <td width="30%">
+      Which forms would you like to print?
+     </td>
+     <td>
+      <table>
+       <al-for iter="form_i" expr="forms.forms">
+        <al-exec expr="form = form_i.value()">
+        <tr>
+         <td>
+          <al-input type="checkbox" name="forms.include_forms" 
+           valueexpr="form.label" list />
+         </td>
+         <td width="100%">
+          <al-value expr="form.name" />
+         </td>
+        </tr>
+       </al-for>
+      </table>
+     </td>
+     <td align="center">
+      <al-if expr="len(forms.forms) > 0">
+       <al-input type="submit" name="select_all" 
+        class="bigbutt" value="Select All" />
+       <br />
+       <al-input type="submit" name="clear_all" 
+        class="bigbutt" value="Clear Selection" />
+      </al-if>
+     </td>
+    </tr>
+   </al-if>
+   <tr>
+    <td colspan="3" class="fauxrule"></td>
+   </tr>
+   <tr>
+    <td align="left">
+    </td>
+    <td></td>
+    <td align="center">
+      <al-input type="submit" name="okay" class="butt" value="Okay" />
+    </td>
+   </tr>
+  </table>
+</al-expand>

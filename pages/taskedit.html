@@ -1,0 +1,259 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-macro name="task_assign_search">
+    <table width="95%">
+     <tr>
+      <al-th colspanexpr="assign_search.span()">
+       <al-value expr="assign_search.title" /></al-th>
+     </tr>
+     <tr>
+      <al-td colspanexpr="assign_search.span()" width="100%">
+       <table width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+         <td width="100%">
+          <al-input name="assign_search.term" class="fill" />
+         </td>
+         <td nowrap valign="middle">
+          <al-input class="butt" type="submit" name="as:search" value="Search" />
+          <al-input class="butt" type="submit" name="as:clear" value="Clear" />
+          <al-input class="butt" type="submit" name="cancel_search" value="Cancel" />
+         </td>
+        </tr>
+       </table>
+      </al-td>
+     </tr>
+     <al-if expr="assign_search.search_error">
+      <tr>
+       <al-td class="reverr" colspanexpr="assign_search.span()">
+        <al-value expr="assign_search.search_error" />
+       </al-td>
+      </tr>
+     </al-if>
+     <al-for iter="ri" expr="assign_search.result">
+      <al-exec expr="row = ri.value()" />
+      <tr>
+       <al-for iter="ci" expr="assign_search.showcols">
+        <td><al-value expr="getattr(row, ci.value())" /></td>
+       </al-for>
+       <al-if expr="assign_search.info_page">
+        <td>
+         <al-input type="image" 
+          srcexpr="appath('images/info.png')" height="24" width="24"
+          nameexpr="taskedit.row_select('search_info', row)" />
+        </td>
+       </al-if>
+       <td align="right">
+        <al-input class="butt" type="submit" value="Select"
+          nameexpr="taskedit.row_select('search_assign', row)" />
+       </td>
+      </tr>
+     </al-for>
+    </table>
+</al-macro>
+
+<al-macro name="task_edit">
+    <table width="95%" cellspacing="0" border="0">
+     <tr>
+      <th colspan="2" align="left">
+       <al-if expr="edittask.seed_task_id">
+        <al-if expr="edittask.inplace">
+         <al-if expr="edittask.action in tasks.action_closed">
+          Editing CLOSED task:
+         <al-else>
+          Editing task:
+         </al-if>
+        <al-else>
+         Next task:
+        </al-if>
+       <al-else>
+        Creating a new task:
+       </al-if>
+      </th>
+     </tr>
+
+     <tr><td colspan="2" class="fauxrule"></td></tr>
+
+     <tr>
+      <td width="30%">
+       <label for="task_description">Task Description</label>
+      </td>
+      <td><al-input class="fill" id="task_description" name="edittask.task_description" /></td>
+     </tr>
+     <tr>
+      <td align="right">
+       or <al-input type="submit" name="apply_desc" class="bigbutt"
+        value="Apply Description" />
+      </td>
+      <td><al-select class="fill" id="task_descriptions" 
+        name="popular_tasks" optionexpr="task_options" />
+      </td>
+     </tr>
+     
+     <tr><td colspan="2" class="fauxrule"></td></tr>
+
+     <tr>
+      <td><label for="annotation">Task Notes</label></td>
+      <td><al-textarea class="fill" id="annotation" name="edittask.annotation" rows="4" /></td>
+     </tr>
+
+     <tr><td colspan="2" class="fauxrule"></td></tr>
+
+     <al-if expr="fh and fh.forms">
+      <tr>
+       <td><label for="form_name">Form for task</label></td>
+       <td><al-select class="fill" id="form_name" name="edittask.form_name" 
+         optionexpr="fh.forms" onchange="submit();"/><br>
+        <al-input type="submit" name="showforms" class="bigbutt"
+         value="Refresh form list" />
+       </td>
+      </tr>
+      <al-if expr="fh.form_instances is not None">
+       <tr>
+        <td><label for="active"><al-value expr="fh.selected_form" /> forms</label></td>
+        <td>
+         <table>
+          <al-for iter="fi" expr="fh.form_instances">
+          <al-exec expr="summary_id, summary_date, summary = fi.value()" />
+           <tr>
+            <td><al-input type="radio"
+               name="edittask.summary_id" valueexpr="summary_id" /></td>
+            <td><al-value expr="summary_date" /></td>
+            <td><al-value expr="wiki_oneliner(summary)" /></td>
+           </tr>
+          </al-for>
+         </table>
+        </td>
+       </tr>
+      </al-if>
+     </al-if>
+
+     <tr><td colspan="2" class="fauxrule"></td></tr>
+
+     <tr>
+      <td>Assign task to</td>
+      <td>
+       <table width="100%">
+        <al-for iter="at" expr="edittask.assignee.assign_types">
+         <al-exec expr="value, label = at.value()" />
+         <tr>
+          <td>
+           <al-input type="radio" name="edittask.assignee.assign_type" 
+            valueexpr="value" idexpr="'assign_' + value" /></td>
+          <td width="40%">
+           <al-label forexpr="'assign_' + value"><al-value expr="label" /></al-label>
+          </td>
+          <td width="40%">
+           <al-lookup expr="value">
+            <al-item expr="'originator'">
+             <al-value expr="edittask.assignee.originator_str()" />
+            </al-item>
+            <al-item expr="'assigner'">
+             <al-value expr="edittask.assignee.last_assigner_str()" />
+            </al-item>
+            <al-item expr="'queue'">
+             <al-select class="fill" name="edittask.assignee.queue_id"
+              optionexpr="edittask.assignee.workqueues.options()" />
+            </al-item>
+            <al-item expr="'unit'">
+             <al-value expr="edittask.assignee.unit_str()" />
+            </al-item>
+            <al-item expr="'user'">
+             <al-value expr="edittask.assignee.user_str()" />
+            </al-item>
+           </al-lookup>
+          </td>
+          <td align="right">
+           <al-lookup expr="value">
+            <al-item expr="'unit'">
+             <al-input type="submit" name="search_unit" 
+              class="bigbutt" expr="'Select ' + config.unit_label" />
+            </al-item>
+            <al-item expr="'user'">
+             <al-input type="submit" name="search_user" 
+              class="bigbutt" value="Select User" />
+            </al-item>
+           </al-lookup>
+          </td>
+         </tr>
+        </al-for>
+       </table>
+      </td>
+     </tr>
+
+     <tr><td colspan="2" class="fauxrule"></td></tr>
+
+     <tr>
+      <td><label for="active">Start task within/by</label></td>
+      <td><al-select class="fill" id="active" name="edittask.active" 
+       optionexpr="edittask.active_options" /></td>
+     </tr>
+     <tr>
+      <td align="right">
+       <label for="active_abs">or enter a date</label>
+      </td>
+      <td>
+       <al-input id="active_abs" name="edittask.active_abs" size="30" 
+        calendarformatexpr="edittask.datetime_format" />
+      </td>
+     </tr>
+
+     <tr><td colspan="2" class="fauxrule"></td></tr>
+
+     <tr>
+      <td><label for="due">Complete within/by</label></td>
+      <td><al-select class="fill" id="due" name="edittask.due" 
+       optionexpr="edittask.due_options" /></td>
+     </tr>
+     <tr>
+      <td align="right">
+       <label for="due_abs">or enter a date</label>
+      </td>
+      <td><al-input id="due_abs" name="edittask.due_abs" size="30" 
+       calendarformatexpr="edittask.datetime_format" /></td>
+     </tr>
+
+     <tr><td colspan="2" class="fauxrule"></td></tr>
+
+     <tr>
+      <td><label for="repeat">Repeat task</label></td>
+      <td><al-select id="repeat" name="edittask.repeat" 
+       optionexpr="edittask.repeat_options" /> 
+       <al-select id="repeatcount" name="edittask.repeatcount" 
+        optionexpr="edittask.repeatcount_options" /> times.
+      </td>
+     </tr>
+
+     <tr><td colspan="2" class="fauxrule"></td></tr>
+
+    </table>
+</al-macro>
+
+<al-macro name="taskedit">
+ <div class="task">
+  <al-if expr="assign_search">
+   <al-expand name="task_assign_search" />
+  <al-else>
+   <al-expand name="task_edit" />
+   <al-expand name="menubar" />
+   <script>enterSubmit('appform', 'update');</script>
+  </al-if>
+ </div>
+</al-macro>

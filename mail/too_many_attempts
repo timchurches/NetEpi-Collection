@@ -1,0 +1,12 @@
+To: {{registration_notify}}
+Subject: [{{apptitle}}] locked user {{username}} - too many bad passwords
+
+The following account was locked due to too many login attempts with an
+incorrect password:
+
+    Instance:     {{appname}} / {{apptitle}}
+    Username:     {{username}}
+    Fullname:     {{fullname}}
+    Work Phone:   {{phone_work}}
+    Mobile Phone: {{phone_mobile}}
+    e-mail:       {{email}}

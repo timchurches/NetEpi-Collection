@@ -1,0 +1,22 @@
+
+For Install instructions read INSTALL file
+
+For Configuration information see the html documentation
+
+Changelog, see html file mod_auth_pgsql.html
+
+
+Please report bugs with platform and apache/postgresql release information
+
+HomePage http://www.giuseppetanzilli.it/mod_auth_pgsql2/
+
+Old module for apache 1.3 HomePage http://www.giuseppetanzilli.it/mod_auth_pgsql/
+
+
+              Maintainer:
+              Giuseppe Tanzilli
+                      info@giuseppetanzilli.it
+                      g.tanzilli@gruppocsf.com
+              Original source:
+	    	          Adam Sussman <asussman@vidya.com> Feb, 1996
+    	    	      Matthias Eckermann <eckerman@lrz.uni-muenchen.de>

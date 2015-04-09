@@ -1,0 +1,63 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-expand name="page_layout_banner">
+ <al-setarg name="title">Configure duplicate <al-value expr="config.person_label" /> matching</al-setarg>
+ <table class="dupecfg" border="0">
+  <tr>
+   <td class="group"><label for="dupecfg_group.label">Label:</label></td>
+   <td style="padding: 0;">
+    <al-input name="dupecfg_group.label" size="30" >
+   </td>
+  </tr>
+  <tr>
+   <td class="group"><label for="dupecfg_group.enabled">Enabled:</label></td>
+   <td><al-input type="checkbox" name="dupecfg_group.enabled" value="True"></td>
+  </tr>
+  <tr>
+   <td class="group"><label for="dupecfg_group.weight">Weight:</label></td>
+   <td>
+    <al-input type="radio" name="dupecfg_group.weight" value="0.5">&nbsp;low&nbsp;&nbsp;
+    <al-input type="radio" name="dupecfg_group.weight" value="1.0">&nbsp;normal&nbsp;&nbsp;
+    <al-input type="radio" name="dupecfg_group.weight" value="2.0">&nbsp;high&nbsp;&nbsp;
+   </td>
+  </tr>
+  <tr>
+   <td class="group"><label for="dupecfg_group.fields">Fields:</label></td>
+   <al-if expr="dupecfg_group.editable">
+    <td style="padding: 0;">
+     <al-select name="dupecfg_group.fields"  multiple
+       style="width: 100%"
+       sizeexpr="len(dupecfg_group.fields_optionexpr())"
+       optionexpr="dupecfg_group.fields_optionexpr()" />
+    </td>
+   <al-else>
+    <td>not editable for this group.</td>
+   </al-if>
+  </tr>
+  <tr>
+   <td align="left" class="button">
+   </td>
+   <td align="middle" class="button">
+    <al-input type="submit" name="reset" class="butt" value="Defaults" />
+   </td>
+  </tr>
+ </table>
+</al-expand>

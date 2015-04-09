@@ -1,0 +1,5 @@
+summary_id,form_date,close_contact,contact_duration,contact_date_first,contact_date_last
+1,3/4/2003,True,23.1,1/3/2003,2/3/2003
+2,4/5/2004,False,12.3,2/4/2004,5/4/2004
+3,5/6/2002,False,2.4,2/4/2002,5/4/2002
+4,6/7/2001,Unknown,29.1,2/1/2001,2/3/2003

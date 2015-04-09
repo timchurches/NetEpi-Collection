@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<form name='sars_exposure' form_type='case' allow_multiple='False'>
+ <label>Exposure History (SARS)</label>
+ <question>
+  <label>
+   Close contact with person diagnosed with SARS in 10 days prior to onset.
+   [Close contact is defined as....]
+  </label>
+  <input name='Close_contact' type='RadioList' required='True'>
+   <summary>Contact with case</summary>
+   <choices>
+    <choice name='True'>Yes</choice>
+    <choice name='False'>No</choice>
+    <choice name='Unknown'>Unknown</choice>
+   </choices>
+  </input>
+ </question>
+ <question>
+  <label>Duration of contact (in hours)</label>
+  <input name='Contact_duration' type='FloatInput'>
+   <summary>Contact duration (hours)</summary>
+   <post_text>hours</post_text>
+  </input>
+ </question>
+ <question>
+  <label>Date of first contact with person with SARS</label>
+  <input name='Contact_date_first' type='DateInput'>
+   <summary>Date of first contact</summary>
+  </input>
+ </question>
+ <question>
+  <label>Date of last contact with a person with SARS</label>
+  <input name='Contact_date_last' type='DateInput'>
+   <summary>Most recent contact</summary>
+  </input>
+ </question>
+ <question>
+  <label>Favourite foods</label>
+  <input name='Contact_favourite_food' type='CheckBoxes'>
+   <summary>Favourite foods</summary>
+   <choices>
+    <choice name='icecream'>Icecream</choice>
+    <choice name='lambchops'>Lamb Chops</choice>
+    <choice name='apples'>Apples</choice>
+   </choices>
+  </input>
+ </question>
+</form>

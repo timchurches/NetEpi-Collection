@@ -1,0 +1,148 @@
+<?xml version="1.0"?>
+<form name='lab_serology' form_type='case' allow_multiple='True'>
+ <label>Lab test - Serology (SARS)</label>
+ <question>
+  <label>
+   At what stage of progression of the disease was the sample taken (More than
+   one series of results can be entered)
+  </label>
+  <input name='Serology_stage' type='RadioList' required='True'>
+   <summary>Stage</summary>
+   <choices>
+    <choice name='Acute'>Acute</choice>
+    <choice name='Convalescent'>Convalescent</choice>
+    <choice name='None'>Not answered</choice>
+   </choices>
+  </input>
+ </question>
+ <question>
+  <label>
+   At what date was the sample taken? (More than one series of results can be
+   entered)
+  </label>
+  <input name='Serology_date' type='DateInput' required='True'>
+   <summary>Date of sample</summary>
+  </input>
+ </question>
+ <question>
+  <label>SARS coronavirus</label>
+  <input name='SARS_coronavirus' type='RadioList' required='True'>
+   <summary>SARS coronavirus</summary>
+   <choices>
+    <choice name='Positive'>Positive</choice>
+    <choice name='Negative'>Negative</choice>
+    <choice name='None'>Not answered</choice>
+   </choices>
+  </input>
+ </question>
+ <question>
+  <label>Legionella spp.</label>
+  <input name='Legionella' type='RadioList' required='True'>
+   <summary>Legionella</summary>
+   <choices>
+    <choice name='Positive'>Positive</choice>
+    <choice name='Negative'>Negative</choice>
+    <choice name='None'>Not answered</choice>
+   </choices>
+  </input>
+ </question>
+ <question>
+  <label>Chlamydia psittaci</label>
+  <input name='chlamydia_ps' type='RadioList' required='True'>
+   <summary>Chalmydia</summary>
+   <choices>
+    <choice name='Positive'>Positive</choice>
+    <choice name='Negative'>Negative</choice>
+    <choice name='None'>Not answered</choice>
+   </choices>
+  </input>
+ </question>
+ <question>
+  <label>Chlamydia pneumoniae</label>
+  <input name='Chlamydia_pn' type='LabTestResult' />
+ </question>
+ <question>
+  <label>Influenza A/B</label>
+  <input name='Influenza' type='RadioList' required='True'>
+   <summary>Influenza</summary>
+   <choices>
+    <choice name='Positive'>Positive</choice>
+    <choice name='Negative'>Negative</choice>
+    <choice name='None'>Not answered</choice>
+   </choices>
+  </input>
+ </question>
+ <question>
+  <label>Q fever</label>
+  <input name='Q_fever' type='RadioList' required='True'>
+   <summary>Q fever</summary>
+   <choices>
+    <choice name='Positive'>Positive</choice>
+    <choice name='Negative'>Negative</choice>
+    <choice name='None'>Not answered</choice>
+   </choices>
+  </input>
+ </question>
+ <question>
+  <label>Adenovirus</label>
+  <input name='Adenovirus' type='RadioList' required='True'>
+   <summary>Adenovirus</summary>
+   <choices>
+    <choice name='Positive'>Positive</choice>
+    <choice name='Negative'>Negative</choice>
+    <choice name='None'>Not answered</choice>
+   </choices>
+  </input>
+ </question>
+ <question>
+  <label>Mycoplasma</label>
+  <input name='Mycoplasma' type='RadioList' required='True'>
+   <summary>Mycoplasma</summary>
+   <choices>
+    <choice name='Positive'>Positive</choice>
+    <choice name='Negative'>Negative</choice>
+    <choice name='None'>Not answered</choice>
+   </choices>
+  </input>
+ </question>
+ <question>
+  <label>RSV</label>
+  <input name='RSV' type='RadioList' required='True'>
+   <summary>RSV</summary>
+   <choices>
+    <choice name='Positive'>Positive</choice>
+    <choice name='Negative'>Negative</choice>
+    <choice name='None'>Not answered</choice>
+   </choices>
+  </input>
+ </question>
+ <question>
+  <label>Enteroviruses</label>
+  <input name='Enterovirus' type='RadioList' required='True'>
+   <summary>Enterovirus</summary>
+   <choices>
+    <choice name='Positive'>Positive</choice>
+    <choice name='Negative'>Negative</choice>
+    <choice name='None'>Not answered</choice>
+   </choices>
+  </input>
+ </question>
+ <question>
+  <label>Hendra</label>
+  <input name='Hendra' type='RadioList' required='True'>
+   <summary>Hendra</summary>
+   <choices>
+    <choice name='Positive'>Positive</choice>
+    <choice name='Negative'>Negative</choice>
+    <choice name='None'>Not answered</choice>
+   </choices>
+  </input>
+ </question>
+ <question>
+  <label>Other (please specify)</label>
+  <input name='Other_serology' type='TextInput'>
+   <summary>Other</summary>
+   <pre_text>Other disease test</pre_text>
+  </input>
+ </question>
+</form>

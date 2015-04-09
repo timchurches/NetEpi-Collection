@@ -1,0 +1,98 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-include name="demogfields.html">
+
+<al-expand name="page_layout_banner">
+ <al-setarg name="title">Merge case records</al-setarg>
+ <al-exec expr="field_rows = selcasemerge.personfields_rows_and_cols()" />
+ <al-expand name="demogfields_text" />
+
+ <al-if expr="not selcasemerge.syndsets">
+  <p class="err">No other records for this person</p>
+ <al-else>
+  <p>This person has multiple records. If you wish to merge
+   records, select A and B records from the same 
+   <al-value expr="config.syndrome_label" /> and then press <b>View</b>.</p>
+  <table class="duperes">
+   <thead>
+    <th style="text-align: center;">A</th>
+    <th style="text-align: center;">B</th>
+    <th>Deleted?</th>
+    <al-for iter="f_i" expr="casefields">
+     <th><al-value expr="f_i.value().label" /></th>
+    </al-for>
+   </thead>
+
+   <tfoot>
+    <tr>
+     <al-td colspanexpr="len(casefields) + 3">
+      <table width="100%">
+       <tr>
+        <td align="left">
+         <al-input name="back" type="submit" class="butt" value="Finished" />
+        </td>
+        <td align="right">
+         <al-input name="showmerge" type="submit" class="butt" value="View" />
+        </td>
+       </tr>
+      </table>
+     </al-td>
+    </tr>
+   </tfoot>
+
+   <tbody>
+    <al-for iter="syndset_i" expr="selcasemerge.syndsets">
+     <al-exec expr="syndset = syndset_i.value()" />
+     <tr>
+      <al-th colspanexpr="len(casefields) + 3" style="text-align: center;">
+       <al-value expr="syndset.name" />
+      </al-th>
+     </tr>
+     <al-for vars="mc" iter="case_i" expr="syndset">
+      <al-if expr="case_i.index() & 1"><tr class="darker"><al-else><tr></al-if>
+       <al-exec expr="value = '%d,%d' % (syndset_i.index(), case_i.index())" />
+       <td align="center">
+        <al-input name="selcasemerge.index_a" type="radio" valueexpr="value" />
+       </td>
+       <td align="center">
+        <al-input name="selcasemerge.index_b" type="radio" valueexpr="value" />
+       </td>
+       <al-if expr="mc.deleted">
+        <td class="warn">
+         DELETED<br>
+         <al-value expr="mc.delete_timestamp"><br>
+         <al-if expr="mc.delete_reason">
+          <al-value expr="mc.delete_reason"><br>
+         </al-if>
+        </td>
+       <al-else>
+        <td></td>
+       </al-if>
+       <al-for vars="field" expr="casefields">
+        <td><al-value expr="field.outtrans(mc)" /></td>
+       </al-for>
+      </tr>
+     </al-for>
+    </al-for>
+   </tbody>
+  </table>
+ </al-if>
+</al-expand>

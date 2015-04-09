@@ -1,0 +1,154 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-include name="demogfields.html" />
+
+<al-expand name="page_layout_banner">
+ <al-setarg name="title"><al-value expr="search.search_ops.title" /></al-setarg>
+
+ <al-expand name="confirm_or_error">
+
+  <al-if expr="search.search_ops.show_quick">
+   <div class="search">
+    <div class="flag">
+      Enter a
+      <al-value expr="search.field_label('surname')" /> and/or
+      <al-value expr="search.field_label('given_names')" />, or
+      <al-value expr="search.field_label('local_case_id')" />,
+      <al-value expr="search.field_label('case_id')" /> or Form ID:
+    </div>
+
+    <table class="labelform" width="100%">
+     <tr>
+      <td class="label">
+       <label for="quicksearch">Quick search</label>
+      </td>
+      <td>
+       <al-input style="width: 99%;" name="search.quicksearch" id="quicksearch" entersubmit />
+      </td>
+     </tr>
+    </table>
+   </div>
+  </al-if>
+
+  <al-if expr="search.search_ops.show_caseset">
+   <div class="search">
+    <div class="flag"><al-if expr="search.search_ops.show_quick">OR s<al-else>S</al-if>elect a case set:</div>
+
+    <table class="pickset" width="100%">
+     <tr>
+      <th>Saved:</th>
+      <th>Recent:</th>
+     </tr>
+     <tr>
+      <td class="pspane">
+       <al-if expr="casesets.saved_casesets">
+        <table width="100%">
+         <al-for vars="csi" expr="casesets.saved_casesets">
+          <tr>
+           <td width="100%"><al-value expr="csi.name" /></td>
+           <td align="right">
+            <al-input type="submit" nameexpr="'cs_saved:%s' % csi.caseset_id" 
+               class="smallbutt" value=">>" /><td>
+          </tr>
+         </al-for>
+        </table>
+       <al-else>
+        <div>None</div>
+       </al-if>
+      </td>
+      <td class="pspane">
+       <al-if expr="casesets.recent_casesets">
+        <table width="100%">
+         <al-for vars="cs" iter="cs_i" expr="casesets.recent_casesets">
+          <tr>
+           <td width="100%"><al-value expr="cs.name" /></td>
+           <td align="right">
+            <al-input type="submit" nameexpr="'cs_recent:%s' % cs_i.index()" 
+               class="smallbutt" value=">>" /><td>
+          </tr>
+         </al-for>
+        </table>
+       <al-else>
+        <div>None</div>
+       </al-if>
+      </td>
+     </tr>
+    </table>
+   </div>
+  </al-if>
+
+  <div class="search">
+    <div class="flag"><al-value expr="search.search_ops.pretext" /></div>
+
+   <al-exec expr="render_fields = search.get_demog_fields()" />
+   <al-expand name="demogfields" />
+  </div>
+
+  <div class="search">
+   <table class="labelform options" width="100%">
+    <tr><td colspan="4" class="fauxrule"></td></tr>
+    <tr>
+     <td colspan="2">
+      <al-input type="checkbox" name="search.fuzzy" id="fuzzy" value="True" />
+      &nbsp;<label for="fuzzy">Phonetic Search</label>
+     </td>
+     <td class="label"><label for="order_by">Order results by</label></td>
+     <td class="field"><al-select name="search.order_by" id="order_by"
+          optionexpr="search.get_order_options()" /></td>
+    </tr>
+    <tr>
+     <td colspan="2"></td>
+     <td></td>
+     <td>
+      <al-input type="checkbox" name="search.reverse" id="reverse"
+       value="True" />&nbsp;<label for="reverse">Reverse</label></td>
+    </tr>
+    <tr>
+     <td colspan="2"></td>
+     <td class="label" valign="baseline">
+      <label for="results_per_page">Results per page</label></td>
+     <td>
+      <span id="results_per_page">
+       <al-for iter="i" expr="search.persons_per_page_options">
+        <al-input type="radio" name="search.persons_per_page"
+          valueexpr="i.value()" />&nbsp;<al-value expr="i.value()" />&nbsp;
+       </al-for>
+      </span>
+     </td>
+    </tr>
+   </table>
+
+   <table class="flag" width="100%" cellspacing="0" cellpadding="0">
+    <tr>
+     <td width="33%" align="left"></td>
+     <td width="34%" align="center">
+      <al-input type="submit" name="search_reset" value="Clear" class="butt" />
+     </td>
+     <td width="33%" align="right">
+      <al-input type="submit" name="search_go" value="Search >>" class="butt" />
+     </td>
+    </tr>
+   </table>
+  </div>
+  <script>enterSubmit('appform', 'search_go');</script>
+
+ </al-expand>
+</al-expand>

@@ -1,0 +1,4 @@
+person_id,surname,given_names,dob,sex
+1,Person_Surname_A,Person_Given_Name_A,3/4/58,M
+2,Person_Surname_B,Person_Given_Name_B,4/12/70,M
+3,Person_Surname_C,Person_Given_Name_C,5/2/80,F

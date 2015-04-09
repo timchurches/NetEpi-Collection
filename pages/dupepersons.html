@@ -1,0 +1,96 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-expand name="page_layout_banner">
+ <al-setarg name="title"><al-value expr="likely.title" /></al-setarg>
+ <div class="smaller">Last update: <al-value expr="likely.last_run" /></div>
+ <table class="duperes" width="100%">
+  <thead>
+   <tr>
+    <al-th colspanexpr="len(fields) + 2">
+     <al-expand name="page_select" />
+    </al-th>
+   </tr>
+   <tr>
+    <th style="text-align: center;">Confidence</th>
+    <al-for iter="f_i" expr="fields">
+     <th>
+      <al-value expr="f_i.value().label" />
+     </th>
+    </al-for>
+    <th style="text-align: center;">
+     <al-if expr="likely.exclude_count">
+      <al-if expr="likely.show_excluded">
+       <al-input type="submit" class="butt" name="excluded:hide" value="Hide Excl" />
+      <al-else>
+       <al-input type="submit" class="butt" name="excluded:show" value="Show Excl" />
+      </al-if>
+     </al-if>
+    </th>
+   </tr>
+  </thead>
+  <tfoot>
+   <tr><al-td colspanexpr="len(fields) + 2" class="smaller">
+    <al-value expr="likely.stats()" />
+   </al-td></tr>
+   <tr>
+    <al-th colspanexpr="len(fields) + 2">
+     <al-expand name="page_select" />
+    </al-th>
+   </tr>
+  </tfoot>
+  <tbody>
+   <al-for iter="page_i" expr="page">
+    <al-exec expr="index, pair, person_a, person_b = page_i.value()" />
+    <al-if expr="page_i.index() & 1"><tr class="darker"><al-else><tr></al-if>
+     <al-if expr="pair.status == persondupe.STATUS_EXCLUDED">
+      <td rowspan="2" class="excluded" align="center">
+       Excluded<br>
+       <al-if expr="pair.exclude_reason"><al-value expr="pair.exclude_reason" /><br></al-if>
+       <al-value expr="pair.confpc()" />
+      </td>
+     <al-else>
+      <td rowspan="2" align="center">
+       <al-value expr="pair.confpc()" />
+      </td>
+     </al-if>
+     <al-for iter="f_i" expr="fields">
+      <al-exec expr="field = f_i.value()" />
+      <td>
+       <al-value expr="field.outtrans(person_a) or ''" />
+      </td>
+     </al-for>
+     <td rowspan="2" align="center">
+      <al-input type="submit" class="butt" 
+       nameexpr="'view:%d' % index" value="View" />
+     </td>
+    </tr>
+    <al-if expr="page_i.index() & 1"><tr class="darker"><al-else><tr></al-if>
+     <al-for iter="f_i" expr="fields">
+      <al-exec expr="field = f_i.value()" />
+      <td>
+       <al-value expr="field.outtrans(person_b) or ''" />
+      </td>
+     </al-for>
+    </tr>
+   </al-for>
+  </tbody>
+ </table>
+</al-expand>

@@ -1,0 +1,7 @@
+To be done:
+- test 
+- add a group conf/require group example in the doc
+- investigate why the module will be reconfigured (per directory) at every request
+	but only if we configure by .htaccess instead of Directory in httpd.cof
+- password caching with shared cache (?)
+- new documentation

@@ -1,0 +1,169 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-macro name="input_pre_text">
+       <al-exec expr="pre_text = input.get_pre_text()" />
+       <al-if expr="pre_text">
+        <tr><td class="pretext" colspan="2">
+         <al-value expr="wiki_oneliner(pre_text)" noescape="noescape" />
+        </td></tr>
+       </al-if>
+</al-macro>
+
+<al-macro name="input_post_text">
+       <al-exec expr="post_text = input.get_post_text()" />
+       <al-if expr="post_text">
+        <tr><td class="posttext" colspan="2">
+         <al-value expr="wiki_oneliner(post_text)" noescape="noescape" />
+        </td></tr>
+       </al-if>
+</al-macro>
+
+<al-macro name="input_skipon">
+       <al-exec expr="skips = input.skiptext()" />
+       <al-if expr="skips">
+        <al-for iter="skip_i" expr="skips">
+         <tr><td class="skiptext" colspan="2">
+          <al-value expr="wiki_oneliner(skip_i.value())" noescape="noescape" />.
+         </td></tr>
+        </al-for>
+       </al-if>
+</al-macro>
+
+<al-lookup name="input_markup">
+
+ <!-- RadioList -->
+ <al-item expr="'RadioList'">
+  <al-expand name="input_pre_text" />
+  <al-if expr="input.render_horizontal()">
+   <tr>
+    <td valign="baseline" width="100%" nowrap colspan="2">
+     <al-for iter="choice_i" expr="input.get_choices()">
+      <al-exec expr="choice = choice_i.value()" />
+      <al-input type="radio" disabledbool="form_disabled"
+       nameexpr="'form_data.' + input.get_column_name()"
+       valueexpr="choice[0]" />&nbsp;<al-value expr="wiki_oneliner(choice[1])" noescape="noescape" />&nbsp;&nbsp;
+     </al-for>
+    </td>
+   </tr>
+  <al-else>
+   <al-for iter="choice_i" expr="input.get_choices()">
+    <al-exec expr="choice = choice_i.value()" />
+    <tr>
+     <td valign="baseline" width="16">
+      <al-input type="radio" disabledbool="form_disabled"
+       nameexpr="'form_data.' + input.get_column_name()"
+       valueexpr="choice[0]" />
+     </td>
+     <td valign="baseline" width="100%">
+      <al-value expr="wiki_oneliner(choice[1])" noescape="noescape" />
+     </td>
+    </tr>
+   </al-for>
+  </al-if>
+  <al-expand name="input_skipon" />
+  <al-expand name="input_post_text" />
+ </al-item>
+
+ <!-- DropList -->
+ <al-item expr="'DropList'">
+  <al-expand name="input_pre_text" />
+  <tr>
+   <td colspan="2">
+    <al-select disabledbool="form_disabled"
+     nameexpr="'form_data.' + input.get_column_name()" 
+     optionexpr="input.get_choices()" />
+   </td>
+  </tr>
+  <al-expand name="input_skipon" />
+  <al-expand name="input_post_text" />
+ </al-item>
+
+ <!-- TextInput -->
+ <al-item expr="'TextInput'">
+  <al-expand name="input_pre_text" />
+  <tr>
+   <td colspan="2">
+    <al-input type="text" disabledbool="form_disabled"
+     nameexpr="'form_data.' + input.get_column_name()" size="30" />
+   </td>
+  </tr>
+  <al-expand name="input_post_text" />
+ </al-item>
+
+ <!-- DateInput -->
+ <al-item expr="'DateInput'">
+  <al-expand name="input_pre_text" />
+  <tr>
+   <td colspan="2" nowrap>
+    <al-input type="text" disabledbool="form_disabled" size="30"
+     calendarformatexpr="input.format()"
+     nameexpr="'form_data.' + input.get_column_name()"
+     idexpr="'form_data.' + input.get_column_name()" />
+   </td>
+  </tr>
+  <al-expand name="input_post_text" />
+ </al-item>
+
+ <!-- TextArea -->
+ <al-item expr="'TextArea'">
+  <al-expand name="input_pre_text" />
+  <tr>
+   <td colspan="2">
+    <al-textarea disabledbool="form_disabled"
+     nameexpr="'form_data.' + input.get_column_name()" rows="5" cols="40" />
+   </td>
+  </tr>
+  <al-expand name="input_post_text" />
+ </al-item>
+
+ <!-- CheckBoxes -->
+ <al-item expr="'CheckBoxes'">
+  <al-expand name="input_pre_text" />
+  <al-if expr="input.render_horizontal()">
+   <tr>
+    <td valign="baseline" width="100%" nowrap colspan="2">
+     <al-for iter="choice_i" expr="input.get_choices()">
+      <al-exec expr="choice = choice_i.value()" />
+      <al-input type="checkbox" disabledbool="form_disabled"
+       nameexpr="'form_data.' + input.get_column_name() + choice[0].lower()"
+       value="True" />&nbsp;<al-value expr="wiki_oneliner(choice[1])" noescape="noescape" />&nbsp;&nbsp;
+     </al-for>
+    </td>
+   </tr>
+  <al-else>
+   <al-for iter="choice_i" expr="input.get_choices()">
+    <al-exec expr="choice = choice_i.value()" />
+    <tr>
+     <td valign="baseline" width="16">
+      <al-input type="checkbox" disabledbool="form_disabled"
+       nameexpr="'form_data.' + input.get_column_name() + choice[0].lower()"
+       value="True" />
+     </td>
+     <td valign="baseline" width="100%">
+      <al-value expr="wiki_oneliner(choice[1])" noescape="noescape" />
+     </td>
+    </tr>
+   </al-for>
+  </al-if>
+  <al-expand name="input_skipon" />
+  <al-expand name="input_post_text" />
+ </al-item>
+</al-lookup>

@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<form name='lab_direct_ag' form_type='case' allow_multiple='True'>
+ <label>Lab test - Direct Antigen (SARS)</label>
+ <question>
+  <label>
+   At what stage of progression of the disease was the sample taken (More than
+   one series of results can be entered)
+  </label>
+  <input name='Direct_antigen_stage' type='RadioList'>
+   <choices>
+    <choice name='Acute'>Acute</choice>
+    <choice name='Convalescent'>Convalescent</choice>
+    <choice name='None'>Not answered</choice>
+   </choices>
+  </input>
+ </question>
+ <question>
+  <label>
+   On what date was the sample taken? (More than one series of results can be
+   entered)
+  </label>
+  <input name='Direct_antigen_date' type='DateInput'>
+   <pre_text>Date collected</pre_text>
+  </input>
+ </question>
+ <section>
+  <label>Respiratory tract</label>
+  <question>
+   <label>Influenza A/B</label>
+   <input name='Influenza_DAntigen' type='LabTestResult' required='True'>
+    <summary>Influenza</summary>
+   </input>
+  </question>
+  <question>
+   <label>RSV</label>
+   <input name='RSV_DAntigen' type='LabTestResult' required='True'>
+    <summary>RSV</summary>
+   </input>
+  </question>
+  <question>
+   <label>Adenovirus</label>
+   <input name='Adenovirus_DAntigen' type='LabTestResult' required='True'>
+    <summary>Adenovirus</summary>
+   </input>
+  </question>
+  <question>
+   <label>Parainfluenza</label>
+   <input name='Parainfluenza_DAntigen' type='LabTestResult' required='True'>
+    <summary>Parainfluenza</summary>
+   </input>
+  </question>
+  <question>
+   <label>Metapneumovirus</label>
+   <input name='Metapn_DAntigen' type='LabTestResult' required='True'>
+    <summary>Metapneumovirus</summary>
+   </input>
+  </question>
+ </section>
+</form>

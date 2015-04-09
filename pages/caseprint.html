@@ -1,0 +1,247 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-macro name="caseprint_demog">
+   <table class="cpsection">
+    <tr>
+     <td class="heading" colspan="4"><al-usearg name="demogtitle" /></td>
+    </tr>
+    <al-for iter="field_row_i" expr="field_rows">
+     <tr>
+      <al-for iter="field_i" expr="field_row_i.value()">
+       <al-exec expr="field = field_i.value()" />
+       <td class="question"><al-value expr="field.label" />: </td>
+       <td class="inputs">
+        <al-lookup expr="field.render">
+         <al-item expr="'select'">
+          <al-exec expr="value = eval(field.field)" />
+          <al-value expr="dict(field.optionexpr()).get(value, value)" />
+         </al-item>
+         <al-item expr="'passport'">
+          <al-value expr="eval(field.field + 'number')" />,
+          <al-exec expr="value = eval(field.field + 'country')" />
+          <al-value expr="dict(field.optionexpr()).get(value, value)" />
+         </al-item>
+         <al-exec expr="value = eval(field.field)" />
+         <al-if expr="value">
+          <al-value expr="value" />
+         <al-else>
+          <div class="textbox" style="border-bottom: 1px solid black; height: 1.5em;">&nbsp;</div>
+         </al-if>
+        </al-lookup>
+       </td>
+      </al-for>
+     </tr>
+    </al-for>
+   </table>
+</al-macro>
+
+<al-lookup name="printform_filled_inputs">
+
+ <!-- RadioList -->
+ <al-item expr="'RadioList'">
+  <tr><td colspan="2">
+   <al-value expr="input.outtrans(form_data)" />
+  </tr></td>
+ </al-item>
+
+ <!-- DropList -->
+ <al-item expr="'DropList'">
+  <tr><td colspan="2">
+   <al-value expr="input.outtrans(form_data)" />
+  </tr></td>
+ </al-item>
+
+ <!-- CheckBoxes -->
+ <al-item expr="'CheckBoxes'">
+  <tr><td colspan="2">
+   <al-value expr="input.outtrans(form_data)" />
+  </tr></td>
+ </al-item>
+
+ <!-- Default -->
+ <!-- TextInput -->
+ <!-- DateInput -->
+ <!-- TextArea -->
+ <tr><td colspan="2">
+  <al-exec expr="value = eval('form_data.' + input.get_column_name())" />
+  <al-if expr="value is not None">
+   <al-value expr="value" />
+  <al-else>
+   <div class="textbox" style="border-bottom: 1px solid black; height: 1.5em;">&nbsp;</div>
+  </al-if>
+ </tr></td>
+
+</al-lookup>
+
+<al-macro name="caseprint_form">
+   <table class="cpsection" border="0" cellspacing="0" cellpadding="0">
+    <al-tree iter="tree_i" expr="form">
+     <al-exec expr="node = tree_i.value()" />
+     <al-lookup expr="node.render" whitespace>
+      <al-item expr="'Question'">
+       <al-if expr="not node.disabled">
+        <al-exec expr="inputs = node.get_inputs()" />
+        <tr>
+         <td class="question number"><al-value expr="node.label" /></td>
+         <al-if expr="inputs">
+          <td class="question">
+         <al-else>
+          <td class="question" colspan="2">
+         </al-if>
+          <al-for iter="skiptext_i" expr="node.skiptext()">
+           <div class="skiptext"><al-value expr="wiki_oneliner(skiptext_i.value())" noescape></div>
+          </al-for>
+          <al-value expr="wiki_text(node.text)" noescape="noescape" />
+          <al-if expr="node.help">
+           <hr width="80%">
+           <div class="info">
+             <al-value expr="wiki_text(node.help)" noescape="noescape" />
+           </div>
+          </al-if>
+         </td>
+         <al-if expr="inputs">
+          <td class="inputs">
+           <table width="100%" border="0" cellspacing="0">
+            <al-for iter="input_i" expr="inputs">
+             <al-exec expr="input = input_i.value()">
+             <!-- render input -->
+             <al-if expr="hasattr(input, 'pre_text') and input.pre_text">
+              <tr><td class="pretext" colspan="2">
+               <al-value expr="wiki_oneliner(input.pre_text)" noescape="noescape" />
+              </td></tr>
+             </al-if>
+             <al-value lookup="printform_filled_inputs" expr="input.render" whitespace />
+             <al-if expr="hasattr(input, 'post_text') and input.post_text">
+              <tr><td class="posttext" colspan="2">
+               <al-value expr="wiki_oneliner(input.post_text)" noescape="noescape" />
+              </td></tr>
+             </al-if>
+            </al-for>
+           </table>
+          </td>
+         </al-if>
+        </tr>
+       </al-if>
+      </al-item>
+
+      <!-- SubSection -->
+      <al-item expr="'SubSection'">
+       <tr>
+        <td class="subsection number">
+         <al-value expr="node.label" />
+        </td>
+        <td class="subsection" colspan="2" width="100%">
+         <al-value expr="wiki_oneliner(node.text)" noescape="noescape" />
+        </td>
+       </tr>
+      </al-item>
+
+      <!-- Section -->
+      <al-item expr="'Section'">
+       <tr>
+        <td class="section number">
+         <al-value expr="node.label" />
+        </td>
+        <td class="section" colspan="2" width="100%">
+         <al-value expr="wiki_oneliner(node.text)" noescape="noescape" />
+        </td>
+       </tr>
+      </al-item>
+
+      <!-- Form -->
+      <al-item expr="'Form'">
+       <tr>
+        <td colspan="3" class="heading">
+         <al-value expr="node.text" />
+         <al-if expr="form_data.summary_id">
+          - <al-value expr="form_ui.form_id(form_data.summary_id)" />
+         </al-if>
+         <al-if expr="node.version">
+          <div class="info">
+           (Version <al-value expr="node.version">)
+          </div>
+         </al-if>
+        </td>
+       </tr>
+      </al-item>
+
+     </al-lookup>
+    </al-tree>
+   </table>
+</al-macro>
+
+<al-macro name="printcontacts">
+ <table border="0" class="cpsection" cellspacing="0">
+  <thead>
+   <tr>
+    <td class="heading" colspan="4">Case <al-value expr="config.contact_label" />s</td>
+   </tr>
+   <tr>
+    <th align="middle">ID</th>
+    <th align="left"><al-value expr="config.syndrome_label" /></th>
+    <th align="left">Status</th>
+    <th align="left"><al-value expr="config.person_label" /></th>
+    <th align="left"><al-value expr="config.contact_label" /> Type</th>
+    <th align="left"><al-value expr="config.contact_label" /> Date</th>
+   </tr>
+  </thead>
+  <tbody>
+   <al-for iter="page_i" expr="xrange(contacts.pages())">
+    <al-exec expr="contacts.page = page_i.index() + 1" />
+    <al-for iter="contact_i" expr="contacts.page_rows()">
+     <al-exec expr="c = contact_i.value()">
+     <tr>
+      <td align="middle"><al-value expr="c.case_id" /></td>
+      <td><al-value expr="c.syndrome_name" /></td>
+      <td><al-value expr="c.case_status" /></td>
+      <td><al-value expr="c.person.summary(contacts.order_by)" /></td>
+      <td><al-value expr="c.contact_type" /></td>
+      <td><al-value expr="c.contact_date" /></td>
+     </tr>
+    </al-for>
+   </al-for>
+  </tbody>
+ </table>
+</al-macro>
+
+<al-expand name="print_layout">
+  <al-setarg name="title"></al-setarg>
+  <al-expand name="confidential" />
+  <al-exec expr="field_rows = case.rows_and_cols('case')" />
+  <al-expand name="caseprint_demog">
+   <al-setarg name="demogtitle">
+    Case Demographics<al-if expr="case.deleted"> (DELETED)</al-if>
+   </al-setarg>
+  </al-expand>
+  <al-if expr="contacts">
+   <al-expand name="printcontacts" />
+  </al-if>
+  <al-if expr="hasattr(__ctx__, 'edit_form')">
+   <al-exec expr="form = edit_form.get_form_ui()" />
+   <al-expand name="caseprint_form" />
+  <al-else>     
+   <al-for iter="forms_i" expr="case.enumerate_forms()">
+    <al-exec expr="form, form_data = forms_i.value()" />
+    <al-expand name="caseprint_form" />
+   </al-for>
+  </al-if>
+</al-expand>
+

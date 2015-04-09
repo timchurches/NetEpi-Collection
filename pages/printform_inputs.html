@@ -1,0 +1,117 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-comment>
+    
+    This file needs to be kept in sync with app/pages/form_inputs.html.
+
+</al-comment>
+
+<al-macro name="tickbox">
+ <al-img class="tickbox" expr="appath('images/box.png')" />
+</al-macro>
+
+<al-macro name="printform_choices">
+   <al-if expr="input.choices">
+    <al-if expr="input.render_horizontal()">
+     <tr>
+      <td colspan="2">
+       <table cellpadding="0" cellspacing="0">
+        <tr>
+         <al-for iter="choice_i" expr="input.choices">
+          <al-exec expr="choice = choice_i.value()" />
+          <td>&#x2610;</td>
+          <td>&nbsp;<al-value expr="wiki_oneliner(choice[1])" noescape="noescape" />&nbsp;</td>
+         </al-for>
+        </tr>
+       </table>
+      </td>
+     </tr>
+    <al-else>
+     <al-for iter="choice_i" expr="input.choices">
+      <al-exec expr="choice = choice_i.value()" />
+      <tr>
+       <td valign="baseline">&#x2610;</td>
+       <td valign="baseline" width="100%">
+        <al-value expr="wiki_oneliner(choice[1])" noescape="noescape" />
+       </td>
+      </tr>
+     </al-for>
+    </al-if>
+    <al-exec expr="skips = input.skiptext()" />
+    <al-if expr="skips">
+     <al-for iter="skip_i" expr="skips">
+      <tr><td class="skiptext" colspan="2">
+       <al-value expr="wiki_oneliner(skip_i.value())" noescape="noescape" />.
+      </td></tr>
+     </al-for>
+    </al-if>
+   <al-else>
+    <tr><td colspan="2">[no choices defined]</td></tr>
+   </al-if>
+</al-macro>
+<al-lookup name="printform_inputs">
+
+ <!-- RadioList -->
+ <al-item expr="'RadioList'">
+  <tr><td colspan="2" class="pretext">(Mark only one box)</td></tr>
+  <al-expand name="printform_choices" />
+ </al-item>
+
+ <!-- DropList -->
+ <al-item expr="'DropList'">
+  <tr><td colspan="2" class="pretext">(Mark only one box)</td></tr>
+  <al-expand name="printform_choices" />
+ </al-item>
+
+ <!-- TextInput -->
+ <al-item expr="'TextInput'">
+  <tr>
+   <td colspan="2">
+    <div class="textbox" style="border-bottom: 1px solid black; height: 1.5em;">&nbsp;</div>
+   </td>
+  </tr>
+ </al-item>
+
+ <!-- DateInput -->
+ <al-item expr="'DateInput'">
+  <tr>
+   <td colspan="2">
+    <div class="textbox" style="border-bottom: 1px solid black; height: 1.5em;">&nbsp;</div>
+   </td>
+  </tr>
+ </al-item>
+
+ <!-- TextArea -->
+ <al-item expr="'TextArea'">
+  <al-for iter="li" expr="range(5)">
+   <tr>
+    <td colspan="2">
+     <div class="textlines" style="border-bottom: 1px solid black; height: 1.5em;">&nbsp;</div>
+    </td>
+   </tr>
+  </al-for>
+ </al-item>
+
+ <!-- CheckBoxes -->
+ <al-item expr="'CheckBoxes'">
+  <al-expand name="printform_choices" />
+ </al-item>
+</al-lookup>

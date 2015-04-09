@@ -1,0 +1,57 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-expand name="page_layout_admin">
+ <al-setarg name="title"><al-value expr="config.contact_label" /> type: <al-value expr="contact_type.name" /></al-setarg>
+ <al-expand name="confirm_or_error">
+  <table class="widelabelform">
+   <tr>
+    <th colspan="3">
+     <al-value expr="contact_type.name" />
+     <span class="smaller">
+      &nbsp;-&nbsp;<al-value expr="contact_type.count" /> association(s)
+     </span>
+    </th>
+   </tr>
+   <tr>
+    <td class="label">Rename to</td>
+    <td class="field"><al-input type="text" name="contact_type.new_name" /></td>
+    <td>
+     <al-input type="submit" name="rename" class="butt" value="Rename" /></td>
+   </tr>
+   <al-if expr="contact_type.count">
+    <tr>
+     <td class="label">Merge into</td>
+     <td class="field">
+       <al-select name="contact_type.merge_to_id" 
+          optionexpr="contact_type.merge_types()" /></td>
+     <td>
+      <al-input type="submit" name="merge" class="butt" value="Merge" /></td>
+    </tr>
+   </al-if>
+    <tr>
+     <td class="label">Delete</td>
+     <td></td>
+     <td>
+      <al-input type="submit" name="delete" class="danger butt" value="Delete" /></td>
+    </tr>
+  </table>
+ </al-expand>
+</al-expand>

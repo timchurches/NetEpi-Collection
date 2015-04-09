@@ -1,0 +1,123 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation and others. 
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-expand name="page">
+   <al-setarg name="title">
+    Step 5: Summary
+   </al-setarg>
+   <h3>Number of specimens submitted for respiratory virus diagnosis</h3>
+   <table class="grid rtable">
+    <thead>
+     <tr>
+      <td></td>
+      <th>Count</th>
+     </tr>
+    </thead>
+    <tbody>
+     <al-for iter="t_i" expr="report.test_totals">
+      <al-exec expr="test = t_i.value()" />
+      <tr>
+       <th><al-value expr="test.label" /></th>
+       <td><al-if expr="test.count"><al-value expr="test.count" /></al-if></td>
+      </tr>
+     </al-for>
+    </tbody>
+   </table>
+   <h3>Number of diagnoses made</h3>
+   <table class="grid rtable">
+    <thead>
+     <tr>
+      <td></td>
+      <al-for iter="d_i" expr="labsurv.TestDiags.diagnoses">
+       <th><al-value expr="d_i.value()[1]" /></th>
+      </al-for>
+     </tr>
+    </thead>
+    <tbody>
+     <al-for iter="t_i" expr="report.test_diags">
+      <al-exec expr="test = t_i.value()" />
+      <tr>
+       <th><al-value expr="test.label" /></th>
+       <al-for iter="d_i" expr="test.counts">
+        <td>
+         <al-if expr="d_i.value()">
+          <al-value expr="d_i.value()" />
+         </al-if>
+        </td>
+       </al-for>
+      </tr>
+     </al-for>
+    </tbody>
+   </table>
+   <h3>Influenza positive cases this week</h3>
+   <table class="grid">
+    <col align="right">
+    <col align="left">
+    <col align="center">
+    <col align="right">
+    <col align="center">
+    <col align="left">
+    <col align="left">
+    <thead>
+     <tr>
+      <td></td>
+      <th>Test method</th>
+      <th>Flu</th>
+      <th>Age of case</th>
+      <th>Sex</th>
+      <th>Suburb</th>
+      <th>Postcode</th>
+     </tr>
+    </thead>
+    <tbody>
+     <al-for iter="c_i" expr="report.positive_cases">
+      <al-exec expr="case = c_i.value()" />
+      <al-if expr="case">
+       <tr>
+        <th><al-value expr="case.idx + 1" /></th>
+        <td><al-value expr="case.test" /></td>
+        <td><al-value expr="case.diagnosis" /></td>
+        <td><al-value expr="case.age" /></td>
+        <td><al-value expr="case.sex" /></td>
+        <td><al-value expr="case.suburb" /></td>
+        <td><al-value expr="case.postcode" /></td>
+       </tr>
+      </al-if>
+     </al-for>
+    </tbody>
+   </table>
+   <h3>Notes</h3>
+   <pre><al-value expr="report.notes" /></pre>
+   <al-setarg name="buttons">
+    <table class="buttons">
+     <tr>
+      <td align="left">
+       <al-input type="submit" name="back" value="<< Back" />
+      </td>
+      <td align="center">
+       <al-input type="button" name="print" value="Print" 
+        onclick="window.print();" />
+      </td>
+      <td align="right">
+       <al-input type="submit" name="submit" value="Submit" />
+      </td>
+     </tr>
+    </table>
+   </al-setarg>
+</al-expand>

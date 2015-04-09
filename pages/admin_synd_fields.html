@@ -1,0 +1,143 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-include name="search_pt.html" />
+<al-include name="group_edit.html" />
+
+<al-macro name="asf-contexts">
+     <al-for iter="c_i" expr="contexts">
+      <th class="smaller">
+       <al-value expr="c_i.value()[0].upper()" />
+      </th>
+     </al-for>
+</al-macro>
+
+<al-expand name="page_layout_admin">
+ <al-setarg name="title"><al-value expr="title" /></al-setarg>
+  <div class="key">
+   <table>
+    <thead>
+     <tr>
+      <th colspan="3">KEY</th>
+     </tr>
+    </thead>
+    <tbody>
+     <tr>
+      <th><u>C</u>ase</th>
+      <td>Editable case demographic fields.</td>
+     </tr>
+     <tr>
+      <th><u>F</u>orm</th>
+      <td>Non-editable case demographic fields shown while
+      editing forms, access control and tasks.</td>
+     </tr>
+     <tr>
+      <th><u>S</u>earch</th>
+      <td>Fields available for Search and Edit Case.</td>
+     </tr>
+     <tr>
+      <th><u>P</u>erson</th>
+      <td>Fields available when adding a Case (duplicate person search).</td>
+     </tr>
+     <tr>
+      <th><u>R</u>esult</th>
+      <td>Fields that appear in the search results.</td>
+     </tr>
+    </tbody>
+   </table>
+  </div>
+
+  <table border="0" class="admin-syndromes">
+   <col align="left">
+   <col align="center">
+   <col align="left">
+   <al-colgroup align="center" spanexpr="len(contexts)" />
+   <colgroup span="2" align="center"></colgroup>
+   <thead>
+    <tr>
+     <th>Field Name</th>
+     <th class="smaller" style="text-align: center;">Entity</th>
+     <th>Field Label</th>
+     <al-expand name="asf-contexts" />
+     <th colspan="2"></th>
+    </tr>
+   </thead>
+   <al-for iter="dfg_i" expr="demog_fields.grouped()">
+    <al-exec expr="dfg = dfg_i.value()" />
+    <al-if expr="dfg.label">
+     <tr>
+      <th colspan="3" class="smaller">
+       <al-if expr="cur == dfg.name"><a name="cur" /></al-if>
+       <al-value expr="dfg.label" />
+      </th>
+      <al-expand name="asf-contexts" />
+      <th colspan="2"></th>
+     </tr>
+    </al-if>
+    <al-for iter="df_i" expr="dfg">
+     <al-exec expr="df = df_i.value()">
+     <al-exec expr="i = demog_fields.index(df)" />
+     <al-exec expr="bn = 'demog_fields[%d]' % i">
+     <tr>
+      <td><al-value expr="df.name" /></td>
+      <td class="smaller"><al-value expr="df.entity" /></td>
+      <td><al-input nameexpr="bn + '.label'" size="24" /></td>
+      <al-for iter="c_i" expr="contexts">
+       <td>
+        <al-if expr="df.allow_field(c_i.value())">
+         <al-input type="checkbox" value="True"
+              disabledbool="not df.hideable"
+              nameexpr="'%s.show_%s' % (bn, c_i.value())" />
+        </al-if>
+       </td>
+      </al-for>
+      <td><al-input type="submit" value="DFL" style="width: 2em;"
+            nameexpr="'dflt:%s:%s' % (dfg.name, i)" /></td>
+      <al-if expr="df_i.index() == 0">
+       <al-th rowspanexpr="len(dfg)">
+        <al-if expr="len(dfg) > 1">
+         <al-input type="submit" value="+" style="width: 2em;"
+             nameexpr="'grp:on:%s' % dfg.name" /><br>
+         <al-input type="submit" value="DFL" style="width: 2em;"
+             nameexpr="'grp:dflt:%s' % dfg.name" /><br>
+         <al-input type="submit" value="-" style="width: 2em;"
+             nameexpr="'grp:off:%s' % dfg.name" />
+        </al-if>
+       </al-th>
+      </al-if>
+     </tr>
+    </al-for>
+   </al-for>
+   <tr>
+    <al-td colspanexpr="5 + len(contexts)" class="darker">
+     <al-expand name="confirm_or_error">
+      <table width="100%" cellpadding="0" cellspacing="0">
+       <tr>
+        <td align="right">
+         <al-input class="butt" name="update" type="submit" value="Save" />
+         <script>enterSubmit('appform', 'update');</script>
+        </td>
+       </tr>
+      </table>
+     </al-expand>
+    </al-td>
+   </tr>
+  </table>
+</al-expand>

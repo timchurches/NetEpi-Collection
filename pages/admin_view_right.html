@@ -1,0 +1,127 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-macro name="avr_user">
+    <tr>
+     <td width="20"></td>
+     <td width="20"></td>
+     <td width="20"></td>
+     <td><al-value expr="user.name" /></td>
+     <td><al-value expr="user.fullname" /></td>
+     <td style="text-align: right">
+      <al-input nameexpr="'edit_user:%s' % user.id" 
+            class="smallbutt" type="submit" value="Edit" /></td>
+    </tr>
+</al-macro>
+
+<al-macro name="avr_unit">
+     <tr>
+      <td width="20"></td>
+      <td width="20"></td>
+      <th colspan="3">
+       <al-value expr="unit.name" /> <al-value expr="config.unit_label" />
+      </th>
+      <th style="text-align: right;">
+       <al-input nameexpr="'edit_unit:%s' % unit.id" 
+             class="smallbutt" type="submit" value="Edit" /></th>
+     </tr>
+     <al-if expr="unit.users">
+      <al-for vars="user" expr="unit.sorted_users()">
+       <al-expand name="avr_user" />
+      </al-for>
+     <al-else>
+      <tr>
+       <td width="20"></td>
+       <td width="20"></td>
+       <td width="20"></td>
+       <td colspan="3"><i>nil</i></td>
+      </tr>
+     </al-if>
+</al-macro>
+
+
+<al-expand name="page_layout_admin">
+ <al-setarg name="title">Right <al-value expr="rm.right" /> - <al-value expr="rm.label" /></al-setarg>
+  <table border="0" class="admin-u">
+   <tr>
+    <th colspan="6">Via <al-value expr="config.group_label" /></th>
+   </tr>
+   <al-if expr="rm.direct_groups">
+    <al-for vars="group" expr="rm.sorted_groups()">
+     <tr>
+      <td width="20"></td>
+      <th colspan="4">
+       <al-value expr="group.name" /> <al-value expr="config.group_label" />
+      </th>
+      <th style="text-align: right;">
+       <al-input nameexpr="'edit_group:%s' % group.id" 
+             class="smallbutt" type="submit" value="Edit" /></th>
+     </tr>
+     <al-if expr="group.units">
+      <al-for vars="unit" expr="group.sorted_units()">
+       <al-expand name="avr_unit" />
+      </al-for>
+     <al-else>
+      <tr>
+       <td width="20"></td>
+       <td width="20"></td>
+       <td colspan="4">
+        <i>nil</i>
+       </td>
+      </tr>
+     </al-if>
+    </al-for>
+   <al-else>
+    <tr>
+     <td width="20"></td>
+     <td colspan="5"><i>nil</i></td>
+    </tr>
+   </al-if>
+
+   <tr>
+    <th colspan="6">Via <al-value expr="config.unit_label" /></th>
+   </tr>
+   <al-if expr="rm.direct_units">
+    <al-for vars="unit" expr="rm.sorted_units()">
+      <al-expand name="avr_unit" />
+    </al-for>
+   <al-else>
+    <tr>
+     <td width="20"></td>
+     <td colspan="5"><i>nil</i></td>
+    </tr>
+   </al-if>
+
+   <tr>
+    <th colspan="6">Via User</th>
+   </tr>
+   <al-if expr="rm.direct_users">
+    <al-for vars="user" expr="rm.sorted_users()">
+      <al-expand name="avr_user" />
+    </al-for>
+   <al-else>
+    <tr>
+     <td width="20"></td>
+     <td colspan="5"><i>nil</i></td>
+    </tr>
+   </al-if>
+  </table>
+</al-expand>
+

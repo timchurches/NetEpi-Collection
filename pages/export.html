@@ -1,0 +1,139 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-macro name="exportset">
+    <td align="center">
+     <al-input type="submit" name="set" class="butt" value="Set" />
+    </td>
+</al-macro>
+
+<al-expand name="page_layout_banner">
+ <al-setarg name="title">Export <al-value expr="syndromes[exportsel.syndrome_id].name" /> records</al-setarg>
+  <i class="smaller" style="margin-left: 12px">
+   Note: <b>reports</b> offer a more flexible but slower mechanism for
+   CSV exports of cases and forms, allowing a subset of rows and columns to be
+   exported.</i>
+  <table class="selexp">
+   <tr>
+    <td>Include deleted records?</td>
+    <td>
+     <al-input type="radio" name="exportsel.deleted" 
+      value="n" onchange="submit();" />&nbsp;No
+     <al-input type="radio" name="exportsel.deleted" 
+      value="both" onchange="submit();" />&nbsp;Yes
+     <al-input type="radio" name="exportsel.deleted" 
+      value="y" onchange="submit();" />&nbsp;Only deleted
+    </td>
+    <al-expand name="exportset" />
+   </tr>
+   <tr>
+    <td>Replace newlines in fields with spaces?</td>
+    <td>
+     <al-input type="radio" name="exportsel.strip_newlines" 
+      value="False" onchange="submit();" />&nbsp;No
+     <al-input type="radio" name="exportsel.strip_newlines" 
+      value="True" onchange="submit();" />&nbsp;Yes
+    </td>
+    <al-expand name="exportset" />
+   </tr>
+   <al-if expr="exportsel.show_schemes()">
+    <tr>
+     <td>
+      Select export scheme
+     </td>
+     <td>
+      <table cellpadding="0" cellspacing="0" border="0">
+       <al-for iter="i" expr="exportsel.scheme_options()">
+        <tr>
+         <td><al-input type="radio" name="exportsel.export_scheme" 
+           valueexpr="i.value()[0]" onchange="submit();" ></td>
+         <td><al-value expr="i.value()[1]" /></td>
+        </tr>
+       </al-for>
+      </table>
+     </td>
+     <al-expand name="exportset" />
+    </tr>
+   </al-if>
+
+   <al-if expr="exportsel.exporter and exportsel.exporter.forms is not None">
+    <tr>
+     <td valign="top">
+      There <b><al-value expr="exportsel.exporter.entity_info()" /></b> 
+      to export.
+      <al-if expr="len(exportsel.exporter.forms) > 0">
+       <al-if expr="exportsel.multi_form_sel()">
+        What forms would you like to export?
+       <al-else>
+        What form would you like to export?
+       </al-if>
+      <al-else>
+       There are <b>no</b> forms to export.
+      </al-if>
+     </td>
+     <td valign="top">
+      <al-if expr="len(exportsel.exporter.forms) > 0">
+       <table cellpadding="0" cellspacing="0" border="0">
+        <al-for iter="form_i" expr="exportsel.exporter.forms">
+         <al-exec expr="form = form_i.value()">
+         <tr>
+          <td>
+           <al-if expr="exportsel.multi_form_sel()">
+            <al-input type="checkbox" name="exportsel.include_forms" 
+             valueexpr="form.label" list />
+           <al-else>
+            <al-input type="radio" name="exportsel.include_forms" 
+             valueexpr="form.label" />
+           </al-if>
+          </td>
+          <td width="100%">
+           <al-value expr="form.name" />
+          </td>
+         </tr>
+        </al-for>
+       </table>
+      </al-if>
+     </td>
+     <td align="center">
+      <al-if expr="len(exportsel.exporter.forms) > 0 and exportsel.multi_form_sel()">
+       <al-input type="submit" name="select_all" 
+        class="bigbutt" value="Select All" />
+       <br />
+       <al-input type="submit" name="clear_all" 
+        class="bigbutt" value="Clear Selection" />
+      </al-if>
+     </td>
+    </tr>
+   </al-if>
+   <tr>
+    <td colspan="3" class="fauxrule"></td>
+   </tr>
+   <tr>
+    <td align="left">
+    </td>
+    <td></td>
+    <td align="center">
+     <al-if expr="exportsel.exporter">
+      <al-input type="submit" name="doexport" class="butt" value="Export" />
+     </al-if>
+    </td>
+   </tr>
+  </table>
+</al-expand>

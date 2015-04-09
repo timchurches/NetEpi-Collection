@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<form name='sars_hk' form_type='case' allow_multiple='True'>
+ <label>Travel history - Hong Kong (SARS)</label>
+ <section>
+  <label>Transit in Hong Kong</label>
+  <question>
+   <label>
+    Transited through Hong Kong(as distinct from travelled in Hong Kong)
+   </label>
+   <input name='HK_transit_airport' type='TextInput'>
+    <summary>Transit airport</summary>
+    <pre_text>Airport</pre_text>
+   </input>
+   <input name='HK_transit_date' type='DateInput'>
+    <summary>Transit date</summary>
+    <pre_text>Transit date</pre_text>
+   </input>
+   <input name='HK_transit_period' type='IntInput'>
+    <pre_text>Transit period</pre_text>
+    <post_text>Whole hours</post_text>
+   </input>
+  </question>
+  <question>
+   <label>While in transit, did you leave the airport?</label>
+   <input name='HK_transit_left' type='YesNo' />
+  </question>
+  <section>
+   <label>Travel in China</label>
+   <question>
+    <label>Total period spent in Hong Kong</label>
+    <input name='HK_arrival' type='DateInput'>
+     <summary>Arrived</summary>
+     <pre_text>Arrived in HK</pre_text>
+    </input>
+    <input name='HK_depart' type='DateInput'>
+     <pre_text>Departed HK</pre_text>
+    </input>
+   </question>
+   <question>
+    <label>Did you stay in or visit the Metropole Hotel?</label>
+    <input name='Metropole' type='YesNo' />
+    <input name='Metro_arrival' type='DateInput'>
+     <pre_text>Arrival date</pre_text>
+    </input>
+    <input name='Metro_depart' type='DateInput'>
+     <pre_text>Departure date</pre_text>
+    </input>
+   </question>
+   <question>
+    <label>Did you stay in or visit the Amoy Gardens?</label>
+    <input name='Amoy' type='YesNo' />
+    <input name='Amoy_arrival' type='DateInput'>
+     <pre_text>Arrival date</pre_text>
+    </input>
+    <input name='Amoy_depart' type='DateInput'>
+     <pre_text>Departure date</pre_text>
+    </input>
+   </question>
+   <question>
+    <label>
+     Did you stay in any other hotels or apartment buildings? (Please specify)
+    </label>
+    <input name='Hotel1' type='TextInput'>
+     <pre_text>Hotel name</pre_text>
+    </input>
+    <input name='Hotel1_arrival' type='DateInput'>
+     <pre_text>Arrival date</pre_text>
+    </input>
+    <input name='Hotel1_depart' type='DateInput'>
+     <pre_text>Departure date</pre_text>
+    </input>
+   </question>
+  </section>
+ </section>
+</form>

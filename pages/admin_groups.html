@@ -1,0 +1,69 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-expand name="page_layout_admin">
+ <al-setarg name="title"><al-value expr="config.group_label"></al-setarg>
+  <table border="0" class="gridtab">
+   <thead class="darkest">
+    <al-if expr="paged_search.has_pages()">
+     <tr><td colspan="4"><al-expand name="page_select" /></td></tr>
+    </al-if>
+    <tr>
+     <al-expand name="sort_header" />
+     <th style="text-align: center;">
+      <al-input name="add" class="smallbutt" type="submit" value="New" />
+     </th>
+    </tr>
+   </thead>
+   <al-if expr="paged_search.has_pages()">
+    <tfoot class="darkest">
+     <tr><td colspan="4"><al-expand name="page_select" /></td></tr>
+    </tfoot>
+   </al-if>
+   <tbody>
+    <al-for iter="groups_i" expr="paged_search.result_page()">
+     <al-exec expr="group = groups_i.value()" />
+     <al-if expr="groups_i.index() & 1">
+      <tr>
+     <al-else>
+      <tr class="darker">
+     </al-if>
+       <td><al-value expr="group.group_name" /></td>
+       <td width="100%"><al-value expr="group.description" /></td>
+       <td>
+        <al-if expr="group.rights"><al-value expr="group.rights" /></al-if>
+       </td>
+       <td align="center" nowrap>
+        <al-input nameexpr="'edit:%s' % group.group_id" 
+             class="smallbutt" type="submit" value="Edit" />
+       </td>
+     </tr>
+    </al-for>
+    <al-if expr="paged_search.error">
+     <tr>
+      <td colspan="4" class="reverr">
+       <al-value expr="paged_search.error" />
+      </td>
+     </tr>
+    </al-if>
+   </tbody>
+  </table>
+</al-expand>
+

@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<form name='sars_followup' form_type='case' allow_multiple='True'>
+ <label>SARS Contact Follow-up</label>
+ <question>
+  <label>Follow-up date</label>
+  <input name='form_date' type='DatetimeInput' />
+ </question>
+ <question>
+  <label>
+   <![CDATA[Temperature at first taking?<br><font size="-1">If 38 degrees or
+   over arrange urgent protected medical assessment, if between 37.5 and 38
+   degrees celsius discuss with clinician</font>]]>
+  </label>
+  <input name='first_temperature' type='BodyTemperatureInput'>
+   <summary>1st Temp</summary>
+  </input>
+ </question>
+ <question>
+  <label>
+   <![CDATA[Temperature at second taking?<br><font size="-1">If 38 degrees or
+   over arrange urgent protected medical assessment, if between 37.5 and 38
+   degrees celsius discuss with clinician.</font>]]>
+  </label>
+  <input name='second_temperature' type='BodyTemperatureInput'>
+   <summary>2st Temp</summary>
+  </input>
+ </question>
+ <question>
+  <label>
+   <![CDATA[Has the contact taken any medications that could reduce
+   temperature (e.g. paracetamol, aspirin, other pain relievers)?<br><font
+   size="-1">If yes, arrange a further telephone call to check the person's
+   temperature four hours after medication taken.</font>]]>
+  </label>
+  <input name='antipyretic_medication' type='YesNo' />
+ </question>
+ <section>
+  <label>Does the contact have any of these symptoms</label>
+  <question>
+   <label>Feels generally unwell (malaise)?</label>
+   <input name='malaise' type='YesNo'>
+    <summary>malaise</summary>
+   </input>
+  </question>
+  <question>
+   <label>Chills?</label>
+   <input name='chills' type='YesNo'>
+    <summary>chills</summary>
+   </input>
+  </question>
+  <question>
+   <label>Rigours?</label>
+   <input name='rigors' type='YesNo'>
+    <summary>rigours</summary>
+   </input>
+  </question>
+  <question>
+   <label>Headache?</label>
+   <input name='headache' type='YesNo'>
+    <summary>headache</summary>
+   </input>
+  </question>
+  <question>
+   <label>Cough?</label>
+   <input name='cough' type='YesNo'>
+    <summary>cough</summary>
+   </input>
+  </question>
+  <question>
+   <label>Diarrhoea?</label>
+   <input name='diarrhoea' type='YesNo'>
+    <summary>diarrhoea</summary>
+   </input>
+  </question>
+  <question>
+   <label>If yes, are own toilet facilities available?</label>
+   <input name='toilet_isolation' type='YesNo' />
+  </question>
+  <question>
+   <label>Shortness of breath or difficulty breathing?</label>
+   <input name='breathing_difficulty' type='YesNo'>
+    <summary>difficulty breathing</summary>
+   </input>
+  </question>
+ </section>
+ <question>
+  <label>
+   Are any other houshold members showing any symptoms listed above? If yes,
+   arrange protected medical assessment.
+  </label>
+  <input name='other_household_symptoms' type='YesNo' />
+ </question>
+ <question>
+  <label>
+   Have you been away from home in the last 24 hours? If yes, provide
+   information sheets on the importance of quarantine.
+  </label>
+  <input name='away_from_home' type='YesNo' />
+ </question>
+ <question>
+  <label>
+   Dou you have any immediate or impending compliance issues (e.g. need to go
+   out for groceries, running out of masks, child care, etc)?
+  </label>
+  <input name='compliance_issues' type='YesNo' />
+ </question>
+ <question>
+  <label>Other comments</label>
+  <input name='other_comments' type='TextArea' />
+ </question>
+</form>

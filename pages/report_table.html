@@ -1,0 +1,82 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-if expr="confirm">
+ <al-expand name="page_layout_banner">
+  <al-setarg name="title"><al-value expr="reportgen.params.title(_credentials)"></al-setarg>
+  <al-expand name="confirm" />
+ </al-expand>
+<al-else>
+ <al-expand name="print_layout">
+  <al-setarg name="title"><al-value expr="reportgen.params.title(_credentials)"></al-setarg>
+  <al-setarg name="extrabuttons">
+   <al-input type="submit" class="backbutt" name="refresh" value="Refresh" />
+  </al-setarg>
+  <div class="linereport">
+   <h1 class="header"><al-value expr="reportgen.params.title(_credentials)" /></h1>
+   <al-value expr="len(reportgen)"> record<al-if expr="len(reportgen) != 1">s</al-if>.
+   <al-if expr="reportgen.params.preamble">
+    <p class="preamble">
+     <al-value expr="wiki_text(reportgen.params.expand(_credentials, 'preamble'))" noescape />
+    </p>
+   </al-if>
+   <al-expand name="confidential" />
+   <table id="linereport" class="clicktab">
+    <thead>
+     <tr>
+      <al-for iter="h" expr="reportgen.headings()">
+       <th><al-value expr="h.value()" /></th>
+      </al-for>
+     </tr>
+    </thead>
+    <tbody>
+     <al-for vars="gencase" iter="r" expr="reportgen">
+      <al-tr idexpr="'key:%s' % gencase.id" classexpr="page_common.alternate(r.index())">
+       <al-if expr="gencase.columns is not None">
+        <al-for iter="c" expr="gencase.columns">
+         <td>
+          <al-if expr="c.value() is not None">
+           <al-value expr="c.value()" />
+          </al-if>
+         </td>
+        </al-for>
+       </al-if>
+      </al-tr>
+      <al-for vars="key, label, text" iter="free_i" expr="gencase.freetext">
+       <al-tr idexpr="'key:%s' % key">
+        <al-td colspanexpr="reportgen.n_cols" class="free">
+         <al-if expr="label"><b><al-value expr="label" />: </b></al-if>
+         <al-value expr="text" />
+        </al-td>
+       </al-tr>
+      </al-for>
+     </al-for>
+    </tbody>
+   </table>
+   <al-if expr="reportgen.params.footer">
+    <p class="footer">
+     <al-value expr="wiki_text(reportgen.params.expand(_credentials, 'footer'))" noescape />
+    </p>
+   </al-if>
+  </div>
+  <al-input type="hidden" name="key" value="" />
+  <script>clicktab('linereport', 'appform');</script>
+ </al-expand>
+</al-if>

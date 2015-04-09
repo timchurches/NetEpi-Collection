@@ -1,0 +1,37 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-expand name="page_layout_admin">
+ <al-setarg name="title">Form Diff</al-setarg>
+ <al-setarg name="extrastyle">
+   .diff { margin: 0 2ex 0 2ex; }
+   .diff tbody {
+    border-top: 4px solid #ccc;
+    border-bottom: 4px solid #ccc;}
+   .diff_header {background-color:#e0e0e0}
+   td.diff_header {text-align:right}
+   .diff_next {display: none; background-color:#c0c0c0}
+   .diff_add {background-color:#aaffaa}
+   .diff_chg {background-color:#ffff77}
+   .diff_sub {background-color:#ffaaaa}
+ </al-setarg>
+ <al-value expr="difftable" noescape />
+</al-expand>
+

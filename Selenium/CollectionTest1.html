@@ -1,0 +1,1240 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!--
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+-->
+
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <title>NetEpi Collection Test 1 - initial "smoke" test</title>
+  <!-- General test of most, but not all functions, intended as a first-pass 
+       "smoke" test (that is, when you plug it in and turn on the power, it 
+       doesn't crash and burn in a huge cload of smoke). Subsequent tests
+       cover specific functions more thoroughly.
+       Designed to be run using Selenium v0.3 or later. -->
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+  <tbody>
+    <tr>
+      <td rowspan="1" colspan="3">NetEpi Collection Test 1<br>
+      </td>
+    </tr>
+    <!-- Test login and logout -->
+    <tr>
+      <td>open</td>
+      <td>../../cgi-bin/casemgr/app.py</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyLocation</td>
+      <td>/cgi-bin/casemgr/app.py</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>NetEpi Collection<br>
+      </td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>user</td>
+      <td>admin</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>password</td>
+      <td>sn00Py</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>login</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Welcome Administrator</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>You are a member of the Administrator Unit.</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>logout</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Thank you for using NetEpi Collection. Your session is now closed.</td>
+      <td>&nbsp;</td>
+    </tr>
+
+    <!-- Login again and create a new case of SARS -->
+    <tr>
+      <td>type</td>
+      <td>user</td>
+      <td>admin</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>password</td>
+      <td>sn00Py</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>login</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Welcome Administrator</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>You are a member of the Administrator Unit.</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>SARS</td>
+      <td>&nbsp;</td>
+    </tr>
+    <!-- Add a new case of SARS -->
+    <tr>
+      <td>clickAndWait</td>
+      <td>new:2</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Add Case</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Please search to make sure the person you are going to add is not already in the database.</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>do_search</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Search Results</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>new_case</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Local Case ID</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Onset Date</td>
+      <td>&nbsp;</td>
+    </tr>
+    <!-- Fill in the details of the new case -->
+    <tr>
+      <td>type</td>
+      <td>local_case_id</td>
+      <td>A12345</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>surname</td>
+      <td>humperdinck</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>given_names</td>
+      <td>engelbert</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>DOB</td>
+      <td>23/4/39</td>
+    </tr>
+    <tr>
+      <td>select</td>
+      <td>sex</td>
+      <td>Male</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>home_phone</td>
+      <td>9876 5432</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>work_phone</td>
+      <td>9123 4567</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>street_address</td>
+      <td>123a smith st</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>locality</td>
+      <td>smithFIELD</td>
+    </tr>
+    <tr>
+      <td>select</td>
+      <td>state</td>
+      <td>Queensland</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>postcode</td>
+      <td>4567</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>onset_datetime</td>
+      <td>12/9/04 12:34</td>
+    </tr>
+    <!-- Save the data and verify -->
+    <tr>
+      <td>clickAndWait</td>
+      <td>update</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Onset symptoms (SARS)</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyValue</td>
+      <td>surname</td>
+      <td>HUMPERDINCK</td>
+    </tr>
+    <tr>
+      <td>verifyValue</td>
+      <td>given_names</td>
+      <td>Engelbert</td>
+    </tr>
+    <tr>
+      <td>verifyValue</td>
+      <td>DOB</td>
+      <td>23/04/1939</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Age: 66 yrs</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyValue</td>
+      <td>sex</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <td>verifyValue</td>
+      <td>home_phone</td>
+      <td>9876 5432</td>
+    </tr>
+    <tr>
+      <td>verifyValue</td>
+      <td>work_phone</td>
+      <td>9123 4567</td>
+    </tr>
+    <tr>
+      <td>verifyValue</td>
+      <td>street_address</td>
+      <td>123a Smith St</td>
+    </tr>
+    <tr>
+      <td>verifyValue</td>
+      <td>locality</td>
+      <td>SMITHFIELD</td>
+    </tr>
+    <tr>
+      <td>verifyValue</td>
+      <td>state</td>
+      <td>QLD</td>
+    </tr>
+    <tr>
+      <td>verifyValue</td>
+      <td>postcode</td>
+      <td>4567</td>
+    </tr>
+    <tr>
+      <td>verifyValue</td>
+      <td>onset_datetime</td>
+      <td>12/09/2004 12:34</td>
+    </tr>
+    <!-- Check the audit trail log -->
+    <tr>
+      <td>clickAndWait</td>
+      <td>log</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Case Log</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>surname:humperdinck, given_names:engelbert</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>back</td>
+      <td>&nbsp;</td>
+    </tr>
+    <!-- Change the Notification Status field -->
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Edit Case</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>select</td>
+      <td>notification_status</td>
+      <td>Notified to DOH</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>update</td>
+      <td>&nbsp;</td>
+    </tr>
+    <!-- Check the log again -->
+    <tr>
+      <td>clickAndWait</td>
+      <td>log</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Case Log</td>
+      <td>&nbsp;</td>
+    </tr>
+    <!-- NB Changes to notification_status not currently being logged 
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>notification_status:XXXX</td>
+      <td>&nbsp;</td>
+    </tr>
+	-->
+    <tr>
+      <td>clickAndWait</td>
+      <td>back</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Edit Case</td>
+      <td>&nbsp;</td>
+    </tr>
+    <!-- Add data to SARS Symptoms Onset form -->
+    <tr>
+      <td>clickAndWait</td>
+      <td>new:sars_symptoms</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Fever >38 degrees C</td>
+      <td>&nbsp;</td>
+    </tr>
+    <!-- Note that it is not possible to set radio buttons reliably yet -->
+    <tr>
+      <td>type</td>
+      <td>form_sars_symptoms_00000.fever_onset</td>
+      <td>12/3/04</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>form_sars_symptoms_00000.onset_first_symptom</td>
+      <td>13/3/04</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>form_sars_symptoms_00000.xray_date</td>
+      <td>14/3/04</td>
+    </tr>
+    <!-- Save the data -->
+    <tr>
+      <td>clickAndWait</td>
+      <td>form_submit</td>
+      <td>&nbsp;</td>
+    </tr>
+    <!-- Check that the summary shows correctly -->
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Fever >38C: Unknown, Fever onset date: 12/3/04, Productive cough: Unknown, Difficulty Breathing: Unknown, Headache: Unknown, Myalgia: Unknown</td>
+      <td>&nbsp;</td>
+    </tr>
+    <!-- And check that there is an entry in the log -->
+    <tr>
+      <td>clickAndWait</td>
+      <td>log</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Case Log</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>form_sars_symptoms_00000[summary_id:None, fever:Unknown, fever_onset:12/03/2004, onset_first_symptom:13/03/2004, productive_cough:Unknown, nonproductive_cough:Unknown, diff_breathing:Unknown, headache:Unknown, myalgia:Unknown, diarrhoea:Unknown, sore_throat:Unknown, rigors:Unknown, nausea_vomiting:Unknown, dizziness:Unknown, xray_date:14/03/2004, xray_pneumonia:Unknown, xray_description:xray3, autopsy_rds:Unknown]</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>back</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Edit Case</td>
+      <td>&nbsp;</td>
+    </tr>
+    <!-- Test access control lists -->
+    <tr>
+      <td>clickAndWait</td>
+      <td>access</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Case Access</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Administrator Unit</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>pt_search_go</td>  <!-- Note unusual name for search button...-->
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>South Eastern Sector Laboratory Service</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>add_4</td>  <!-- Click the add arrow for above unit -->
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>South Eastern Sector Laboratory Service</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>update</td>
+      <td>&nbsp;</td>
+    </tr>
+    <!-- Check new ACL -->
+    <tr>
+      <td>clickAndWait</td>
+      <td>access</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Case Access</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Administrator Unit</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>South Eastern Sector Laboratory Service</td>
+      <td>&nbsp;</td>
+    </tr>
+    <!-- Try to remove access by own unit -->
+    <tr>
+      <td>clickAndWait</td>
+      <td>remove_0</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td> Can't delete your unit's access</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>cancel</td>
+      <td>&nbsp;</td>
+    </tr>
+    <!-- Now test contacts -->
+    <tr>
+      <td>clickAndWait</td>
+      <td>contacts</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Case Contacts</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>This case has no contacts</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>add_contact</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Add Contact to Case</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>do_search</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>seconds and returned</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>new_contact</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Edit Case Contact</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Enter details of contact</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>update</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>A surname must be given</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>contact.person.surname</td>
+      <td>flack</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>contact.person.given_names</td>
+      <td>roberta</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>contact.person.DOB</td>
+      <td>17/9/1947</td>
+    </tr>
+    <tr>
+      <td>select</td>
+      <td>contact.person.sex</td>
+      <td>Female</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>contact.person.home_phone</td>
+      <td>1234 5678</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>contact.person.work_phone</td>
+      <td>8765 4321</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>contact.person.street_address</td>
+      <td>98 middleofthe rd</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>contact.person.locality</td>
+      <td>smaltzville</td>
+    </tr>
+    <tr>
+      <td>select</td>
+      <td>contact.person.state</td>
+      <td>Tasmania</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>contact.person.postcode</td>
+      <td>7654</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>contact.contact_row.contact_date</td>
+      <td>29/11/03</td>
+    </tr>
+    <tr>
+      <td>select</td>
+      <td>contact.followup_type</td>
+      <td>Active follow-up</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>update</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Contact date must be after onset date</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>contact.contact_row.contact_date</td>
+      <td>29/11/05</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>update</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Edit Case Contact</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>SARS Contact Follow-up</td>
+      <td>&nbsp;</td>
+    </tr>
+    <!-- Verify the values -->
+    <tr>
+      <td>verifyValue</td>
+      <td>contact.person.surname</td>
+      <td>FLACK</td>
+    </tr>
+    <tr>
+      <td>verifyValue</td>
+      <td>contact.person.given_names</td>
+      <td>Roberta</td>
+    </tr>
+    <tr>
+      <td>verifyValue</td>
+      <td>contact.person.DOB</td>
+      <td>17/09/1947</td>
+    </tr>
+    <tr>
+      <td>verifyValue</td>
+      <td>contact.person.sex</td>
+      <td>F</td>
+    </tr>
+    <tr>
+      <td>verifyValue</td>
+      <td>contact.person.home_phone</td>
+      <td>1234 5678</td>
+    </tr>
+    <tr>
+      <td>verifyValue</td>
+      <td>contact.person.work_phone</td>
+      <td>8765 4321</td>
+    </tr>
+    <tr>
+      <td>verifyValue</td>
+      <td>contact.person.street_address</td>
+      <td>98 Middleofthe Rd</td>
+    </tr>
+    <tr>
+      <td>verifyValue</td>
+      <td>contact.person.locality</td>
+      <td>SMALTZVILLE</td>
+    </tr>
+    <tr>
+      <td>verifyValue</td>
+      <td>contact.person.state</td>
+      <td>TAS</td>
+    </tr>
+    <tr>
+      <td>verifyValue</td>
+      <td>contact.person.postcode</td>
+      <td>7654</td>
+    </tr>
+    <tr>
+      <td>verifyValue</td>
+      <td>contact.contact_row.contact_date</td>
+      <td>29/11/2005</td>
+    </tr>
+    <tr>
+      <td>verifyValue</td>
+      <td>contact.followup_type</td>
+      <td>active</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>new:sars_followup</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Does the contact have any of these symptoms</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>form_sars_followup_00000.first_temperature</td>
+      <td>16.3</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>form_sars_followup_00000.second_temperature</td>
+      <td>39.3</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>form_sars_followup_00000.other_comments</td>
+      <td>The rain in Spain falls mainly on the aeroplane.</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>form_submit</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>ERR: must greater than or equal to</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>form_sars_followup_00000.first_temperature</td>
+      <td>36.3</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>form_submit</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>1st Temp: 36.3</td>
+      <td>&nbsp;</td>
+    </tr>
+    <!-- Now change user's details -->
+    <tr>
+      <td>clickAndWait</td>
+      <td>home</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>yourdetails</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>User details</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Retype New Password</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>user.email</td>
+      <td>admin@netepi.info</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>update</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Please enter a password</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>old_password</td>
+      <td>sn00Py</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>update</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Case Definition</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>difficulty breathing</td>
+      <td>&nbsp;</td>
+    </tr>
+    <!-- Check that the details have changed -->
+    <tr>
+      <td>clickAndWait</td>
+      <td>yourdetails</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>User details</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Retype New Password</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyValue</td>
+      <td>user.email</td>
+      <td>admin@netepi.info</td>
+    </tr>
+    <!-- Now try to change password -->
+    <tr>
+      <td>type</td>
+      <td>new_pwd_a</td>
+      <td>sn11Py</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>new_pwd_b</td>
+      <td>sn11Py</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>update</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Please enter a password</td>
+      <td>&nbsp;</td>
+    </tr>
+    <!-- Now try to change password with non-matching new password -->
+    <tr>
+      <td>type</td>
+      <td>new_pwd_a</td>
+      <td>sn11Py</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>new_pwd_b</td>
+      <td>sn12Py</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>old_password</td>
+      <td>sn00Py</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>update</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Passwords don't match - try again</td>
+      <td>&nbsp;</td>
+    </tr>
+    <!-- Now try to change password with a weak new password -->
+    <tr>
+      <td>type</td>
+      <td>new_pwd_a</td>
+      <td>snooPy</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>new_pwd_b</td>
+      <td>snooPy</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>old_password</td>
+      <td>sn00Py</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>update</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>at least two alphabetic</td>
+      <td>&nbsp;</td>
+    </tr>
+    <!-- Now try to change password with another weak new password -->
+    <tr>
+      <td>type</td>
+      <td>new_pwd_a</td>
+      <td>sn00py</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>new_pwd_b</td>
+      <td>sn00py</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>old_password</td>
+      <td>sn00Py</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>update</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Alphabetic characters in the password must be a mix of upper and lower case</td>
+      <td>&nbsp;</td>
+    </tr>
+    <!-- Now try to change password with wrong old password -->
+    <tr>
+      <td>type</td>
+      <td>new_pwd_a</td>
+      <td>sn11Py</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>new_pwd_b</td>
+      <td>sn11Py</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>old_password</td>
+      <td>sn00py</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>update</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Incorrect password</td>
+      <td>&nbsp;</td>
+    </tr>
+    <!-- Now really change password -->
+    <tr>
+      <td>type</td>
+      <td>new_pwd_a</td>
+      <td>sn11Py</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>new_pwd_b</td>
+      <td>sn11Py</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>old_password</td>
+      <td>sn00Py</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>update</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Case Definition</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>difficulty breathing</td>
+      <td>&nbsp;</td>
+    </tr>
+    <!-- Log out and try to log back in -->
+    <tr>
+      <td>clickAndWait</td>
+      <td>logout</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Your session is now closed.</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>NetEpi Collection<br>
+      </td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>user</td>
+      <td>admin</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>password</td>
+      <td>sn00Py</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>login</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Incorrect password</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>user</td>
+      <td>admin</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>password</td>
+      <td>sn11Py</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>login</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>area with community</td>
+      <td>&nbsp;</td>
+    </tr>
+    <!-- Change password back to what is was -->
+    <tr>
+      <td>clickAndWait</td>
+      <td>yourdetails</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>User details</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Retype New Password</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyValue</td>
+      <td>user.email</td>
+      <td>admin@netepi.info</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>user.email</td>
+      <td>&nbsp;</td> <!-- Reset field to blank otherwise this test will fail when run again. -->
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>old_password</td>
+      <td>sn11Py</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>new_pwd_a</td>
+      <td>sn00Py</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>new_pwd_b</td>
+      <td>sn00Py</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>update</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>deep seated vesicles</td>
+      <td>&nbsp;</td>
+    </tr>
+    <!-- Check that searches are working -->
+    <tr>
+      <td>clickAndWait</td>
+      <td>search</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Search Cases & Contacts</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>do_search</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Search Results</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Search took</td>
+      <td>&nbsp;</td>
+    </tr>
+    <!-- Search for someone who doesn't exist. -->
+    <tr>
+      <td>clickAndWait</td>
+      <td>home</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>search</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Search Cases & Contacts</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>search.person.surname</td>
+      <td>engelbert;</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>do_search</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Search Results</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>HUMPERDINCK</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>back</td>
+      <td>&nbsp;</td>
+    </tr>
+    <!-- Test filtering by syndrome -->
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Search Cases & Contacts</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>select</td>
+      <td>search.syndrome_id</td>
+      <td>Smallpox</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>do_search</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Search Results</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>No matches found</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>back</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>clickAndWait</td>
+      <td>back</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>An illness with acute onset of fever</td>
+      <td>&nbsp;</td>
+    </tr>
+    <!-- Check export page as far as possible, which is not very far. -->
+    <tr>
+      <td>clickAndWait</td>
+      <td>export</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Select export scheme</td>
+      <td>&nbsp;</td>
+    </tr>
+    <!-- That's enough for Test 1 -->
+    <tr>
+      <td>clickAndWait</td>
+      <td>logout</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>verifyTextPresent</td>
+      <td>Your session is now closed.</td>
+      <td>&nbsp;</td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>

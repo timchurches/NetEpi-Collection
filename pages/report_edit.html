@@ -1,0 +1,235 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-include name="tabs.html">
+<al-include name="report_columns.html">
+
+<al-macro name="report_info">
+ <table class="rfields">
+  <tr>
+   <th><label for="name">Name</label></th>
+   <td class="wide"><al-input id="name" name="reportparams.label" /></td>
+  </tr>
+  <tr>
+   <th><label for="header">Title</label></th>
+   <td class="wide"><al-input id="header" name="reportparams.header" width="80" /></td>
+  </tr>
+  <tr>
+   <th><label for="sharing">Type</label></th>
+   <td>
+    <al-select name="set_type" expr="reportparams.report_type"
+      optionexpr="reports.report_type_optionexpr()" 
+      onchange="submit();" />
+   </td>
+  </tr>
+  <tr>
+   <th><label for="sharing">Sharing</label></th>
+   <td>
+    <al-for vars="name, label" expr="reportparams.sharing_options">
+     <al-input type="radio" name="reportparams.sharing" valueexpr="name" />
+     &nbsp;<al-value expr="label" />&nbsp;&nbsp;
+    </al-for>
+   </td>
+  </tr>
+  <al-if expr="delete_confirm">
+   <tr>
+    <td colspan="2" class="danger">
+     Delete this report?
+     <al-input type="submit" class="butt"
+      name="delete_cancel" value="Cancel" />
+     <al-input type="submit" class="butt"
+      name="delete_confirm" value="Delete" />
+    </td>
+   </tr>
+  <al-else>
+   <al-if expr="reportparams.show_headfoot">
+    <tr>
+     <th><label for="preamble">Preamble</label>
+      <br><al-expand name="wikihelp" /></th>
+     <td class="wide"><al-textarea id="preamble" name="reportparams.preamble" 
+         rows="4" cols="80" /></td>
+    </tr>
+    <tr>
+     <th><label for="footer">Footer</label>
+      <br><al-expand name="wikihelp" /></th>
+     <td class="wide"><al-textarea id="footer" name="reportparams.footer" 
+         rows="4" cols="80" /></td>
+    </tr>
+   </al-if>
+   <tr>
+    <td>
+     <al-if expr="reportparams.loaded_from_id">
+       <al-input type="submit" class="danger butt" 
+         name="delete" value="Delete" />
+     </al-if>
+    </td>
+    <td>
+     <al-input type="submit" name="params_download" value="Download" class="butt">
+    </td>
+   </tr>
+  </al-if>
+ </table>
+</al-macro>
+
+<al-macro name="report_crosstab">
+ <table class="minselect">
+  <tr>
+   <td><label>Columns</label></td>
+   <td>
+    <al-select name="reportparams.col.form_name" onchange="submit();"
+     optionexpr="reportparams.col.form_options()" />
+   </tr>
+  </tr>
+  <tr>
+   <td></td>
+   <td>
+    <al-if expr="reportparams.col.show_fields()">
+     <al-select name="reportparams.col.field"
+      optionexpr="reportparams.col.col_options()" />
+    </al-if>
+   </tr>
+  </tr>
+  <tr>
+   <td><label>Rows</label></td>
+   <td>
+    <al-select name="reportparams.row.form_name" onchange="submit();"
+     optionexpr="reportparams.row.form_options()" />
+   </tr>
+  </tr>
+  <tr>
+   <td></td>
+   <td>
+    <al-if expr="reportparams.row.show_fields()">
+     <al-select name="reportparams.row.field"
+      optionexpr="reportparams.row.col_options()" />
+    </al-if>
+   </tr>
+  </tr>
+  <tr>
+   <td><label>Pages</label></td>
+   <td>
+    <al-select name="reportparams.page.form_name" onchange="submit();"
+     optionexpr="reportparams.page.form_options()" />
+   </tr>
+  </tr>
+  <tr>
+   <td></td>
+   <td>
+    <al-if expr="reportparams.page.show_fields()">
+     <al-select name="reportparams.page.field"
+      optionexpr="reportparams.page.col_options()" />
+    </al-if>
+   </tr>
+  </tr>
+  <tr>
+   <td><label>Include empty rows &amp; columns</label></td>
+   <td>
+    <al-input id="empty_rowsncols_no" type="radio" name="reportparams.empty_rowsncols" value="False" /><label for="empty_rowsncols_no">&nbsp;No</label>&nbsp;&nbsp;<al-input id="empty_rowsncols_yes" type="radio" name="reportparams.empty_rowsncols" value="True" /><label for="empty_rowsncols_yes">&nbsp;Yes
+   </td>
+  </tr>
+  <tr>
+   <td><label>Include empty pages</label></td>
+   <td>
+    <al-input id="empty_pages_no" type="radio" name="reportparams.empty_pages" value="False" /><label for="empty_pages_no">&nbsp;No</label>&nbsp;&nbsp;<al-input id="empty_pages_yes" type="radio" name="reportparams.empty_pages" value="True" /><label for="empty_pages_yes">&nbsp;Yes
+   </td>
+  </tr>
+ </table>
+</al-macro>
+
+<al-macro name="report_export">
+ <table class="rfields">
+  <tr>
+   <th>
+    <label for="strip_newlines">Replace newlines in fields with spaces?</label>
+   </th>
+   <td>
+     <label><al-input type="radio" name="reportparams.export_strip_newlines"
+      value="yes"  />&nbsp;Yes</label>&nbsp;&nbsp;<label><al-input type="radio"
+      name="reportparams.export_strip_newlines" value="no" />&nbsp;No</label>
+   </td>
+  </tr>
+  <tr>
+   <th><label for="column_labels">Column labels</label></th>
+   <td>
+    <label><al-input type="radio" name="reportparams.export_column_labels"
+     value="fields" />&nbsp;Field labels</label><br>
+    <label><al-input type="radio" name="reportparams.export_column_labels"
+     value="dbcols" />&nbsp;Database labels</label><br>
+   </td>
+  </tr>
+  <tr>
+   <th><label for="row_type">Rows</label></th>
+   <td>
+    <label><al-input type="radio" name="reportparams.export_row_type"
+     value="cases" />&nbsp;by case (with flattened forms)</label><br>
+    <label><al-input type="radio" name="reportparams.export_row_type"
+     value="forms" />&nbsp;by form (with case)</label><br>
+   </td>
+  </tr>
+  <tr>
+   <td></td>
+   <td>
+    <al-input type="submit" class="butt" name="export" value="Export" />
+   </td>
+  </tr>
+ </table>
+</al-macro>
+
+<al-expand name="page_layout_banner">
+ <al-setarg name="title"><al-value expr="reportparams.type_label" /></al-setarg>
+ <al-exec expr="tabs = report_tabs" />
+ <al-expand name="left-tabs">
+    <al-lookup expr="report_tabs.selected">
+     <al-item expr="'info'">
+      <al-expand name="report_info" />
+     </al-item>
+     <al-item expr="'filters'">
+      <al-include name="report_filters.html" />
+     </al-item>
+     <al-item expr="'columns'">
+      <al-expand name="reportdemogcols" />
+     </al-item>
+     <al-item expr="'crosstab'">
+      <al-expand name="report_crosstab" />
+     </al-item>
+     <al-item expr="'forms'">
+      <al-expand name="reportformcols" />
+     </al-item>
+     <al-item expr="'orderby'">
+      <al-include name="report_orderby.html" />
+     </al-item>
+     <al-item expr="'epicurve'">
+      <al-include name="report_epicurve.html" />
+     </al-item>
+     <al-item expr="'contactvis'">
+      <al-if expr="reports.have_graphviz()">
+       <al-include name="report_contactvis.html" />
+      <al-else>
+       <div class="redbox">
+        Association visualisation not available on this system
+       </div>
+      </al-if>
+     </al-item>
+     <al-item expr="'export'">
+      <al-expand name="report_export" />
+     </al-item>
+    </al-lookup>
+ </al-expand>
+</al-expand>

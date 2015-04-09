@@ -1,0 +1,180 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+-->
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+   form_name = 'appform';
+   field_name = 'form_data.weight_kgs';
+   iu_dose_per_kg = 20;
+   titre = 150;
+   vial_ml = 2;
+   rationing = true;
+
+   function get_src_field () {
+    var src_form = window.opener.document.forms[form_name];
+    if (!src_form) return;
+    return src_form[field_name];
+   }
+
+   function getFloat(fieldName) {
+    var field = document.getElementById(fieldName);
+    return parseFloat(field.value === undefined ? field.innerHTML : field.value);
+   }
+   function display(elementName, state) {
+    var node = document.getElementById(elementName);
+    node.style.display = state ? '' : 'none';
+   }
+
+   function setFloat(fieldName, value, prec) {
+    var field = document.getElementById(fieldName);
+    if (!field) throw Error('Unknown field ' + fieldName);
+    if (field.value === undefined)
+     field.innerHTML = value.toFixed(prec);
+    else
+     field.value = value.toFixed(prec);
+   }
+
+   function init () {
+    setFloat('iu_dose_per_kg', iu_dose_per_kg);
+    setFloat('titre', titre);
+    setFloat('vial_ml', vial_ml);
+    if (window.opener) {
+     var field = document.getElementById('weight');
+     var src_field = get_src_field();
+     if (!src_field) return;
+     field.value = src_field.value;
+     update();
+    }
+    document.forms[0][0].focus();
+   }
+
+   function update () {
+    var error_field = document.getElementById('error');
+    var result_div = document.getElementById('result');
+    if (!error_field || !result_div) return;
+    result_div.style.display = 'none';
+    error_field.innerHTML = '';
+    try {
+     var weight = getFloat('weight');
+     if (weight < 0) {
+      error_field.innerHTML = 'Weight must be > 0';
+      return;
+     }
+     if (weight > 600 || isNaN(weight)) {
+      error_field.innerHTML = 'Bad weight';
+      return;
+     }
+     setFloat('weight_1', weight, 1);
+     var dose_iu = weight * iu_dose_per_kg;
+     setFloat('dose_iu_1', dose_iu);
+     setFloat('dose_iu_2', dose_iu);
+     var dose_ml = dose_iu / titre;
+     setFloat('dose_ml_1', dose_ml, 1);
+     setFloat('dose_ml_2', dose_ml, 1);
+     var vials = dose_ml / vial_ml;
+     setFloat('vials', vials, 1);
+     var fraction = vials - Math.floor(vials);
+     var rounded_vials;
+     if (rationing && weight >= 60 && fraction < 0.25) {
+      display('rationing_on', true)
+      display('rationing_off', false)
+      rounded_vials = Math.floor(vials);
+     } else {
+      display('rationing_on', false)
+      display('rationing_off', true)
+      rounded_vials = Math.ceil(vials);
+     }
+     setFloat('rounded_vials', rounded_vials);
+     result_div.style.display = 'block';
+    } finally {
+     if (result_div.style.display != 'block' && !error_field.innerHTML)
+      error_field.innerHTML = 'An internal error has occurred';
+    }
+   }
+  </script>
+  <style>
+   body {
+    background-color: white;
+    font-size: 10pt;
+    font-family: "Verdana", "Arial", sans-serif;
+   }
+   .info {
+    width: 80%;
+    color: #444;
+    border-bottom: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    margin: 1em 2em;
+   }
+   .error {
+    color: red;
+    font-weight: bold;
+   }
+   .result {
+    display: none;
+    color: #262;
+    font-size: 120%;
+    margin: 1em 0;
+   }
+  </style>
+  <title>NSWHealth HRIG calculator</title>
+ </head>
+ <body onload="init();">
+  <h1>NSWHealth HRIG calculator</h1>
+  <h3>Calculating the amount of HRIG required:</h3>
+  <div class="info">
+   The Australian Immunisation Handbook recommends 20 IU of HRIG per
+   kg of weight for all ages. Each ml of HRIG has a minimum titre of
+   150 IU. Each vial contains 2 ml of HRIG. When HRIG supplies are at
+   critical levels, savings of HRIG should be made by rationing. For
+   adults weighing over 60 kg (who will be receiving a minimum of 1200
+   IU in 8 ml) an extra vial should not be used where 0.5 ml or less is
+   indicated to be injected.
+  </div>
+
+  <form onsubmit="try {update()} finally {return false}">
+   <label for="weight">Weight (in kg):</label>
+   <input id="weight" name="weight" onchange="update();" />
+   <input type="submit" value="Okay" />
+   <div class="error" id="error"></div>
+   <div class="result" id="result">
+    <div>
+     <b><span id="weight_1"></span> kg</b> x <span id="iu_dose_per_kg"></span>
+     IU per kg of HRIG = <span id="dose_iu_1"></span> IU of HRIG
+    </div>
+    <div>
+     <span id="dose_iu_2"></span> IU / <span id="titre"></span> IU per ml = 
+     <span id="dose_ml_1"></span> ml of HRIG
+    </div>
+    <div>
+     <span id="dose_ml_2"></span> ml of HRIG / <span id="vial_ml"></span>
+     ml per vial = <span id="vials"></span> fractional vial(s)
+    </div>
+    <div>
+     <span id="rationing_on">Rationing rules apply, </span>
+     <span id="rationing_off">Rationing rules do not apply, </span>
+     order <b><span id="rounded_vials"></span> vial(s)</b>.
+    </div>
+   </div>
+   <input type="button" onclick="window.close()" value="Close">
+  </form>
+ </body>
+</html>

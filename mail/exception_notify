@@ -1,0 +1,4 @@
+To: {{exception_notify}}
+Subject: [{{appname}}] Uncaught exception report ({{datetime}})
+
+{{exception}}

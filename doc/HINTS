@@ -1,0 +1,61 @@
+Find instances of form 'swineflu' where there is more than one instance
+associated with a case:
+
+    select cnt, case_id, surname, given_names, dob from 
+        (select count(*) as cnt, case_id 
+            from case_form_summary 
+            where form_label='swineflu' and not deleted
+            group by case_id) 
+        as formcnt 
+        join cases using (case_id)
+        join persons using (person_id)
+        where cnt > 1 and not deleted;
+
+Find instances duplicate singleton forms:
+
+    select * from 
+        (select count(*) as cnt, case_id 
+            from case_form_summary 
+            where form_label in 
+                (select label from forms where not allow_multiple)
+            group by form_label, case_id) 
+        as formcnt 
+        where cnt > 1;
+
+Report users who are actively using the system (since a given date):
+
+    select user_id, username, fullname, title, email, 
+            phone_home, phone_work, phone_mobile, phone_fax, 
+            agency, expertise 
+        from users 
+        where not deleted 
+            and enabled 
+            and user_id in 
+                (select user_id 
+                    from user_log 
+                    where event_timestamp >= '2009-5-1')
+        order by username;
+
+or (for CSV output):
+
+    psql -q -A -o activeusers -F, -c "select user_id, username, fullname, title, email, phone_home, phone_work, phone_mobile, phone_fax, agency, expertise from users where not deleted and enabled and user_id in (select user_id from user_log where event_timestamp >= '2009-5-1') order by username;" sftest
+
+Report persons who have multiple cases of syndrome_id 8:
+
+    select cnt, surname, given_names, dob 
+        from 
+            (select person_id, count(case_id) as cnt 
+                from cases 
+                where syndrome_id=8 and not deleted 
+                group by person_id) as foo 
+        join persons using (person_id) 
+        where cnt > 1;
+
+Copy data from form into core field:
+
+    update cases 
+        set case_assignment=sf.phu_for_case 
+        from case_form_summary, form_swineflu_00056 as sf 
+        where syndrome_id=8 
+            and case_form_summary.summary_id = sf.summary_id 
+            and cases.case_id = case_form_summary.case_id;

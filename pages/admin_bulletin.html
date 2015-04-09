@@ -1,0 +1,81 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-include name="group_edit.html" />
+
+<al-expand name="page_layout_admin">
+ <al-setarg name="title">Bulletin</al-setarg>
+  <table border="0" class="admin-u">
+   <tr>
+    <th colspan="2">Edit bulletin</th>
+   </tr>
+   <tr>
+    <td align="right">Title:</td>
+    <td><al-input name="bulletin.title" size="60" /></td>
+   </tr>
+   <tr>
+    <td align="right">Post Date:</td>
+    <td><al-input name="bulletin.post_date" size="60" id="bulletin.post_date" 
+     calendarformatexpr="datetime.mx_parse_datetime.format" /></td>
+   </tr>
+   <tr>
+    <td align="right" valign="baseline">Expiry Date:</td>
+    <td><al-input name="bulletin.expiry_date" size="60" 
+     calendarformatexpr="datetime.mx_parse_datetime.format" />
+     <div class="smaller">(leave blank for "Never")</div>
+    </td>
+   </tr>
+   <tr>
+    <td align="right"><al-value expr="config.group_label" />:</td>
+    <td>
+     <al-expand name="group_edit" />
+    </td>
+   </tr>
+   <tr>
+    <td align="right">Synopsis:</td>
+    <td>
+     <al-textarea name="bulletin.synopsis" cols="60" rows="4">
+      <al-value expr="bulletin.synopsis" />
+     </al-textarea>
+    </td>
+   </tr>
+   <tr>
+    <td align="right">Detail:<br /><al-input class="butt" name="wikiedit:detail" type="submit" value="Edit" /></td>
+    <td><al-if expr="bulletin.detail"><div class="preview"><al-value expr="wiki_text(bulletin.detail)" noescape="noescape" /></div></al-if></td>
+   </tr>
+   <tr>
+    <td colspan="2" class="darker">
+     <al-expand name="confirm_or_error">
+      <table width="100%" cellpadding="0" cellspacing="0">
+       <tr>
+        <td align="center" width="100%">
+         <al-input class="butt danger" name="delete" type="submit" value="delete" />
+        </td>
+        <td align="right">
+         <al-input class="butt" name="update" type="submit" value="Save" />
+         <script>enterSubmit('appform', 'update');</script>
+        </td>
+       </tr>
+      </table>
+     </al-expand>
+    </td>
+   <tr>
+  </table>
+</al-expand>

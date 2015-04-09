@@ -1,0 +1,25 @@
+if [ -z "$1" ]; then
+    echo "Usage: $0 <database>" >&2;
+    exit 1;
+fi
+dir=userdata
+if [ ! -d "$dir" ]; then
+    mkdir "$dir"
+fi
+echo "Dumping into $dir"
+psql -f - -q $1 << EOF
+
+\qecho === groups
+\copy groups to '${dir}/groups' using delimiters '|'
+
+\qecho === units
+\copy units to '${dir}/units' using delimiters '|'
+
+\qecho === unit_groups
+\copy unit_groups to '${dir}/unit_groups' using delimiters '|'
+
+\qecho === users
+\copy users to '${dir}/users' using delimiters '|'
+
+\qecho === unit_users
+\copy unit_users to '${dir}/unit_users' using delimiters '|'

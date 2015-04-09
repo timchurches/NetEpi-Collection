@@ -1,0 +1,60 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation and others. 
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-expand name="page">
+   <al-setarg name="title">
+    Step 1: Select week
+   </al-setarg>
+   <div class="export">
+    <h2>Download</h2>
+    <al-input type="submit" name="export:totals" value="Totals" /><br>
+    <al-input type="submit" name="export:diags" value="Diagnoses" /><br>
+    <al-input type="submit" name="export:cases" value="Cases" /><br>
+    <al-input type="submit" name="export:notes" value="Notes" /><br>
+   </div>
+   <h2>Complete <al-value expr="apptitle"> for:</h2>
+   <table>
+    <tr>
+     <td>
+      <label for="lab">Lab</label>
+     </td>
+     <td>
+      <al-select name="report.lab" id="lab" disabledbool="report.lab_readonly"
+       optionexpr="report.lab_options" />
+     </td>
+    </tr>
+    <tr>
+     <td>
+      <label for="week">for week ending Friday</label>
+     </td>
+     <td>
+      <al-select name="report.week" id="week"
+       style="min-width: 100%;"
+       optionexpr="report.week_options" />
+     </td>
+    </tr>
+   </table>
+   <al-setarg name="buttons">
+    <table class="buttons">
+     <tr>
+      <td align="right"><al-input type="submit" name="next" value="Next >>" /></td>
+     </tr>
+    </table>
+   </al-setarg>
+</al-expand>

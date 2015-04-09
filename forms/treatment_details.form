@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<form name='treatment_details' form_type='case' allow_multiple='False'>
+ <label>Treatment Detail (SARS)</label>
+ <question>
+  <label>Recovered following treatment</label>
+  <input name='Recovery' type='YesNo' required='True'>
+   <summary>Recovered</summary>
+  </input>
+ </question>
+ <question>
+  <label>Antivirals (please list with dose and route of transmission)</label>
+  <input name='Antiviral1' type='TextInput'>
+   <pre_text>First antiviral agent</pre_text>
+  </input>
+  <input name='Antiviral2' type='TextInput'>
+   <pre_text>Second antiviral agent</pre_text>
+  </input>
+  <input name='Antiviral3' type='TextInput'>
+   <pre_text>Third antiviral agent</pre_text>
+  </input>
+  <input name='Antiviral4' type='TextInput'>
+   <pre_text>Fourth antiviral agent</pre_text>
+  </input>
+  <input name='Antiviral5' type='TextInput'>
+   <pre_text>Fifth antiviral agent</pre_text>
+  </input>
+  <input name='Antiviral_other' type='TextInput'>
+   <pre_text>Other antiviral agents</pre_text>
+  </input>
+ </question>
+ <question>
+  <label>
+   Antimicrobials (Please list with dose and route of administration)
+  </label>
+  <input name='Antimicrobial1' type='TextInput'>
+   <pre_text>First antimicrobial agent</pre_text>
+  </input>
+  <input name='Antimicrobial2' type='TextInput'>
+   <pre_text>Second antimicrobial</pre_text>
+  </input>
+  <input name='Antimicrobial3' type='TextInput'>
+   <pre_text>Third antimicrobial</pre_text>
+  </input>
+  <input name='Antimicrobial4' type='TextInput'>
+   <pre_text>Fourth antimicrobial</pre_text>
+  </input>
+  <input name='Antimicrobial5' type='TextInput'>
+   <pre_text>Fifth antimicrobial</pre_text>
+  </input>
+  <input name='Antimicrobial_other' type='TextInput'>
+   <pre_text>Other antimicrobials</pre_text>
+  </input>
+ </question>
+ <question>
+  <label>Corticosteroids</label>
+  <input name='Corticosteroids' type='YesNo' />
+ </question>
+ <question>
+  <label>Outcome</label>
+  <input name='Outcome' type='RadioList'>
+   <choices>
+    <choice name='Alive'>Alive</choice>
+    <choice name='Dead'>Dead</choice>
+    <choice name='Unknown'>Unknown</choice>
+   </choices>
+  </input>
+ </question>
+</form>

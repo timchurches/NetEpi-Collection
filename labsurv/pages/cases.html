@@ -1,0 +1,74 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation and others. 
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-expand name="page">
+   <al-setarg name="rtitle">
+    <al-value expr="report.case_page_info()" />
+   </al-setarg>
+   <al-setarg name="title">
+    Step 4: Influenza positive cases this week
+   </al-setarg>
+  <table class="cases">
+   <thead style="font-size: 83%;">
+    <tr>
+     <th></th>
+     <th>Test method</th>
+     <th>Flu</th>
+     <th>Age of case</th>
+     <th>Sex</th>
+     <th>Suburb</th>
+     <th>Postcode</th>
+    </tr>
+   </thead>
+   <tbody>
+    <al-for iter="c_i" expr="report.positive_case_page()">
+     <al-exec expr="case = c_i.value()" />
+     <tr>
+      <th><al-value expr="case.idx + 1" /></th>
+      <td><al-select optionexpr="case.tests" onfocus="from_prev(this);"
+       nameexpr="'report.positive_cases[%d].test' % case.idx" /></td>
+      <td><al-select optionexpr="case.diagnoses" 
+       nameexpr="'report.positive_cases[%d].diagnosis' % case.idx" /></td>
+      <td><al-input size="12"
+       nameexpr="'report.positive_cases[%d].age' % case.idx" /></td>
+      <td><al-select optionexpr="case.sexes"
+       nameexpr="'report.positive_cases[%d].sex' % case.idx" /></td>
+      <td><al-input onblur="this.value = this.value.toUpperCase();"
+       nameexpr="'report.positive_cases[%d].suburb' % case.idx" /></td>
+      <td><al-input onfocus="lookup_postcode(this);"
+       nameexpr="'report.positive_cases[%d].postcode' % case.idx" /></td>
+     </tr>
+    </al-for>
+    <tr>
+     <th align="right">Notes:</th>
+     <td colspan="6">
+      <al-textarea name="report.notes" style="width: 100%;" rows="10" />
+     </td>
+    </tr>
+   </tbody>
+  </table>
+  <al-setarg name="buttons">
+   <table class="buttons">
+    <tr>
+     <td align="left"><al-input type="submit" name="back" value="<< Back" /></td>
+     <td align="right"><al-input type="submit" name="next" value="Next >>" /></td>
+    </tr>
+   </table>
+  </al-setarg>
+</al-expand>

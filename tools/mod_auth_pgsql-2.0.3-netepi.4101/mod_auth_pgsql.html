@@ -1,0 +1,608 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+  <meta name="GENERATOR"
+ content="Mozilla/4.05 [en] (X11; I; Linux 2.0.34 i686) [Netscape]">
+  <title>Module mod_auth_pgsql PostgreSQL authentication module fro
+Apache web server</title>
+</head>
+<body>
+<h1>Apache2 Module mod_auth_pgsql</h1>
+<h2> PostgreSQL Authentication&nbsp;</h2>
+This module allows user authentication (and can log authethication
+requests) against information stored in a <a
+ href="http://www.postgresql.org/"> PostgreSQL</a> database. PostgreSQL
+is a public domain SQL database.
+<ul>
+  <li>Authentication</li>
+</ul>
+<pre>	One database, and one (or two) tables.  One table holds the username and the encryped (or plain) password.<br>&nbsp;	The other table holds the username and the names of the group to which the user belongs.  <br>	It is possible to have username, groupname and password in the same table. <br></pre>
+<ul>
+  <li>Access Logging</li>
+</ul>
+<pre>	Every authentication access is logged in the same database of the authentication table, but in different table.<br>	User name and date of the request are logged.<br>	As option, it can log <i>password, </i><i>ip address</i>, <i>request lin</i>e.<br></pre>
+<p><br>
+</p>
+<p><br>
+This page documents version 2.0.3 (2006 01 05) of mod_auth_pgsql
+require Apache &gt;= 2.0.40 and PostreSQL &gt;=&nbsp; 7.x&nbsp;<br>
+If you need to authenticate with Apache 1.3.x please use the old
+version (0.9.12), this one will not work.<br>
+</p>
+<p><br>
+Home Page <a href="http://www.giuseppetanzilli.it/mod_auth_pgsql2/">http://www.giuseppetanzilli.it/mod_auth_pgsql2/</a><br>
+</p>
+<p>Old module for Apache 1.3 :&nbsp; <a
+ href="http://www.giuseppetanzilli.it/mod_auth_pgsql/">http://www.giuseppetanzilli.it/mod_auth_pgsql/</a><br>
+</p>
+<p><br>
+</p>
+<p><a href="#Directives">Module Directives </a> | <a href="#Download">
+Download </a> | <a href="#compile">Compilation &amp; Installation
+Notes</a> | <a href="#example">Example</a> | <a href="#notes">Technical
+Notes</a> |<a href="#Changelog"> Changelog</a> </p>
+<h2><a name="Directives"></a> Directives</h2>
+<ul>
+  <li><a href="#host">Auth_PG_host</a> </li>
+  <li><a href="#port">Auth_PG_port</a> </li>
+  <li><a href="#options">Auth_PG_options</a> </li>
+  <li><a href="#pwd_table">Auth_PG_database</a> </li>
+  <li><a href="#PGuser">Auth_PG_user</a> </li>
+  <li><a href="PGpwd">Auth_PG_pwd</a> </li>
+  <li><a href="#grp_table">Auth_PG_pwd_table</a> </li>
+  <li><a href="#uid_field">Auth_PG_grp_table</a> </li>
+  <li><a href="#uid_field">Auth_PG_uid_field</a> </li>
+  <li><a href="#pwd_field">Auth_PG_pwd_field</a> </li>
+  <li><a href="#gid_field">Auth_PG_gid_field</a> </li>
+  <li><a href="#nopasswd">Auth_PG_nopasswd</a> </li>
+  <li><a href="#authoritative">Auth_PG_authoritative</a> </li>
+  <li><a href="#lowercaseuid">Auth_PG_lowercase_uid</a> </li>
+  <li><a href="#uppercaseuid">Auth_PG_uppercase_uid</a></li>
+  <li><a href="#pwd_ignore_case">Auth_PG_pwd_ignore_case</a><br>
+  </li>
+  <li><a href="#encrypted">Auth_PG_encrypted</a> </li>
+  <li><a href="#hash_type">Auth_PG_hash_type</a> <br>
+  </li>
+  <li><a href="#pwd_whereclause">Auth_PG_pwd_whereclause</a> </li>
+  <li><a href="#grp_whereclause">Auth_PG_grp_whereclause</a></li>
+  <li><a href="#cache_passwords">Auth_PG_cache_passwords</a><br>
+  </li>
+  <li><a href="#log_table">Auth_PG_log_table</a> </li>
+  <li><a href="#log_uname_field">Auth_PG_log_uname_field</a> </li>
+  <li><a href="#log_date_field">Auth_PG_log_date_field</a> </li>
+  <li><a href="#log_uri_field">Auth_PG_log_uri_field</a> </li>
+  <li><a href="#log_addrs_field">Auth_PG_log_addrs_field</a> </li>
+  <li><a href="#log_pwd_field">Auth_PG_log_pwd_field</a> </li>
+</ul>
+<hr>
+<h2><a name="host"></a> Auth_PG_host</h2>
+<b>Syntax:</b> Auth_PG_host <i>hostname</i><br>
+<b>Context:</b> directory, .htaccess <br>
+<b>Override:</b> AuthConfig <br>
+<b>Status:</b> Extension
+<p>Specifies the host on which the <b>postmaster</b> is running. It is
+optional, if not specified unix socket will be used.<br>
+The effective uid of the server should be allowed
+access, otherwise a trusted user or user with password must
+be specified. <br>
+</p>
+<h2><a name="port"></a> Auth_PG_port</h2>
+<b>Syntax:</b> Auth_PG_port <i>port number</i><br>
+<b>Context:</b> directory, .htaccess <br>
+<b>Override:</b> AuthConfig <br>
+<b>Status:</b> Extension
+<p>Specifies the TCP/IP port number at which the <b>postmaster</b> can
+be found. </p>
+<h2><a name="options"></a> Auth_PG_options</h2>
+<b>Syntax:</b> Auth_PG_options <i>option string</i><br>
+<b>Context:</b> directory, .htaccess <br>
+<b>Override:</b> AuthConfig <br>
+<b>Status:</b> Extension
+<p>Specifies an option string to be passed to the postgreSQL backend
+process. Refer to the PostgreSQL user manual for a description of the
+available options. </p>
+<h2><a name="database"></a> Auth_PG_database</h2>
+<b>Syntax:</b> Auth_PG_database <i>database name</i><br>
+<b>Context:</b> directory, .htaccess <br>
+<b>Override:</b> AuthConfig <br>
+<b>Status:</b> Extension
+<p>Specifies the name of the database that stores the authentication
+information.<br>
+<br>
+</p>
+<h2><a name="PGuser"></a> Auth_PG_user<br>
+</h2>
+<b>Syntax:</b> Auth_PG_user <i>username</i><br>
+<b>Context:</b> directory, .htaccess <br>
+<b>Override:</b> AuthConfig <br>
+<b>Status:</b> Extension <br>
+<br>
+Specifies the database username who access the PostgreSQL,
+should have read access on all authetication tables, and write
+access on all the log tables (if used).<br>
+Needed if the user who make the quey is differrent from the
+user runnig apache, or if the posmater is on a different server and you
+must autheticate with password<br>
+<h2><a name="PGpwd"></a> Auth_PG_pwd</h2>
+<p><b>Syntax:</b> Auth_PG_pwd <i>password</i><br>
+<b>Context:</b> directory, .htaccess <br>
+<b>Override:</b> AuthConfig <br>
+<b>Status:</b> Extension <br>
+<br>
+Specifies the user password for the user who access the
+PostgreSQL.<br>
+Needed if the user specified with Auth_PG_user is not trusted.<br>
+</p>
+<p><br>
+</p>
+<h2><a name="pwd_table"></a> Auth_PG_pwd_table</h2>
+<b>Syntax:</b> Auth_PG_pwd_table <i>relation name</i><br>
+<b>Context:</b> directory, .htaccess <br>
+<b>Override:</b> AuthConfig <br>
+<b>Status:</b> Extension
+<p>Gives the name of the relation which contains the username and
+password information.<br>
+See Auth_PG_encrypted, by default the password is encrypted.<br>
+</p>
+<h2><a name="grp_table"></a> Auth_PG_grp_table</h2>
+<b>Syntax:</b> Auth_PG_grp_table <i>relation name</i><br>
+<b>Context:</b> directory, .htaccess <br>
+<b>Override:</b> AuthConfig <br>
+<b>Status:</b> Extension
+<p>Gives the name of the relation which contains the username and group
+information. This can be the same table specified with
+Auth_PG_pwd_table. This directive is only necessary if you
+want to authenticate by user groups. A user within multiple
+groups has therefore multiple entries. </p>
+<h2><a name="uid_field"></a> Auth_PG_uid_field</h2>
+<b>Syntax:</b> Auth_PG_uid_field <i>attribute name</i><br>
+<b>Context:</b> directory, .htaccess <br>
+<b>Override:</b> AuthConfig <br>
+<b>Status:</b> Extension
+<p>Specifies the attribute name of the field containing the user name
+in the Auth_PG_pwd_table relation. </p>
+<h2><a name="pwd_field"></a> Auth_PG_pwd_field</h2>
+<b>Syntax:</b> Auth_PG_pwd_field <i>attribute name</i><br>
+<b>Context:</b> directory, .htaccess <br>
+<b>Override:</b> AuthConfig <br>
+<b>Status:</b> Extension
+<p>Specifies the attribute name of the field containing the encrypted
+(see Auth_PG_encrypted) password in the Auth_PGpwd_table relation.<br>
+Please remember to use field of type varchar, not char for the password.<br>
+</p>
+<h2><a name="gid_field"></a> Auth_PG_gid_field</h2>
+<b>Syntax:</b> Auth_PG_gid_field <i>attribute name</i><br>
+<b>Context:</b> directory, .htaccess <br>
+<b>Override:</b> AuthConfig <br>
+<b>Status:</b> Extension
+<p>Specifies the attribute name of the field containing the group name
+in the Auth_PG_grp_table relation. This directive is only necessary if
+you want to authenticate by user groups. </p>
+<h2><a name="nopasswd"></a> Auth_PG_nopasswd</h2>
+<b>Syntax:</b> Auth_PG_nopasswd <i>on</i> or <i>off</i><br>
+<b>Context:</b> directory, .htaccess <br>
+<b>Override:</b> AuthConfig <br>
+<b>Status:</b> Extension
+<p>This option is off by default. Turning it on will cause a user to be
+validated when their password field is empty. The password entered will
+be ignored. Exercise caution when turning this on. </p>
+<h2><a name="authoritative"></a> Auth_PG_authoritative</h2>
+<b>Syntax:</b> Auth_PG_authoritative <i>on</i> or <i>off</i><br>
+<b>Context:</b> directory, .htaccess <br>
+<b>Override:</b> AuthConfig <br>
+<b>Status:</b> Extension
+<p>This option is on by default. Turning it off will cause low level
+errors such a user not being found or a simple configuration error to
+fall through to other authentication directives which may be defined
+for this area. For example, if a parent directory has
+another authorization scheme and a user name is not found for
+the PostgreSQL scheme, the parent directory scheme will be given
+the chance to try and authenticate the user. Exercise caution
+when turning this option off. It can be a security risk. Can be
+used to use two authentication schemes for the same dir. </p>
+<h2><a name="lowercaseuid"></a> Auth_PG_lowercase_uid</h2>
+<b>Syntax:</b> Auth_PG_lowercase_uid <i>on</i> or <i>off</i><br>
+<b>Context:</b> directory, .htaccess <br>
+<b>Override:</b> AuthConfig <br>
+<b>Status:</b> Extension
+<p>This option is off by default. Controls whether this module converts
+user UIDs to lowercase before looking them up. When turned on this does
+not affect the case of the original user ID should this module decline
+to authenticate and a lower level is called.</p>
+<h2><a name="uppercaseuid"></a> Auth_PG_uppercase_uid</h2>
+<b>Syntax:</b> Auth_PG_uppercase_uid <i>on</i> or <i>off</i><br>
+<b>Context:</b> directory, .htaccess <br>
+<b>Override:</b> AuthConfig <br>
+<b>Status:</b> Extension
+<p>This option is off by default. Controls whether this module converts
+user UIDs to uppercase before looking them up. When turned on this does
+not affect the case of the original user ID should this module decline
+to authenticate and a lower level is called.</p>
+<h2><a name="pwd_ignore_case"></a> Auth_PG_pwd_ignore_case</h2>
+<b>Syntax:</b> Auth_PG_pwd_ignore_case <i>on</i> or <i>off</i><br>
+<b>Context:</b> directory, .htaccess <br>
+<b>Override:</b> AuthConfig <br>
+<b>Status:</b> Extension
+<p>This option is off by default. Controls whether this module ignore
+the upper/lowercase of password from user, when looking up clear text
+password from db.&nbsp;</p>
+<h2><a name="encrypted"></a> Auth_PG_encrypted</h2>
+<b>Syntax:</b> Auth_PG_encrypted <i>on</i> or <i>off</i><br>
+<b>Context:</b> directory, .htaccess <br>
+<b>Override:</b> AuthConfig <br>
+<b>Status:</b> Extension
+<p>Defaults to on. Controls weather this module expects passwords in
+the database to be encrypted or not. When turned off, you can use
+unencrypted passwords in your database. Exercise caution when deciding
+to turn this off!</p>
+<p><br>
+</p>
+<h2><a name="hash_type"></a> Auth_PG_hash_type</h2>
+<b>Syntax:</b> Auth_PG_hash_type CRYPT or MD5 or BASE64 or NETEPI<br>
+<b>Context:</b> directory, .htaccess <br>
+<b>Override:</b> AuthConfig <br>
+<b>Status:</b> Extension
+<p>Set the encryption type for the password stored in the database.<br>
+Defaults to CRYPT.&nbsp; </p>
+<p><br>
+</p>
+<h2><a name="pwd_whereclause"></a> Auth_PG_pwd_whereclause</h2>
+<b>Syntax:</b> Auth_PG_pwd_whereclause <i>SQL fragment</i><br>
+<b>Context:</b> directory, .htaccess <br>
+<b>Override:</b> AuthConfig <br>
+<b>Status:</b> Extension
+<p>This option allows you to exercise greater control over the SQL code
+used to retrieve the user name and password from the database. You can
+use this to search for the username using more attributes
+in the table than the pwd_field. </p>
+<p>The basic SQL statement used to retrieve a user's password for
+checking looks like this: </p>
+<ul>
+select <i>&lt;pwd_field&gt;</i> from <i>&lt;pwd_table&gt;</i> where <i>
+&lt;uid_field&gt;</i> ='<i>&lt;remote_user&gt;</i> '
+</ul>
+<p>The pwd_whereclause will be added to the end of this statement and
+must fit logically. <em>The where clause must be double quoted, with
+initial space .</em></p>
+<p>Example: </p>
+<pre>      Auth_PG_pwd_whereclause " and access_level &gt; 100 "</pre>
+<p>&nbsp;</p>
+<h2><a name="grp_whereclause"></a> Auth_PG_grp_whereclause</h2>
+<b>Syntax:</b> Auth_PG_grp_whereclause <i>SQL fragment</i><br>
+<b>Context:</b> directory, .htaccess <br>
+<b>Override:</b> AuthConfig <br>
+<b>Status:</b> Extension
+<p>This option allows you to exercise greater control over the SQL code
+used to retrieve the group name and corresponding user from the
+database. You can use this to search for the group name
+using more attributes in the table than the gid_field. </p>
+<p>The basic SQL statement used to retrieve a group name and user name
+for checking looks like this: </p>
+<ul>
+select <i>&lt;uid_field&gt;</i> from <i>&lt;grp_table&gt;</i> where <i>
+&lt;gid_field&gt;</i> ='<i>&lt;required group&gt;</i> '
+</ul>
+The gid_whereclause will be added to the end of this statement
+and must fit logically. <em>The where clause must be double
+quoted.<br>
+<br>
+<br>
+</em>
+<h2><a name="log_table"></a> Auth_PG_cache_passwords</h2>
+<b>Syntax:</b> Auth_PG_cache_passwords on | off<br>
+<b>Context:</b> directory, .htaccess <br>
+<b>Override:</b> AuthConfig <br>
+<b>Status:</b> Extension<br>
+<br>
+Enable password caching, default is off. <br>
+The cache table is local to the directory, will be cleaned when full,
+default size is 50.<br>
+<br>
+<h2><a name="log_table"></a> Auth_PG_log_table</h2>
+<b>Syntax:</b> Auth_PG_log_table <i>table name</i><br>
+<b>Context:</b> directory, .htaccess <br>
+<b>Override:</b> AuthConfig <br>
+<b>Status:</b> Extension<br>
+<br>
+Specifies the table where logging information will go, the user
+need write access to this table.<br>
+Required for logging.<br>
+<br>
+<h2><a name="log_uname_field"></a> Auth_PG_log_uname_field</h2>
+<b>Syntax:</b> Auth_PG_log_uname_field <i>fieldname</i><br>
+<b>Context:</b> directory, .htaccess <br>
+<b>Override:</b> AuthConfig <br>
+<b>Status:</b> Extension<br>
+<br>
+Specifies the fieldname where the username will be saved.<br>
+Required for logging.<br>
+<br>
+<h2><a name="log_date_field"></a> Auth_PG_log_date_field</h2>
+<b>Syntax:</b> Auth_PG_log_date_field <i>fieldname</i><br>
+<b>Context:</b> directory, .htaccess <br>
+<b>Override:</b> AuthConfig <br>
+<b>Status:</b> Extension<br>
+<br>
+Specifies the fieldname where the date will be saved.<br>
+Required for logging.<br>
+<br>
+<h2><a name="log_uri_field"></a> Auth_PG_log_uri_field</h2>
+<b>Syntax:</b> Auth_PG_uri_field <i>fieldname</i><br>
+<b>Context:</b> directory, .htaccess <br>
+<b>Override:</b> AuthConfig <br>
+<b>Status:</b> Extension<br>
+<br>
+Specifies the fieldname where the request string will be saved.<br>
+Optional for logging.<br>
+<h2><a name="log_addrs_field"></a> Auth_PG_log_addrs_field</h2>
+<b>Syntax:</b> Auth_PG_addrs_field&nbsp; <i>fieldname</i><br>
+<b>Context:</b> directory, .htaccess <br>
+<b>Override:</b> AuthConfig <br>
+<b>Status:</b> Extension<br>
+<br>
+Specifies the fieldname where the IP address will be saved.<br>
+Optional for logging.<br>
+<h2><a name="log_pwd_field"></a> Auth_PG_log_pwd_field</h2>
+<b>Syntax:</b> Auth_PG_pwd_field&nbsp; <i>fieldname</i><br>
+<b>Context:</b> directory, .htaccess <br>
+<b>Override:</b> AuthConfig <br>
+<b>Status:</b> Extension<br>
+<br>
+Specifies the fileld name where the password used to authenticate
+will be saved.<br>
+<b>Note: the password will be saved in clear text</b><br>
+Optional for logging.<br>
+<br>
+<br>
+<hr>
+<h2><a name="example"></a> Example</h2>
+Here is an example <b>.htaccess</b> file you might use to enable
+PostgreSQL authentication:
+<pre><br>PostgreSQL trusted user:<br><br>	AuthName "My PostgreSQL Authenticator"<br>	AuthType basic<br><br>	Auth_PG_host localhost<br>	Auth_PG_port 5432<br>	Auth_PG_user postgres<br>	Auth_PG_database www<br>	Auth_PG_pwd_table valid_users<br>	Auth_PG_uid_field user<br>	Auth_PG_pwd_field password<br><br>	&lt;LIMIT GET POST&gt;<br>		require valid-user<br>	&lt;/LIMIT&gt;<br><br>PostgreSQL trusted user, select only users with access_level &gt; 100:<br><br>	AuthName "My PostgreSQL Authenticator"<br>	AuthType basic<br><br>	Auth_PG_host localhost<br>	Auth_PG_port 5432<br>	Auth_PG_user postgres<br>	Auth_PG_database www<br>	Auth_PG_pwd_table valid_users<br>	Auth_PG_uid_field user<br>	Auth_PG_pwd_field password<br>        Auth_PG_pwd_whereclause " and access_level &gt; 100 "<br><br>	&lt;LIMIT GET POST&gt;<br>		require valid-user<br>	&lt;/LIMIT&gt;<br><br>PostgreSQL user with password authentication, with logging:<br><br>	AuthName "My PostgreSQL Authenticator"<br>	AuthType basic<br><br>	Auth_PG_host someserver.somenet<br>	Auth_PG_port 5432<br>	Auth_PG_user postgres<br>	Auth_PG_pwd xxxxxxx<br>	Auth_PG_database www<br>	Auth_PG_pwd_table valid_users<br>	Auth_PG_uid_field user<br>	Auth_PG_pwd_field password<br>	Auth_PG_log_table access_log<br>	Auth_PG_log_uname_field login<br>	Auth_PG_log_date_field date<br>	Auth_PG_log_uri_field 	request<br>	Auth_PG_log_addrs_field  ip_address<br><br><br>	&lt;LIMIT GET POST&gt;<br>		require valid-user<br>	&lt;/LIMIT&gt;<br><br><br><br><br><br></pre>
+<h2><a name="notes"></a> Technical Notes</h2>
+<ul>
+  <li> If the SQL statement used to retrieve the user or group name
+returns more than one tuple, it is considered an error. If this is
+likely to happen, use Auth_PG_pwd_whereclause and
+Auth_PG_grp_whereclause to create a query that will only return one
+tuple.<br>
+  </li>
+</ul>
+<br>
+<br>
+<br>
+<br>
+<h2><a name="Download"></a> Download&nbsp;</h2>
+<ul>
+  <li> Latest release:<br>
+    <a href="http://www.giuseppetanzilli.it/mod_auth_pgsql2/dist/">http://www.giuseppetanzilli.it</a>
+    <a href="http://www.giuseppetanzilli.it/mod_auth_pgsql2/dist/">
+/mod_auth_pgsql2/dist/</a> </li>
+  <li>Homepage and Documentation:<br>
+    <a href="http://www.giuseppetanzilli.it/mod_auth_pgsql2/">http://www.giuseppetanzilli.it/mod_auth_pgsql2</a>
+  </li>
+</ul>
+<br>
+<br>
+<br>
+<br>
+<h2><a name="compile"></a> Compilation &amp; Installation Notes</h2>
+<b>From the INSTALL file:</b>
+<pre>PXS DSO Install:<br>	- untar mod_auth_pgsql  <br>		cd /usr/local/src<br>		tar zxf mod_auth_pgsql-2.0.x.tar.gz<br>		cd mod_auth_pgsql-2.0.x<br>	- make &amp; install as DSO<br>	 	<br>	 	/usr/local/apache2/bin/apxs  -i -a -c -I /usr/local/pgsql/include -L /usr/local/pgsql/lib -lpq mod_auth_pgsql.c<br> <br>	<br><br>STATIC Install<br><br><br>	- untar mod_auth_pgsql  <br>		cd /usr/local/src<br>		tar zxf mod_auth_pgsql-2.0.x.tar.gz<br><br>	- untar apache source and run ./configure from the apache source dir<br>		cd /usr/local/src<br>		tar zxf httpd-2.0.x.tar.gz<br>		<br>		cd httpd-2.0.x<br>		./configure --with-module=aaa:../mod_auth_pgsql-2.0.x/mod_auth_pgsql.c<br><br>	- edit config_vars.mk<br>		vi build/config_vars.mk		<br>		add "-I/usr/local/pgsql/include" to the end of  EXTRA_INCLUDES <br>		add "-lpq -L/usr/local/pgsql/lib" to the end of  EXTRA_LIBS<br>		<br>		NOTE: they have to be the last in the line, otherwise we get conflicts between pgsql &amp; apache includes<br>		NOTE2: there is a way to do it in a better way (without vi ) ? <br>		   <br>	- make &amp; install	   <br>		make<br>		make install<br>		<br><br><br><br><br></pre>
+<h2><a name="Changelog"></a> Changelog </h2>
+&nbsp;Version 0.0&nbsp; (Feb 1996) First release (adaptation from
+mod_auth_msql.c v0.5)<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+mod_auth_msql.c was written by Dirk.vanGulik@jrc.it;<br>
+&nbsp;&nbsp;&nbsp; 0.1&nbsp; (Mar 1996) Correct PGgid_field command<br>
+&nbsp;&nbsp;&nbsp; 0.2&nbsp; (Mar 1996) Added use and
+Auth_PGgrp_whereclause<br>
+&nbsp;&nbsp;&nbsp; 0.3&nbsp; (May 1996) Some sundry patches to fix
+grp_whereclause and some compilation<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+issues.&nbsp; Thanks to Randy Terbrush.<br>
+&nbsp;&nbsp;&nbsp; 0.4&nbsp; (Jun 1996) Got rid of pg_set_string_slot,
+use the stock function in http_config.c<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+Made Auth_PGoptions take an actual string argument.<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+Fixed some logical sillyness in check_auth<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+Made command error strings more reasonable.<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+Try to weed out possibility of function names conflicting<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; with other 3rd party modules.<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+Added Auth_PG_authorative directive<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+Added Auth_PG_enrypted directive<br>
+&nbsp;&nbsp;&nbsp; 0.5&nbsp; (Dec 1996) Some cosmetic changes to
+make apache 1.2 happy.<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+Added correctly spelled Auth_PG_Authoratative command.<br>
+&nbsp;&nbsp;&nbsp; 0.6&nbsp;&nbsp;&nbsp; (13 July 1998) Renamed to
+mod_auth_pgsql <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; Some changes just to make it compile under apache 1.3<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; tested on apache 1.3 postgreSQL 6.4<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; Giuseppe Tanzilli g.tanzilli@eurolink.it<br>
+&nbsp;&nbsp;&nbsp; 0.7&nbsp; (11 November 1998)&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; Some little changes just to make it compile in<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; Apache 1.3.3 &amp; PostgreSQL 6.4<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; the Where clause commands now need double quote<br>
+<br>
+&nbsp;&nbsp;&nbsp; 0.7.1&nbsp; 02 March 1999<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; - now
+compile with Apache 1.3.3 &amp; PostgreSQL 6.4<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; - now
+configuration tag in apache for where clause need double quote <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; - use the
+APACI configuration script<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; -
+APACI-Configuration with 1.3.4, additional-Server-Info-String<br>
+<br>
+&nbsp;&nbsp;&nbsp; 0.7.2&nbsp; 25 June 1999<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; - now
+compile with Apache 1.3.6 &amp; PostgreSQL 6.5<br>
+<br>
+&nbsp;&nbsp;&nbsp; 0.8.0&nbsp; 8 August 1999<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; - now
+apache 1.3.1 and PostgreSQL 6.5 are needed<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Added
+options to access authenticated database<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Added
+options to log the authentication requests <br>
+<br>
+<br>
+&nbsp;&nbsp;&nbsp; 0.9.0 1999-10-03 (Tollef Fog Heen
+&lt;tollef@add.no&gt;)<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; - tested
+on apache 1.3.9 and PostgreSQL 6.5.3<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; -
+added autoconf-script<br>
+&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; -
+shared module support<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp; 0.9.1 2000-03-31 (Tollef Fog Heen
+&lt;tollef@add.no&gt;)<br>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; - fixed some minor bugs
+related to autoconf (we don't need expat)<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp; 0.9.2 2000-05-21 (Hayato UENOHARA
+&lt;uenohara@ueda.info.waseda.ac.jp&gt;)<br>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; - Original by Matthias
+Eckermann &lt;eckerman@lrz.uni-muenchen.de&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; - I only copied it from
+a lost branch version 0.7.1 (gone for some reason)<br>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; - So all credit goes to
+Matthias :-)<br>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; - added
+'AUTH_PGSQL_VERSION' &amp; 'pg_auth_init_handler'<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp; 0.9.5 2000-06-04 (Voloda
+&lt;vladimir.kloz@dtg.cz&gt;)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; - added options Auth_PGuser, Auth_PGpwd <br>
+&nbsp;<br>
+&nbsp; &nbsp;&nbsp;&nbsp; 0.9.6 2001-08-27 (Giuseppe Tanzilli
+&lt;info@giuseppetanzilli.it&gt;)<br>
+&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; - ported
+configure &amp; install to Apache 1.3.20 and PostgreSQL 7.1.x<br>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; -
+replaced sprintf with snprintf thanks to Erik Rossen
+&lt;rossen@freesurf.ch&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; -
+changed some directive names to make all them like Auth_PG_*<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp; UPDATE YOUR CONFIG FILES<br>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; -
+Added Logging feature from 0.8 source<br>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; -
+Check input string from user, to deny sql string attack, see report:<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
+http://cert.uni-stuttgart.de/advisories/apache_auth.php <br>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; -
+Updated html documentation<br>
+<br>
+&nbsp;&nbsp;&nbsp; 0.9.7 &nbsp;&nbsp;&nbsp; 2001-09-02 &nbsp;(Giuseppe
+Tanzilli &lt;info@giuseppetanzilli.it&gt;)<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;- fix Auth_PG_pwd_whereclause &amp;
+Auth_PG_grp_whereclause &nbsp; <br>
+&nbsp;&nbsp;&nbsp; 0.9.8&nbsp;&nbsp;&nbsp; &nbsp;2001-09-03 &nbsp; (
+Andrei Nigmatulin&nbsp; &lt;anight@mail.ru&gt;)<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp; - Added Auth_PG_hash_type, now we support crypt and md5 password
+hash method <br>
+&nbsp;&nbsp;&nbsp; 0.9.9&nbsp;&nbsp;&nbsp; &nbsp;2001-09-25
+&nbsp;(Giuseppe Tanzilli &lt;info@giuseppetanzilli.it&gt;)<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;- fix security problem<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;- added password caching, default is off,
+please check it and report by mail<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; it will be useful for hi load
+sites<br>
+&nbsp;&nbsp;&nbsp; 0.9.10&nbsp;&nbsp; 2001-10-11 &nbsp;(Giuseppe
+Tanzilli &lt;info@giuseppetanzilli.it&gt;)<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;- fix MD5 auth failures in some cases<br>
+&nbsp;&nbsp;&nbsp; 0.9.11 &nbsp; 2001-11-20 &nbsp;(Giuseppe Tanzilli
+&lt;info@giuseppetanzilli.it&gt;)<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp; - security fix: string buffers
+&nbsp;Sebastian
+Krahmer &lt;krahmer@suse.de&gt; &nbsp;and Andreas Hasenack
+&lt;andreas@conectiva.com.br&gt;<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;- added Auth_PG_lowercase_uid option &nbsp;
+&nbsp;(Bernard Quatermass &lt;bernard@quatermass.co.uk&gt;)<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;- added Auth_PG_uppercase_uid option &nbsp;<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;- added --with-pgsql-lib=&lt;dir&gt; and
+--with-pgsql-include=&lt;dir&gt; to configure, to make happy debian
+users<br>
+&nbsp;&nbsp;&nbsp; 0.9.12&nbsp;&nbsp;&nbsp; 2002-01-11&nbsp;(Giuseppe
+Tanzilli &lt;info@giuseppetanzilli.it&gt;)<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; - small fix for
+Auth_PG_uppercase_uid/Auth_PG_lowercase_uid<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; - added Auth_PG_pwd_ignore_case option <br>
+&nbsp;&nbsp;&nbsp; 2.0.0&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; 2003-01-30
+(Giuseppe Tanzilli &lt;info@giuseppetanzilli.it&gt;)<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; - ported to Apache 2.0<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; - fixes from Gary Benson
+&lt;gbenson@redhat.com&gt; <br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; - fixes from Guenter &nbsp;Knauf
+&lt;info@gknw.de&gt;<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; - added debug feature, compile time
+option, do not use it on production systems<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; - added Auth_PG_grp_user_field<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; - renamed Auth_PG_gid_field to
+Auth_PG_grp_group_field<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; - added BASE64 support, thanks to
+Norikatsu Shigemura &lt;n-shigemura@ensure-tech.co.jp&gt;<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; - now we reuse database
+connection,&nbsp; 2x speedup !! &nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp; 2.0.1&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+2003-02-21 (Giuseppe Tanzilli &lt;info@giuseppetanzilli.it&gt;)<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; - fix bug introduced with connection reuse<br>
+&nbsp;&nbsp;&nbsp; 2.0.3&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 2006-01-05
+(Giuseppe Tanzilli &lt;info@giuseppetanzilli.it&gt;)<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; - Security fix from iDefense
+Security Advisory [IDEF1245]<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; - many bug fix<br>
+&nbsp;&nbsp;&nbsp; 2.0.3+netepi&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 2009-06-11
+(James Farrow &lt;james@fn.com.au&gt;)<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; - added NETEPI hash support<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+</body>
+</html>

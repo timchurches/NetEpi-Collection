@@ -1,0 +1,275 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+
+<al-include name="form_inputs.html" />
+
+<al-macro name="form_summary">
+   <al-if expr="not case.is_new()">
+    <al-if expr="case.forms">
+     <table cellspacing="0" class="formslist" cellpadding="1">
+      <al-for iter="form_i" expr="case.forms">
+       <al-exec expr="form = form_i.value()" />
+       <tr>
+        <th colspan="2" class="formname">
+         <al-value expr="form.name" />
+        </th>
+        <th align="center" width="5%">
+         <al-if expr="not case.viewonly()">
+          <al-if expr="form.allow_new_form()">
+           <al-input type="submit" class="butt" value="New"
+            nameexpr="'new:' + form.label" />
+          </al-if>
+         </al-if>
+        </th>
+       </tr>
+       <al-for vars="summary" iter="summary_i" expr="form.summaries">
+        <al-if expr="summary.deleted ">
+         <tr class="deleted">
+          <td class="formid">
+           <al-value expr="form_ui.form_id(summary.summary_id)" /><br>
+          </td>
+          <td width="100%">
+           <al-value expr="summary.delete_timestamp" /> - deleted
+           <al-if expr="summary.delete_reason">
+            - <al-value expr="summary.delete_reason" />
+           </al-if>
+          </td>
+          <td align="center">
+            <al-input type="submit" class="butt" value="View"
+             nameexpr="'edit:%s:%s' % (form.label, summary.summary_id)" /></td>
+         </tr>
+        <al-else>
+         <tr>
+          <td class="formid">
+           <al-value expr="form_ui.form_id(summary.summary_id)" /><br>
+           <al-value expr="summary.form_date.date()" /><br>
+           <al-value expr="summary.form_date.time()" />
+          </td>
+          <td width="100%"><al-value expr="wiki_oneliner(summary.summary)" noescape="noescape" /></td>
+          <td align="center">
+           <al-if expr="not case.viewonly()">
+            <al-input type="submit" class="butt" value="Edit"
+             nameexpr="'edit:%s:%s' % (form.label, summary.summary_id)" />
+           <al-else>
+            <al-input type="submit" class="butt" value="View"
+             nameexpr="'edit:%s:%s' % (form.label, summary.summary_id)" />
+           </al-if>
+          </td>
+         </tr>
+        </al-if>
+       </al-for>
+      </al-for>
+     </table>
+    <al-else>
+     <div class="formlist">No forms available</div>
+    </al-if>
+   </al-if>
+</al-macro>
+
+<al-macro name="paged_form_nav">
+  <tr>
+   <td colspan="3">
+    <table width="100%" border="0">
+     <tr>
+      <td width="15%" align="left">
+       <al-if expr="page > 0">
+        <al-input name="prev_form_page" type="submit" value="Prev Page" />
+       </al-if>
+      </td>
+      <td width="70%" align="center">
+       <al-exec expr="select_form_page = page" />
+       <al-select name="select_form_page" 
+        optionexpr="form.get_toc()" list="list" />
+       <al-input name="goto" type="submit" value="Jump to page" />
+      </td>
+      <td width="15%" align="right">
+       <al-if expr="page < len(form) - 1">
+        <al-input name="next_form_page" type="submit" value="Next Page" />
+       </al-if>
+      </td>
+     </tr>
+    </table>
+   </tr>
+  </tr>
+</al-macro>
+
+<al-macro name="heading">
+  <tr>
+   <td colspan="3" align="center" class="heading">
+    <al-value expr="form.text" />
+    <al-if expr="form_data.summary_id">
+     - <al-value expr="form_ui.form_id(form_data.summary_id)" />
+    </al-if>
+   </td>
+  </tr>
+</al-macro>
+
+
+<al-lookup name="element_markup">
+
+ <!-- Question -->
+ <al-item expr="'Question'">
+  <al-if expr="not node.disabled">
+   <al-exec expr="inputs = node.get_inputs()" />
+   <al-tr classexpr="'question%d' % flipflop" idexpr="'Q_' + node.label">
+    <al-exec expr="flipflop = not flipflop" />
+    <td class="number"><al-value expr="node.label" /></td>
+    <al-if expr="inputs">
+     <td class="qtext">
+    <al-else>
+     <td class="qtext" colspan="2">
+    </al-if>
+     <al-if expr="curnode == node.label and not confirm">
+      <a name="cur" />
+     </al-if>
+     <al-for iter="skiptext_i" expr="node.skiptext()">
+      <div class="skiptext"><al-value expr="wiki_oneliner(skiptext_i.value())" noescape></div>
+     </al-for>
+     <al-if expr="node.help and showhelp != node.label">
+      <div class="infobut">
+       <al-input nameexpr="'showhelp:%s' % node.label.replace('.', '_')" 
+         type="image" srcexpr="appath('images/info.png')" />
+      </div>
+     </al-if>
+     <al-value expr="wiki_text(node.text)" noescape="noescape" />
+     <al-if expr="showhelp == node.label">
+       <div class="info">
+        <div class="infobut">
+         <al-input name="'showhelp_'" 
+           type="image" srcexpr="appath('images/close.png')" />
+        </div>
+        <al-value expr="wiki_text(node.help)" noescape="noescape" />
+       </div>
+     </al-if>
+    </td>
+    <al-if expr="inputs">
+     <td class="inputs">
+      <table width="100%" border="0" cellspacing="0">
+       <al-for iter="input_i" expr="inputs">
+        <al-exec expr="input = input_i.value()">
+        <al-if expr="form_errors.input_has_error(input)">
+         <tbody class="errinp">
+          <tr><td colspan="2" class="error">
+           <al-value expr="form_errors.input_error(input)" />
+          </td></tr>
+        <al-elif expr="input.required">
+         <tbody class="reqinp">
+        <al-else>
+         <tbody>
+        </al-if>
+         <al-value lookup="input_markup" expr="input.render" whitespace />
+         <al-if expr="input_i.index() < len(inputs) - 1">
+          <tr><td colspan="2" class="line"></td></tr>
+         </al-if>
+        </tbody>
+       </al-for>
+      </table>
+     </td>
+    </al-if>
+   </al-tr>
+  </al-if>
+ </al-item>
+
+ <!-- SubSection -->
+ <al-item expr="'SubSection'">
+  <tr>
+   <td class="subsection number">
+    <al-value expr="node.label" />
+   </td>
+   <td class="subsection" colspan="2" width="100%">
+    <al-value expr="wiki_oneliner(node.text)" noescape="noescape" />
+   </td>
+  </tr>
+ </al-item>
+
+ <!-- Section -->
+ <al-item expr="'Section'">
+  <tr class="section">
+   <td class="number">
+    <al-value expr="node.label" />
+   </td>
+   <td class="stext" colspan="2" width="100%">
+    <al-value expr="wiki_oneliner(node.text)" noescape="noescape" />
+   </td>
+  </tr>
+ </al-item>
+
+ <!-- Form -->
+ <al-item expr="'Form'">
+  <al-expand name="heading" />
+ </al-item>
+
+</al-lookup>
+
+<al-macro name="form_page_buttons">
+  <al-if expr="not confirm">
+   <tr>
+    <td colspan="3" class="submit">
+     <table width="100%" border="0">
+      <tr>
+       <td align="left">
+        <al-if expr="not form_disabled">
+         <al-input name="form_cancel" type="submit" class="butt"
+          value="Cancel" />
+        <al-else>
+         <al-input name="form_cancel" type="submit" class="butt"
+          value="<< Back" />
+        </al-if>
+       </td>
+       <td align="center">
+        <al-if expr="not form_disabled">
+         <al-input name="form_delete" type="submit" class="butt"
+          value="Delete Form" />
+        </al-if>
+       </td>
+       <td align="right">
+        <al-if expr="not form_disabled">
+         <al-input name="form_submit" type="submit" class="butt"
+          value="Save Form" />
+         <script>enterSubmit('appform', 'form_submit');</script>
+        </al-if>
+       </td>
+      </tr>
+     </table>
+    </td>
+   </tr>
+  </al-if>
+</al-macro>
+
+<al-macro name="form_page">
+
+ <table border="0" cellspacing="0" cellpadding="0" id="smartform">
+  <al-expand name="form_page_buttons" />
+  <al-exec expr="flipflop = False" />
+  <al-tree iter="tree_i" expr="form">
+   <al-exec expr="node = tree_i.value()" />
+   <al-value lookup="element_markup" expr="node.render" whitespace />
+   <tr><td colspan="3" class="line"></td></tr>
+  </al-tree>
+  <tr><td colspan="3" class="fauxrule"></td></tr>
+  <al-expand name="form_page_buttons" />
+ </table>
+ <al-if expr="has_js == 'yes' and not form_disabled">
+  <al-script srcexpr="appath('formhelpers.js')" type="text/javascript"></al-script>
+  <script type="text/javascript"><al-value expr="form.js_meta(form_errors).to_js()" noescape /></script>
+ </al-if>
+</al-macro>
+

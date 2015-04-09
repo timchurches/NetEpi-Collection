@@ -1,0 +1,235 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- 
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+-->    
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+ <title>NetEpi Wiki Formatting</title>
+ <link rel="stylesheet" href="../app/app/wiki.css" type="text/css" />
+ </head>
+<body>
+<h1 id="WikiFormatting">Wiki Formatting</h1>
+<p>
+NetEpi Collection supports the use of wiki mark-up to indicate how text used in certain parts of the application should be formatted when displayed. Wiki mark-up can be used in admin application for the following items:
+</p>
+<ul><li>Case Definition description text (but not in the Case Definition name)
+</li><li>Bulletin detail text (but in the Bulletin title or synopsis)
+</li><li>in Form definitions, in:
+<ul><li>the form title
+</li><li>form section and sub-section headings
+</li><li>question text
+</li><li>question help text
+</li><li>input pre- and post-text (mark-up relevant to single lines of text only)
+</li><li>choice labels for CheckBoxes and RadioButton inputs (mark-up relevant to single lines of text only)
+</li></ul></li></ul><p>
+The wiki mark-up (formatting) rules are derived from those used in Trac (<a class="ext-link" href="http://trac.edgewall.com/"><span class="icon"></span>http://trac.edgewall.com/</a>), with some minor variations, as documented below.
+</p>
+<h2 id="FontStyles">Font Styles</h2>
+<p>
+NetEpi wiki text which is marked-up thus:
+</p>
+<pre class="wiki"> * *bold*
+ * _italic_
+ * **bold italic**
+ * __underline__
+ * {{{monospace}}} or `monospace`
+ * ~~strike-through~~
+ * ^superscript^ 
+ * ,,subscript,,
+</pre>
+<p>
+Results in text displayed thus:
+</p>
+<ul><li><strong>bold</strong>
+</li><li><i>italic</i>
+</li><li><strong><i>bold italic</i></strong>
+</li><li><span class="underline">underline</span>
+</li><li><tt>monospace</tt> or <tt>monospace</tt>
+</li><li><del>strike-through</del>
+</li><li><sup>superscript</sup> 
+</li><li><sub>subscript</sub>
+</li></ul><p>
+Note that the <tt>{{{...}}}</tt> and <tt>`...`</tt> commands not only select a monospace font, but also treat their content as verbatim text, meaning that no further wiki processing is done on this text.
+</p>
+<h2 id="Headings">Headings</h2>
+<p>
+You can create heading by starting a line with one up to five <i>equal</i> characters ("=")
+followed by a single space and the headline text. The line should end with a space 
+followed by the same number of <i>=</i> characters.
+</p>
+<p>
+Example:
+</p>
+<pre class="wiki">= Heading =
+== Subheading ==
+=== About ''this'' ===
+</pre>
+<p>
+Display:
+</p>
+<h1 id="Heading">Heading</h1>
+<h2 id="Subheading">Subheading</h2>
+<h3 id="Aboutthis">About <i>this</i></h3>
+<h2 id="Paragraphs">Paragraphs</h2>
+<p>
+A new text paragraph is created whenever two blocks of text are separated by one or more empty lines.
+</p>
+<p>
+Unlike Trac, forced line breaks cannot currently be inserted using the <br /> macro tag. Support for this may be added in a future version.
+</p>
+<h2 id="Lists">Lists</h2>
+<p>
+The wiki mark-up supports both ordered/numbered and unordered lists.
+</p>
+<p>
+Example:
+</p>
+<pre class="wiki"> * Item 1
+   * Item 1.1
+ * Item 2
+
+ 1. Item 1
+   1. Item 1.1
+ 1. Item 2
+</pre>
+<p>
+Display:
+</p>
+<ul><li>Item 1
+<ul><li>Item 1.1
+</li></ul></li><li>Item 2
+</li></ul><ol><li>Item 1
+<ol><li>Item 1.1
+</li></ol></li><li>Item 2
+</li></ol><p>
+Note that there must be one or more spaces preceding the list item markers, otherwise the list will be treated as a normal paragraph.
+</p>
+<h2 id="DefinitionLists">Definition Lists</h2>
+<p>
+The wiki also supports definition lists.
+</p>
+<p>
+Example:
+</p>
+<pre class="wiki"> llama::
+   some kind of mammal, with hair
+ ppython::
+   some kind of reptile, without hair
+   (can you spot the typo?)
+</pre>
+<p>
+Display:
+<dl><dt>llama</dt><dd>
+some kind of mammal, with hair
+</dd><dt>ppython</dt><dd>
+some kind of reptile, without hair
+(can you spot the typo?)
+</p>
+</dd></dl>
+<p>
+Note that you need a space in front of the defined term.
+</p>
+<h2 id="PreformattedText">Preformatted Text</h2>
+<p>
+Blocks containing preformatted text can be used for notes and examples or other literal text. Use three <i>curly braces</i> wrapped around the text to define a block quote. The curly braces need to be on a separate line.
+  
+Example:
+</p>
+<pre class="wiki"> {{{
+  def HelloWorld():
+      print &#34;Hello World&#34;
+ }}}
+</pre>
+<p>
+Display:
+</p>
+<pre class="wiki"> def HelloWorld():
+     print &#34;Hello World&#34;
+</pre>
+<h2 id="Blockquotes">Blockquotes</h2>
+<p>
+In order to mark a paragraph as blockquote, indent that paragraph with two spaces.
+</p>
+<p>
+Example:
+</p>
+<pre class="wiki">  This text is a quote from someone else.
+</pre>
+<p>
+Display:
+</p>
+<blockquote>
+<p>
+This text is a quote from someone else.
+</p>
+</blockquote>
+<h2 id="Tables">Tables</h2>
+<p>
+Simple tables can be created like this:
+</p>
+<pre class="wiki">||Cell 1||Cell 2||Cell 3||
+||Cell 4||Cell 5||Cell 6||
+</pre>
+<p>
+Display:
+</p>
+<table class="wiki">
+<tr><td>Cell 1</td><td>Cell 2</td><td>Cell 3
+</td></tr><tr><td>Cell 4</td><td>Cell 5</td><td>Cell 6
+</td></tr></table>
+<p>
+There is currently no support for more complex tables to be created using Restructured Text mark-up. This may be added in a future version.
+</p>
+<h2 id="Links">Links</h2>
+<p>
+No linking is currently supported occur.
+</p>
+<h3 id="TracLinks">Trac Links</h3>
+<p>
+Later we may add support for linking to other Collection elements.
+</p>
+<h2 id="Images">Images</h2>
+<p>
+Support for embedded images will be added in a future version (ticket <a class="new ticket" href="/netepi/ticket/12" title="Allow upload of graphics and other resources for use in forms (new)">#12</a>).
+</p>
+<h2 id="Macros">Macros</h2>
+<p>
+By preserving the Trac macro mechanism we may be able to add support for a range of Trac macros in a future version.
+</p>
+<h2 id="Processors">Processors</h2>
+<p>
+See the comments on Macros.
+</p>
+<h2 id="Miscellaneous">Miscellaneous</h2>
+<p>
+Four or more dashes will be replaced by a horizontal line (&lt;HR&gt;)
+</p>
+<p>
+Example:
+</p>
+<pre class="wiki"> ----
+</pre>
+<p>
+Display:
+</p>
+<hr />
+</body>
+</html>
+

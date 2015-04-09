@@ -1,0 +1,136 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-include name="demogfields.html" />
+
+<al-expand name="page_layout_banner">
+ <al-setarg name="title">Merge person record</al-setarg>
+ <table class="duperes">
+  <thead>
+   <al-if expr="personmerge.status == persondupe.STATUS_EXCLUDED">
+    <tr>
+     <td colspan="5">
+      <table width="100%" cellpadding="0" cellspacing="0">
+       <tr class="warn">
+        <td width="100%">Not a duplicate<al-if expr="personmerge.exclude_reason">
+          : <al-value expr="personmerge.exclude_reason" />
+         </al-if>
+        </td>
+        <td>
+          <al-input type="submit" name="include" class="bigbutt" 
+           value="Remove exclusion" />
+        </td>
+       </tr>
+      </table>
+     </td>
+    </tr>
+   <al-else>
+    <tr>
+     <td colspan="5">
+      <table width="100%" cellpadding="0" cellspacing="0">
+       <tr>
+        <td nowrap>Exclusion reason:</td>
+        <td width="100%">
+         <al-input style="width: 100%;" name="personmerge.exclude_reason" />
+        </td>
+        <td>
+         <al-input type="submit" name="exclude" class="bigbutt" 
+          value="Not a duplicate" />
+        </td>
+       </tr>
+      </table>
+     </td>
+    </tr>
+   </al-if>
+   <tr class="top">
+    <td align="right">Source:</td>
+    <th>A</th>
+    <th>B</th>
+    <th>Edit</th>
+    <th>Clear</th>
+   </tr>
+   <tr class="top">
+    <td align="right">System IDs:</td>
+    <al-for vars="cases" expr="personmerge.desc_person_cases()">
+     <th>
+      <table class="smaller">
+       <al-for vars="casedesc" expr="cases">
+        <al-tr classexpr="casedesc.style">
+         <td><al-value expr="casedesc.case_id" /></td>
+         <td><al-value expr="casedesc.syndrome" /></td>
+        </al-tr>
+       </al-for>
+      </table>
+     </th>
+    </al-for>
+    <th>
+     <al-input name="cases" type="submit" class="bigbutt" value="Case" />
+    </th>
+    <th></th>
+   </tr>
+  </thead>
+  <tfoot>
+   <tr>
+    <td colspan="5">
+     <table width="100%">
+      <tr>
+       <td align="right">
+        <al-input name="showmerge" type="submit" class="butt" value="Show Merge" />
+        <script>enterSubmit('appform', 'showmerge');</script>
+       </td>
+      </tr>
+     </table>
+    </td>
+   </tr>
+  </tfoot>
+  <tbody>
+   <al-for iter="f_i" expr="personmerge.fields">
+    <al-exec expr="mc = f_i.value()" />
+    <al-if expr="mc.conflict"><tr class="warn"><al-else><tr></al-if>
+     <th class="label">
+      <al-label forexpr="mc.field.field">
+       <al-value expr="mc.label" />
+      </al-label>
+     </th>
+     <td>
+      <al-exec expr="value_a = mc.outtrans(personmerge.person_a)" />
+      <al-if expr="mc.show_a">
+       <al-input type="radio" value="a" nameexpr="mc.source_field" />
+       <al-value expr="value_a" />
+      </al-if>
+     </td>
+     <td>
+      <al-exec expr="value_b = mc.outtrans(personmerge.person_b)" />
+      <al-if expr="mc.show_b">
+       <al-input type="radio" value="b" nameexpr="mc.source_field" />
+       <al-value expr="value_b" />
+      </al-if>
+     </td>
+     <td class="user">
+      <al-exec expr="field = mc.field" />
+      <al-value lookup="field_render" expr="field.render" />
+     </td>
+     <td align="center">
+      <al-input type="radio" value="d" nameexpr="mc.source_field" /></td>
+    </tr>
+   </al-for>
+  </tbody>
+ </table>
+</al-expand>

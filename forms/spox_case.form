@@ -1,0 +1,220 @@
+<?xml version="1.0"?>
+<form name='spox_case' form_type='case' allow_multiple='False'>
+ <label>Case details (smallpox)</label>
+ <question>
+  <label>
+   Has the patient had a fever in the four days prior to the onset of the
+   rash, as part of this illness?
+  </label>
+  <input name='Fever_prior' type='YesNo' />
+  <input name='Fever_prior_onset' type='DateInput'>
+   <pre_text>Date of onset of fever prior to rash</pre_text>
+  </input>
+  <input name='Fever_prior_temp' type='FloatInput'>
+   <summary>Fever prior to rash</summary>
+   <pre_text>Fever temperature (max.)</pre_text>
+   <post_text><![CDATA[<sup>o</sup>C]]></post_text>
+  </input>
+  <input name='Fever_prior_max' type='DateInput'>
+   <pre_text>Date of max. fever temp., prior to rash</pre_text>
+  </input>
+ </question>
+ <question>
+  <label>Date of rash onset</label>
+  <input name='Rash_date' type='DateInput'>
+   <summary>Date of rash onset</summary>
+  </input>
+ </question>
+ <question>
+  <label>Is the rash accompanied by a cough?</label>
+  <input name='Cough' type='YesNo' />
+  <input name='Cough_date' type='DateInput'>
+   <pre_text>Date of onset of cough</pre_text>
+  </input>
+ </question>
+ <question>
+  <label>Symptoms experienced during the four days preceding rash onset</label>
+  <input name='other_symptom' type='CheckBoxes'>
+   <summary>Other symptoms, prior to rash</summary>
+   <choices>
+    <choice name='Head'>Headache</choice>
+    <choice name='Back'>Backache</choice>
+    <choice name='Chills'>Chills</choice>
+    <choice name='Vomit'>Vomiting</choice>
+    <choice name='Other'>Other, eg abdominal pain, delirium</choice>
+   </choices>
+  </input>
+  <input name='Other_detail' type='TextInput'>
+   <pre_text>If other, please specify</pre_text>
+   <post_text>None</post_text>
+  </input>
+ </question>
+ <question>
+  <label>How are the lesions distributed?</label>
+  <input name='Lesion_distn' type='RadioList'>
+   <choices>
+    <choice name='Centrifugal'>
+     Generalised, predominantly face and distal extremities (centrifugal)
+    </choice>
+    <choice name='Cetripetal'>
+     Generalised, predominantly trunk (centripetal)
+    </choice>
+    <choice name='Localized'>Localised, not generalised</choice>
+    <choice name='Other' />
+   </choices>
+  </input>
+  <input name='Lesion_detail' type='TextInput'>
+   <pre_text>If other, please specify</pre_text>
+  </input>
+ </question>
+ <question>
+  <label>Clinical type of smallpox</label>
+  <input name='Clinical_type' type='RadioList'>
+   <summary>Clinical type</summary>
+   <choices>
+    <choice name='Ordinary'>
+     Ordinary/classic type (raised, pustular lesions)
+    </choice>
+    <choice name='Sine'>Variola sine eruptione (Fever without rash)</choice>
+    <choice name='Modified'>
+     Modified type (As for ordinary but with an accelarated, less severe
+     course)
+    </choice>
+    <choice name='Flat'>
+     Flat type (Pustules remain flat, usually confluent or semi-confluent)
+    </choice>
+    <choice name='Haem'>
+     Haemorrhagic (widespread haemorrhages in skin and mucous membranes)
+    </choice>
+   </choices>
+  </input>
+ </question>
+ <question>
+  <label>Sub types for ordinary/classic cases</label>
+  <input name='ordinary_subtype' type='RadioList'>
+   <choices>
+    <choice name='Discrete'>
+     Discrete lesions (areas of normal skin between lesions, even on face)
+    </choice>
+    <choice name='Semi'>
+     Semi-confluent (Confluent rash on face, discrete elsewhere)
+    </choice>
+    <choice name='Confluent'>
+     Confluent (Confluent rash on face and forearms)
+    </choice>
+   </choices>
+  </input>
+ </question>
+ <question>
+  <label>Subtypes for haemorrhagic type</label>
+  <input name='haem_subtypes' type='RadioList'>
+   <choices>
+    <choice name='Early'>Early (with purpuric rash)</choice>
+    <choice name='Late'>Late (with haemorrhage into base pustules)</choice>
+   </choices>
+  </input>
+ </question>
+ <section>
+  <label>Clinical course</label>
+  <question>
+   <label>Did the patient develop any complications?</label>
+   <input name='complications' type='YesNo'>
+    <summary>Complications</summary>
+   </input>
+   <input name='complic_details' type='CheckBoxes'>
+    <summary>Details</summary>
+    <choices>
+     <choice name='Skin'>Skin, infected lesions/abscesses</choice>
+     <choice name='Cornea'>Corneal ulcer or keratitis</choice>
+     <choice name='Encephalitis'>Encephalitis</choice>
+     <choice name='Arthritis'>Arthritis</choice>
+     <choice name='Pneumonia'>Pneumonia</choice>
+     <choice name='Haemorrhagic'>Haemorrhagic</choice>
+     <choice name='Shock'>Shock</choice>
+     <choice name='Sepsis'>Bacterial sepsis</choice>
+     <choice name='Other'>Other</choice>
+    </choices>
+   </input>
+   <input name='Complication_other' type='TextInput'>
+    <pre_text>If other, please specify</pre_text>
+   </input>
+  </question>
+  <question>
+   <label>Antiviral medication (cidofovir)</label>
+   <input name='Cidofovir' type='YesNo' />
+   <input name='Cidofovir_date' type='DateInput'>
+    <pre_text>Date Cidofovir started</pre_text>
+   </input>
+  </question>
+  <question>
+   <label>Other antiviral medications given?</label>
+   <input name='Other_antiviral' type='YesNo' />
+   <input name='Other_antiviral_detail' type='TextInput'>
+    <pre_text>If yes, please specify</pre_text>
+   </input>
+  </question>
+ </section>
+ <section>
+  <label>Clinical outcome</label>
+  <question>
+   <label>Was the case admitted to hospital?</label>
+   <input name='Admit_hospital' type='YesNo'>
+    <summary>Admitted to hospital</summary>
+   </input>
+   <input name='Admit_hosp_name' type='TextInput'>
+    <summary>At</summary>
+    <pre_text>If yes, please enter hospital name</pre_text>
+   </input>
+   <input name='Admit_hosp_location' type='TextInput'>
+    <pre_text>and the hospital location</pre_text>
+   </input>
+  </question>
+  <question>
+   <label>Please provide the admission and discharge dates</label>
+   <input name='Admit_date' type='DateInput'>
+    <summary>Admission date</summary>
+    <pre_text>Date admitted</pre_text>
+   </input>
+   <input name='Discharge_date' type='DateInput'>
+    <summary>Discharge date</summary>
+    <pre_text>Date discharged</pre_text>
+   </input>
+  </question>
+  <question>
+   <label>Was the patient admitted/transferred to a second hospital?</label>
+   <input name='transfer' type='YesNo'>
+    <summary>Transferred/readmitted</summary>
+   </input>
+   <input name='Second_hospital' type='TextInput'>
+    <summary>Second hospital</summary>
+    <pre_text>If yes, please enter name of second hospital</pre_text>
+   </input>
+   <input name='Second_location' type='TextInput'>
+    <pre_text>and the hospital location</pre_text>
+   </input>
+  </question>
+  <question>
+   <label>
+    Please provide the admission and discharge dates for the second hospital
+   </label>
+   <input name='Second_admit_date' type='DateInput'>
+    <summary>Second admission date</summary>
+    <pre_text>Date of admission</pre_text>
+   </input>
+   <input name='Second_discharge_date' type='DateInput'>
+    <summary>Second discharge date</summary>
+    <pre_text>Date of discharge</pre_text>
+   </input>
+  </question>
+  <question>
+   <label>
+    Did the patient die from smallpox illness or any smallpox complications?
+   </label>
+   <input name='Death' type='YesNo' />
+   <input name='Death_date' type='DateInput'>
+    <summary>Date of death</summary>
+    <pre_text>If yes, please enter date of death</pre_text>
+   </input>
+  </question>
+ </section>
+</form>

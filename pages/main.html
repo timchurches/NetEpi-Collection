@@ -1,0 +1,153 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-include name="syndlist.html" />
+<al-include name="bulletin_list.html" />
+
+<al-macro name="userdetails">
+    <table class="userdetails">
+     <tr>
+      <td align="left">
+       <label>Logged in as</label>
+       <al-value expr="_credentials.user.fullname">
+      </td>
+      <td align="center">
+       <label><al-value expr="config.group_label" /></label>
+       <al-value expr="', '.join(_credentials.unit.groups)" />
+      </td>
+      <td align="right">
+       <label><al-value expr="config.unit_label" /></label>
+       <al-if expr="len(_credentials.unit_options) > 1">
+        <al-select name="unit_select" onchange="submit();"
+         optionexpr="_credentials.unit_options" />
+        <al-if expr="not has_js">
+         <al-input type="submit" class="smallbutt" 
+          name="changeunit" value="Change" />
+        </al-if>
+       <al-else>
+        <al-value expr="_credentials.unit.name" />
+       </al-if>
+      </td>
+     </tr>
+    </table>
+</al-macro>
+
+<al-macro name="top-tasks">
+       <table id="top-tasks" class="top-tasks">
+        <tr>
+         <th>Task</th>
+         <th>Due</th>
+        </tr>
+        <al-for vars="qt" expr="quick_tasks">
+         <al-tr idexpr="'task:%s' % qt.task_id" class="clickable">
+          <td>
+           <al-value expr="qt.surname" />, 
+           <al-value expr="qt.given_names" /> 
+           (ID <al-value expr="qt.case_id" />)
+           <div class="desc"><al-value expr="qt.description" /></div>
+          </td>
+          <td>
+           <al-value expr="qt.due_relative" />
+          </td>
+         </al-tr>
+        </al-for>
+       </table>
+       <script>clicktab('top-tasks', 'appform');</script>
+</al-macro>
+
+<al-macro name="recent-activity">
+       <table id="recent-activity" class="recent-activity">
+        <tr><th>Recently accessed</th></tr>
+        <al-for vars="id, label" expr="_credentials.prefs.get_recent_cases()">
+         <al-tr idexpr="'recent_case:%s' % id" class="clickable">
+          <td><al-value expr="label" /></td>
+         </al-tr>
+        </al-for>
+       </table>
+       <script>clicktab('recent-activity', 'appform');</script>
+</al-macro>
+
+<al-macro name="banner-tabs">
+       <div class="banner-tabs">
+        <al-for vars="tab" expr="page_common.bannertabs(__ctx__)">
+         <al-input type="submit" nameexpr="tab.name" expr="tab.name" />
+        </al-for>
+       </div>
+</al-macro>
+
+<al-macro name="main_rhs">
+  <al-expand name="userdetails" />
+
+  <al-expand name="render_msgs" />
+
+  <al-if expr="helpdesk_contact">
+    <div class="helpdesk">
+     For assistance, please contact 
+     <al-value expr="helpdesk_contact" noescape />.
+    </div>
+  </al-if>
+
+  <al-expand name="syndlist" />
+
+  <table class="twocols">
+   <tr>
+    <td class="leftcol">
+     <al-expand name="top-tasks" />
+    </td>
+    <td class="rightcol">
+     <al-expand name="recent-activity" />
+    </td>
+   </tr>
+  </table>
+
+  <al-expand name="debug_box" />
+</al-macro>
+
+<al-expand name="page_layout">
+ <al-setarg name="title">Home</al-setarg>
+
+ <al-if expr="has_js == 'yes'">
+  <al-input type="hidden" name="action" value="" />
+ </al-if>
+
+ <al-expand name="banner_box">
+  <al-setarg name="banner_extra">
+   <td>
+    <al-input class="quick-search" name="quick_search" id="quick_search" onfocus="this.style.width='16em'" onblur="this.style.width='8em'" />
+    <script>inputHint('quick_search', 'Quick search...');</script>
+   </td>
+  </al-setarg>
+ </al-expand>
+
+
+ <al-if expr="bulletin_list">
+  <div class="left20">
+   <al-expand name="bulletin_list" />
+  </div>
+
+  <div class="right80">
+   <al-expand name="main_rhs" />
+  </div>
+ <al-else>
+  <al-expand name="main_rhs" />
+ </al-if>
+
+
+</al-expand>

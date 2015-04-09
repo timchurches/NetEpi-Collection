@@ -1,0 +1,72 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-expand name="page_layout_banner">
+ <al-setarg name="extrahead">
+  <al-expand name="req-sorttable" />
+ </al-setarg>
+ <al-setarg name="title">
+  Administer <al-value expr="config.unit_label" /> users
+ </al-setarg>
+ <table id="user_table" class="adminusers sorttable">
+  <thead>
+   <tr>
+    <th class="sortable">Enabled</th>
+    <th class="sortable">Bad Pass</th>
+    <th class="sortable">Username</th>
+    <th class="sortable defaultsort">Full name</th>
+    <th class="sortable">Title</th>
+    <th></th>
+   </tr>
+  </thead>
+  <tfoot>
+   <tr>
+    <td colspan="6">
+     <table width="100%" cellpadding="0" cellspacing="0">
+      <tr>
+       <td align="right">
+        <al-input name="new" type="submit" value="New User" class="butt" />
+       </td>
+      </tr>
+     </table>
+    </td>
+   </tr>
+  </tfoot>
+  <tbody>
+   <al-for iter="u_i" expr="users">
+    <al-exec expr="user = u_i.value()" />
+    <al-if expr="u_i.index() & 1"><tr class="darker"><al-else><tr></al-if>
+     <td><al-value expr="user.enabled" lookup="boolean" /></td>
+     <td><al-value expr="user.timelock_str" /></td>
+     <td><al-value expr="user.username" /></td>
+     <td><al-value expr="user.fullname" /></td>
+     <td><al-value expr="user.title" /></td>
+     <td nowrap>
+      <al-input nameexpr="'edit:%s' % user.user_id" 
+       value="Edit" type="submit" class="smallbutt" />
+      <al-input nameexpr="'log:%s' % user.user_id" 
+       value="Log" type="submit" class="smallbutt" />
+     </td>
+    </tr>
+   </al-for>
+  </tbody>
+ </table>
+ <al-input name="sortby" type="hidden" />
+</al-expand>

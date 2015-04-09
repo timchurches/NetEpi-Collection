@@ -1,0 +1,192 @@
+/*
+ *  The contents of this file are subject to the HACOS License Version 1.2
+ *  (the "License"); you may not use this file except in compliance with
+ *  the License.  Software distributed under the License is distributed
+ *  on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+ *  implied. See the LICENSE file for the specific language governing
+ *  rights and limitations under the License.  The Original Software
+ *  is "NetEpi Collection". The Initial Developer of the Original
+ *  Software is the Health Administration Corporation, incorporated in
+ *  the State of New South Wales, Australia.
+ *  
+ *  Copyright (C) 2004-2011 Health Administration Corporation, Australian
+ *  Government Department of Health and Ageing, and others.
+ *  All Rights Reserved.
+ *
+ *  Contributors: See the CONTRIBUTORS file for details of contributions.
+ */
+
+body {
+    background-color: white;
+    color: black;
+    font-family: "Verdana", "Arial", sans-serif;
+}
+
+@media print {
+    .noprint {
+        display: none;
+    }
+    body {
+        font-size: 8pt;
+    }
+}
+.syndform {
+    page-break-after: always;
+    width: 100%;
+}
+.cpsection {
+    width: 100%;
+}
+    
+@media screen {
+    body {
+        font-size: 10pt;
+    }
+    .syndform {
+        border-bottom: 2px dashed black;
+    }
+    .cpsection {
+        border-bottom: 2px dashed black;
+    }
+    .confidential {
+        display: none;
+    }
+}
+.msgbox {
+    color: #080;
+    background-color: #efe;
+    border-left: 1ex solid #080;
+    padding-left: 1ex;
+    margin-top: 0.5ex;
+}
+
+.errbox {
+    color: #c00;
+    background-color: #fee;
+    border: 1px solid #c00;
+    border-left: 1ex solid #c00;
+    padding-left: 1ex;
+    margin-top: 0.5ex;
+    font-weight: bold;
+}
+
+.confidential {
+    text-align: center;
+    font-weight: bold;
+}
+
+.butt {
+    width: 6em;
+}
+td {
+    vertical-align: top;
+}
+
+.heading {
+    font-size: 120%;
+    font-weight: bold;
+    padding-top: 3ex;
+    padding-bottom: 1ex;
+    text-align: center;
+    text-decoration: underline;
+}
+
+.section {
+    font-size: 110%;
+    font-weight: bold;
+    padding-top: 2ex;
+    padding-bottom: 1ex;
+}
+.subsection {
+    font-size: 110%;
+    font-weight: bold;
+    padding-top: 1.5ex;
+    padding-bottom: 1ex;
+}
+.number {
+    width: 8ex;
+}
+.question, .inputs {
+    padding-top: 1ex;
+    padding-bottom: 0.5ex;
+    page-break-inside: avoid;
+}
+.info {
+    font-size: 83%;
+}
+.inputs {
+    width: 35%;
+}
+.skiptext {
+    font-size: 83%;
+    color: #888;
+    font-weight: bold;
+}
+.pretext, .posttext {
+    font-size: 83%;
+}
+.posttext {
+    padding-bottom: 0.5ex;
+}
+.pretext {
+    padding-top: 0.5ex;
+}
+.inputs .textbox {
+    height: 1.5em;
+    width: 99%;
+    border-bottom: 1px solid black;
+    margin: 1px;
+}
+.inputs .textlines {
+    height: 1.5em;
+    width: 100%;
+    border-bottom: 1px dotted black;
+    margin-bottom: 1px;
+}
+.inputs .tickbox {
+    height: 1em;
+    width: 1em;
+    border: solid 1px black;
+    margin-right: 1ex;
+}
+.linereport table {
+    border-collapse: collapse;
+}
+.linereport thead {
+    display: table-header-group;
+}
+.linereport tbody tr:hover {
+    background-color: #fffae7;
+}
+.linereport .header {
+    text-align: center;
+    font-weight: bold;
+    font-size: 120%;
+}
+.linereport .preamble {
+    font-size: 83%;
+}
+.linereport .footer {
+    font-size: 83%;
+}
+.linereport th {
+    text-align: left;
+    background-color: #ccc;
+    border-top: 2px solid black;
+    padding: 0 2px 0 2px;
+}
+.linereport .lighter {
+    background-color: #eee;
+    border-top: 1px solid black;
+}
+.linereport .darker {
+    background-color: #ddd;
+}
+.linereport .lighter td, .linereport .darker td {
+    border-top: 1px solid black;
+    padding: 0 2px 0 2px;
+}
+.linereport .free {
+    padding-left: 4ex;
+    color: #888;
+}

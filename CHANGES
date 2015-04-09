@@ -1,0 +1,1302 @@
+CUMULATIVE CHANGES IN NetEpi Collection
+=======================================
+
+SUMMARY OF CHANGES IN VERSION 1.8.4 RELATIVE TO VERSION 1.7.2
+=============================================================
+
+This round of changes was funded by the Australian Government Department of
+Health and Ageing.
+
+* Added support for importing data to checkbox fields. When using the
+  "Multivalue" column import, the data must appear in a single field with
+  a delimiter character ("/" by default). Exports from NetEpi Collection
+  already use this format.
+
+* The admin form editor has been reimplemented, now relying heavily on
+  Javascript for it's operation. In particular, a more powerful "cut
+  and paste" mechanism for moving and duplicating inputs, questions and
+  sections replaces the "move up", "move down", and "delete" buttons.
+  Cut&paste between forms is also possible, as the cut buffer is retained
+  between invocations of the form editor.
+
+* The admin interface for editing address "states" and "assignments",
+  and the form editor checkbox and droplist choices now use client-side
+  scripting allow reordering of the options without requiring a round-trip
+  to the server (as the former "up" and "down" buttons did).
+
+
+SUMMARY OF CHANGES IN VERSION 1.7.2 RELATIVE TO VERSION 1.6.0
+=============================================================
+
+This round of changes was funded by the Australian Government Department of
+Health and Ageing. The changes focused on improvements to reporting system:
+
+* A new "reports" menu has been introduced, making it easier to browse
+  saved reports.
+
+* Report filtering now supports logical conjunctions and disjunctions (AND and
+  OR).
+
+* There are now four levels of report sharing: "quick" (shown on home page),
+  "public" (available to all users), "role" (available to everyone in your
+  role) and "private" (available only to you).
+
+* A new "PUBREP" right has been introduced that allows users to run reports
+  that have been shared with them, without giving them full access to the
+  reporting system.
+
+* The graphical reports, "Epi curve" and "Association Visualisation" are
+  now report types in their own right, rather than being a sub-function of
+  line reports.
+
+* Reports are now saved in XML format (rather than as Python pickles), and
+  reports can now be imported and exported, facilitating sharing of reports
+  and improving the robustness of saved reports.
+
+* Line report output can now be generated in CSV format (similar to the
+  record export function, but allows filtering and control over the columns
+  exported).
+
+* Cross-tab reports now accept a third "page" axis, as well as options to
+  suppress empty rows, columns and pages.
+
+* Epi Curve (time series) reports now accept categorical form fields as
+  conditioning columns, as well as the core demographic fields, and the
+  generation of tick-marks on the time axis has been improved considerably.
+
+* Reports can now be run from the command-line utility.
+
+In addition to the reporting enhancements, the "date-of-birth/age" demographic
+field logic has been reimplemented to record the precision of the entered age,
+improving the handling of ages in days, weeks and months.
+
+These changes required changes to the database schema. The installer performs
+the necessary upgrades. As a result, it is not possible to downgrade from
+1.7 to 1.6.
+
+
+SUMMARY OF CHANGES IN VERSION 1.6.0 RELATIVE TO VERSION 1.5.2
+=============================================================
+* The "home" page has been redesigned to reduce clutter while providing
+  direct access to things like "recent cases" and the "quick search"
+  function. 
+  
+  NOTE: As this required extensive use of Javascript, browsers without
+  Javascript are no longer supported.
+
+* Minor improvements to usability of the case and person merging have been
+  made. 
+
+SUMMARY OF CHANGES IN VERSION 1.5.2 RELATIVE TO VERSION 1.5.1
+=============================================================
+
+* Add support to crosstabs for filtering by a form that is not a row or column.
+
+* Fixed inconsistent handling of form fields with a maximum length of 0 (this
+  now means "unlimited").
+
+* Changed wiki links to always pop in a new window (otherwise we lose
+  the application state).
+
+SUMMARY OF CHANGES IN VERSION 1.5.1 RELATIVE TO VERSION 1.5.0
+=============================================================
+
+* The demographic field "tabs" on the case and search screens have been
+  replaced by client-side dynamic HTML "folds".
+
+* The data import machinery has been reworked to improve its handling and
+  reporting of import errors, and test coverage of the import logic has been
+  improved considerably.
+
+* The unit test driver has been reimplemented to simplify the setup of test
+  cases and suites, and to allow a single scratch database instance to be
+  shared between all test cases. Previously, the scratch database was created
+  and destroyed for each test case, which was slow and expensive.
+
+* It is now possible to list and export form definitions via the command line
+  interface.
+
+* Made a number of improvements to the wording of messages within the
+  application, and made other cosmetic changes, such as highlighting the field
+  labels in the search result screen.
+
+* A number of regressions that were preventing use with Python 2.3 were fixed,
+  as were a number of other minor bugs. Also, when adding a new case, the
+  results were incorrectly being restricted to the current case definition.
+
+SUMMARY OF CHANGES IN VERSION 1.5.0 RELATIVE TO VERSION 1.4.6
+=============================================================
+
+* An extensive reworking of the contacts-to-case association mechanism has been
+  undertaken. Up until v1.5.0, an association between a contact of a case and a
+  case could only be recorded through the case record, and each contact record
+  could only be associated with a single case (although each person could have
+  multiple contact records, each associated with a different case). All of this
+  was overly restrictive and potentially rather confusing, and many end users
+  inadvertently entered contacts-of-cases around the wrong way. To address
+  these problems, NetEpi now allows arbitrary, bi-directional associations
+  between cases to be captured. In addition, such associations can now be
+  captured between cases of any case definition (syndrome) type to which the
+  user has access - contact associations are no longer restricted purely to
+  pre-defined and specific "contact" definitions.  Furthermore, a type of
+  association (or a type of relationship) can now be specified when recording
+  associations between cases, with the type chosen from a pre-defined list. New
+  association types can be added to this list on-the-fly by end users. An
+  association date can also be recorded. Also, associations can be added for
+  many records at a time, in a single operation, rather than tediously for
+  individual records one-by-one. This is a particularly useful feature when
+  used in conjunction with the new record tagging and case sets facilities
+  described below.
+
+* A case tagging facility has been added. During the public health response to
+  influenza A H1N1 09 (human swine flu) in NSW, Australia in April-August 2009,
+  we relabelled the "Facsimile (fax) number" field in the demographic fields
+  section of NetEpi as "Tags" and used it to record short codes (such as 'PD1')
+  to tag (or flag) records as belonging to a particular group, such as
+  passengers on a particular cruise ship who were potentially exposed to
+  influenza A H1N1 09 virus. This was found to be a very useful feature, but
+  the use of purely free text tags was somewhat problematic. The tagging
+  facility introduced in v1.5 corrects these problems: short tags can be
+  quickly entered as free text in a new "tags" field, which is associated with
+  each case record, not the person record to which the case relates. However,
+  these free text tags are validated against a list of pre-defined tags to
+  avoid typographic errors. Alternatively, tags may be chosen from a list. End
+  users may add new tags, together with a short description or scope note for
+  each tag, as they are required - intervention by an administrator is not
+  required to define new tags. The tags field can thus be used to record
+  membership of arbitrary groups, such as cases with exposure to putative or
+  potential sources of infection or environmental contaminant. Each case record
+  can have more than one tag applied to it. The label for the Tags field can be
+  over-ridden for each case definition eg it can be relabelled "Exposures".
+  Records with particular tags can be located using the search facilities, and
+  can easily be converted into case sets (see below). Tags can also be used in
+  filters for line reports and cross-tabs (and forthcoming in v1.6, to filter
+  data exports as well).
+
+* A "case set" facility has been added. This allows arbitrary sets of records
+  to be browsed or edited as a set of records. Case sets can be temporary, 
+  lasting only for the duration of a login session, or they can be given
+  names and saved for future reference. Case sets can be created by selecting 
+  some or all of the records returned by a search made through the search page.
+  Case sets can also be used to add associations (contacts) to a case, or can
+  be formed from all the associations for a case. Saved case sets can be
+  renamed, deleted or sorted in different ways. In v1.5.0, individual records
+  can be added to or removed from a case set once it has been created. Future
+  versions shall also allow case sets to be merged and to be used with the
+  tasking subsystem, and shall provide other ways of creating case sets, such
+  as automatically updated case sets of all records which do not meet a 
+  user-defined set of quality assurance or completeness criteria.
+
+* A new DATAMGR (data manager) right has been added, which allows users who
+  have been assigned this right to carry out duplicate person and duplicate
+  case scans and to merge duplicate person and/or case records (and data
+  forms). Prior to v1.5.0, only users with full administrator rights could
+  undertake scans for and merging of duplicate records. This was found to be
+  inconvenient in practice, particularly during an emergency, when
+  administrators tended to be rather busy with other tasks.
+
+* Further enhancements have been made to the person duplicate detection sub-
+  system. There are two options: a full duplicate scan and a quick scan. The 
+  full scan now compares every person record with every other person record, 
+  but due to optimisations this exhaustive comparison is faster than previous
+  partial (indexed) comparisons. The quick scan compares records that have been
+  edited since the last duplicate scan with all other records - in other words,
+  it is an incremental scan. Both the full and quick scans run in the back-
+  ground, and changes have been made to prevent manual person merging while 
+  background duplicate scans are running, and to prevent more than one 
+  duplicate scan from running at once.
+
+* A batch duplicate scan script has also been provided in the casemgr/cmdline
+  directory of the distribution. This can be run as an automated "cron" job
+  to scan for person duplicates on a regular basis eg overnight, or every hour.
+  The results of the scan are stored and are then immediately available to 
+  users who have the necessary rights [ADMIN or DATAMGR] to undertake person
+  merging.
+
+* A facility to scan for duplicate cases has been added (under the Tools menu,
+  users who have the necessary rights [ADMIN or DATAMGR]). The scan is
+  performed interactively (it runs quickly) for specific case definitions
+  (syndromes), rather than all case definitions, because not all case
+  definitions are singleton i.e. it may be acceptable, or expected, that a
+  person will have more than one case of a particular type. Thus the facility
+  should only be used to scan for duplicate cases where each person is expected
+  to have only one case. The intention is to enhance this facility in future
+  versions to allow detection of duplicate cases within a given temporal
+  window.
+
+* When cases are merged, the redundant case is now logically deleted, and a
+  note is automatically added to it which points to the case ID into which it
+  has been merged. Furthermore, when a search for a case ID is made using the
+  "quick search" field on the search page, the case IDs of deleted cases are
+  also searched. This helps prevent dismay amongst users who search for a case
+  ID which they knew existed but can no longer be found, because it has been
+  merged with another case.
+
+* A new user invitation and sponsorship system has been introduced. Previously,
+  new users wishing to apply for a user account could access the login page and
+  click on the "Apply for a user account" button without any form of
+  authentication.  This scheme was potentially vulnerable to imposters applying
+  for accounts, and thus required very careful and potentially very
+  time-consuming validation by administrators of the bona fides of account
+  applicants. This scheme is still the default, but additional account
+  application schemes are now available, which can be specified at installation
+  time and/or later by a system administrator. A new "invite" mode allows users
+  who have been given the new SPONSOR ("Sponsor new users") right to invite new
+  users to register for a user account by entering their email address. A
+  message which contains a random, one-time-use passcode is then sent to the
+  invited person's email address.  The invitee is prompted to provide this
+  one-time passcode before they are allowed to proceed with applying for an
+  account. After they have completed their account application, their details
+  must still be validated and approved by an administrator. The other new mode,
+  "sponsor", works in a similar fashion but both the ability to issue
+  invitations to apply for new user accounts and the ability to approve the
+  account applications for which they have issued invitations is devolved to
+  users who have been given the SPONSOR right. This mode completely avoids the
+  reliance on a small number of administrators to approval all new accounts,
+  while simultaneously dramatically reducing the likelihood of false account
+  applications by imposters. All account invitations and sponsorships are
+  logged in the central audit trail facility, and administrators or other
+  nominated users can be informed by email of any new invited or sponsored
+  account applications or approvals.
+
+* Improvements were made to the way in which passwords were encrypted, and the
+  requirements for password complexity were strengthened. Passwords must now be
+  a minimum of 6 characters long and be a mixture of upper and lower case
+  letters and numbers, and upper case letters and numbers must appear in the
+  body of the password, not just as the first and/or last characters.
+
+* A customised Apache web server authentication module, based on
+  mod_auth_pgsql, is included in the tools/ subdirectory. When installed and
+  configured, this module allows authenticated access to web content managed
+  outside of the NetEpi application using the same usernames and passwords that
+  are used to log in to NetEpi itself. This is useful for providing
+  password-protected access to reports or other content, such as maps,
+  generated by an external process based on data automatically exported from
+  NetEpi, without having to manage or issue additional passwords to users.
+
+* A "case assignment" field was added to the core demographic fields to capture
+  which organisational unit (eg which Public Health Unit, or which juris-
+  dictional unit) each case has been assigned to (if any). This often differs
+  from the geographical region of residence or employment of each case. The
+  valid values for this field can be specified by administrators for each case
+  definition/ syndrome.
+
+* A "recently accessed cases" pull-down list was added to the home page. This
+  list provides direct access, without having to go through a search page, to
+  the 16 cases which the user has most recently accessed or edited or added. It
+  is somewhat akin to the "history" function in most web browsers.
+
+* Improvements were made to the ergonomics of searching via the search page:
+  pressing Enter after filling in the Quick Search field now executes the
+  search immediately; the use of a wildcard character (*) in a search field now
+  automatically disables phonetic searching; and if a search returns only one
+  result, the user is shown that case record directly rather than an inter-
+  mediate search results page with just one row on it. This last feature is
+  optional, controlled by a configuration option which system administrators
+  can set.
+
+* It is now possible to embed the following strings in report and cross-tab 
+  headers, pre-ambles and footers and have the corresponding information
+  substituted when the report or cross-tab is run: {{date}}, {{datetime}},
+  {{username}}, {{fullname}}, {{syndrome_name}}, {{syndrome_label}}.
+
+* Data collection forms deletions are now logical, rather than absolute, and
+  thus deleted forms can still be viewed (but not edited), and can be undeleted
+  if required.
+
+* Several minor bugs which manifest themselves in obscure circumstances have
+  been fixed.
+
+SUMMARY OF CHANGES IN VERSION 1.4.6 RELATIVE TO VERSION 1.4.5
+======================================================================
+
+* Significant enhancements to the person duplicate detection facility and the
+  associated interactive person/case/form merging machinery. In particular,
+  an "only changed persons" optimisation for the duplicate person scanning
+  was added which makes incremental scanning much, much faster. In addition,
+  if an excessive number of matches occur while duplicate scanning, the
+  match cut-off is temporarily increased (otherwise up to persons^2 matches
+  can be recorded!). The minimum cut-off was also set at 55%.
+
+* Changes to search page appearance to more clearly distinguish the
+  "general" (lookup) search page from the search page used when adding
+  a new case or contact.
+
+* Added a record count to the footer of printed line reports.
+
+* Added the ability to capture a short textual reason for the deletion of
+  case and contact records.
+
+* Added a new class of message to users: "warning" (orange), in addition
+  to existing "info" (green) and "error" (red) message classes.
+
+* In the admin module, if searches for users, roles, forms etc return
+  only one result, jump straight to the relevant edit page.
+
+* Addition of a command-line tool to extract address details for all
+  new and changed records and print them to stdout or a CSV file, from
+  where they can be submitted to a geocoder for incremental geocoding
+  (see the cmdline/ directory).
+
+* Addition of a simple script to generate a description of the columns in
+  an exported CSV file - this is particularly useful for providing some
+  machine-readable metadata for data exported via the command-line/cron
+  job batch export facility. See the tools/ directory.
+
+* Addition of more last update timestamps on various entities.
+
+* Minor bug fixes, minor cosmetic and/or semantic adjustments to labels and 
+  messages, and some minor performance improvements.
+
+
+SUMMARY OF CHANGES IN VERSION 1.4.5 RELATIVE TO VERSION 1.4.3
+======================================================================
+
+* A cross-tabulation report type has been implemented. Counts of cases, 
+  contacts and forms can be readily generated. Clicking on a cell in the
+  resulting cross-tab generates a query for cases or contacts matching the row
+  and column criteria, and the resulting record set can then be stepped through
+  in the case or contact edit pages.
+
+* An additional check has been added when a user saves a singleton form to
+  ensure another user has not already created an instance of the singleton
+  form. If this has occurred, the forms are merged and the second user is
+  warned to review the data before re-saving it.
+
+* A rights-based user viewer has been added to the Admin interface, allowing
+  administrators to rapidly determine which users have a given Right
+  (permission), and how they acquired the right (via Context, Role or
+  directly).
+
+* In the form editor, you can now show the differences between the current 
+  form definition and the deployed form definition (this functionality requires
+  python 2.4 or greater. When an attempt is made to use it with python 2.3 a
+  harmless exception will occur).
+
+* A bug that resulted in spurious and transient validation errors occasionally 
+  being displayed when first opening a form has been fixed. The problem was
+  only evident when persistent application servers were in use (for example,
+  FastCGI), and did not cause any problems (it has been present for several
+  years and no-one has reported it), but it did cause occasional
+  head-scratching when strange validation errors would sometimes appear when
+  opening a new, blank data collection form.
+
+* The schema upgrade logic used an incorrect default when creating the 
+  DOB_is_approx column. This only effected databases that existed prior to May
+  2006. The consequences of this error were that the date of birth would be
+  treated as approximate even when an exact date of birth was supplied. For
+  effected systems, the default for DOB_is_approx was incorrectly specified as
+  TRUE. It will be necessary to manually fix effected schemas via psql and the
+  following command:
+
+    ALTER TABLE persons ALTER COLUMN DOB_is_approx SET DEFAULT FALSE
+
+* When deployed with the "ocpgdb" DB-API module (rather than pyPgSQL), a bug in
+  PostgreSQL was exposed that allowed invalid times to be saved to the database
+  when using the "Time" form input. This subsequently caused failures when
+  attempting to restore database dumps, as well as other problems with the
+  data.  Additional checks have been added to the application and the bug has
+  been reported to the PostgreSQL developers.
+
+* The handling of report filters where the filter was filtering on
+  form date/times has been fixed.
+
+* The report system's handling of changes to form definitions has been improved:
+  after form upgrades, (green) advisory warnings to check the validity of
+  report parameters are still given until report specifications are re-saved,
+  but reports now continue to function. Previously reports refused to run after
+  form upgrades until their parameters were checked by loading them and
+  re-saving them. Although this is good practice, the requirement was a bit too
+  strict.
+
+* Several changes have been made to the CSV data export functions to assist in
+  scripted and interactive (via the web interface) exporting. These include:
+
+   * A new row-per-form export style has been added to complement the existing 
+     row-per-case export styles. This is more natural for certain types of
+     analysis, and helps avoid problems when exporting into Excel (which does
+     not cope with spreadsheets with more than 256 columns).
+
+   * A flag has been added to optionally make the exporter remove newlines and
+     other control characters embedded within CSV fields.
+    
+   * Command line exports now use the "write to temporary file and rename into
+     place" pattern to avoid potential race conditions when other systems read
+     an export file that is currently being updated.
+  
+   * A bug in the command line exporter's handling of the "export deleted 
+     cases" flags was fixed.
+
+* A logic error in task-based contact access control has been fixed.
+
+* Two issues relating to the handling of RadioButton and DropList form inputs 
+  with null keys have been fixed (these mainly effected the Countries and
+  Languages input classes).
+
+* An issue when importing an XML form definition into the form editor has been
+  fixed. After an import, the form definition was not being marked as having
+  been changed and consequently the "Save" button was not available.
+
+* An issue that resulted in clients who were using systems such as Microsoft 
+  SharePoint producing harmless but annoying exceptions on the server each
+  time they logged in has been fixed.
+
+
+SUMMARY OF CHANGES IN VERSION 1.4.3 RELATIVE TO VERSION 1.4.0
+======================================================================
+
+* A regression in handling of RadioButton and DropList form inputs has been
+  fixed.
+
+* A race condition when rolling out changes to a form definition has been
+  fixed: if a user started filling in a form but had not saved it, the form
+  would be saved with the old form definition. The application now checks the
+  form definition version when saving the user's form and attempts to upgrade
+  it to the newly deployed version (and warns the user that this has occurred).
+
+* Fixed date/time handling in data import. For date/time fields, the date and
+  time specification was ambiguous as MM was used to represent both months and
+  minutes. The time format must now be specified in lower case (for example,
+  hh:mm:ss). Additionally, a logic error that resulted in an application
+  exception when previewing date/time fields has been fixed.
+
+* The third-party library responsible for translating wiki-style markup was
+  initialising the logging system on each call. When the application was
+  deployed as a persistent application server (via FastCGI or similar), the
+  application would slow down noticeably over a period of hours due to this
+  misuse of the logging module. The logging logic has been removed from the
+  wiki markup library.
+
+
+SUMMARY OF CHANGES IN VERSION 1.4.0 RELATIVE TO VERSION 1.3.0
+======================================================================
+
+User database
+-------------
+
+* Groups and Units have been generalised into Contexts and Roles. Contexts
+  allow a single instance to present different "faces" to different users
+  concurrently, while still sharing a single user database. 
+  
+* When a user is a member of multiple Roles, they are able to switch Roles 
+  via a pull-down menu on the main application page, and this choice is
+  remembered between logins.
+
+* Rights can now be associated with Roles as well as Users and Contexts
+  (formerly Groups). A user's rights are the union of their Role rights, their
+  Context rights, and their explicit user rights.  
+
+* User data has been expanded to allow the user database to be used as a
+  contact database. A simple user browser has been added under Tools, and users
+  can control the visibility of their details in the browser via their privacy
+  preferences. At login, users are periodically prompted to review their
+  contact details for correctness. The periodical reminders are controlled by
+  the user_check_interval configuration option.
+
+  The user browser can be disabled via the user_browser configuration option
+  (see the Installation section in the README file for more information).
+
+* A new access model that allows users to see all cases and contacts associated
+  with the case definitions assigned to their Role (rather than their Roles
+  cases and contacts) has been added.  This access is controlled by the "Access
+  by case/contact definition" right, which can be assigned to Users, Roles or
+  Contexts.
+
+* Disabled users (or users waiting for their account to be enabled) can now
+  update their contact details.
+
+* Administrators can now view the system log via the web interface. The system
+  log contains information about administrative changes, such as changes to
+  users, roles, contexts, case definitions, etc.
+
+Data import
+-----------
+
+* It is now possible to import form data as well as demographic data.
+
+* Conflicts encountered while importing cases or contacts can now optionally be
+  resolved by temporarily creating duplicate records, and then resolving the
+  duplicates via the duplicate person merging logic. A switch has been added to
+  the data import parameters to allow users to choose between ignoring
+  conflicting records or creating duplicate persons and cases. A new "View
+  import conflicts" option has been added for Admin users under Tools.
+
+Reports
+-------
+
+* Clicking on a row in report now takes you to the relevant case,
+  contact or form.
+
+* A shortcut has been added to the main page to allow reports with "Role" or
+  "Public" sharing to be run directly.
+
+
+Other changes
+-------------
+
+* It is now possible to create "Note" tasks that are not associated with any 
+  case or contact.
+
+* A (per instance) command line interface has been added to allow scripts to 
+  interact with the application. In particular, this allows scripted export of
+  data from an instance for analysis and reporting in other systems.
+
+* The duplicate person search is now configurable - in particular, the
+  inclusion and weighting of person demographic fields can be controlled, and
+  the user can choose between trigram or bigram matching.
+
+* Several other minor cosmetic and layout improvements have been made.
+
+* Several bug fixes and some refactoring to improve the robustness and 
+  maintainability of the program code. Many minor bugs in the notification
+  system have been fixed, although the effect of these will only be apparent if
+  a persistent application deployment model is used (for example, FastCGI).
+
+
+SUMMARY OF CHANGES IN VERSION 1.3.0 RELATIVE TO VERSION 1.2.0
+======================================================================
+
+* The ability to import demographic data from CSV or other delimited or
+  column-formatted data files has been enhanced and several bugs in the
+  previous version of this facility have been fixed. A name can now be
+  assigned to each source of data to be imported, and if the "Local ID"
+  field is assigned, this is assumed to be a unique key which can be used
+  to update records that have already been imported. This means that updated
+  versions of an imported demographic data can be re-imported and the changes
+  in that updated file will be applied to existing records, rather than a
+  duplicate set of records being created. Demographic data 
+  imported from external sources is marked as read-only, although users
+  can "take ownership" of such records if they need to make changes in
+  NetEpi (and such changes will not be over-written by future data imports
+  from that data source). The use-case (motivation) for this enhancement
+  is the need to be able to repeatedly import batches of demographic data 
+  from sources such as aircraft passenger manifest files, or from Disaster 
+  Victim Registration (DVR) databases, which are often operated by Police or 
+  other agencies in disaster and emergency situations. Note that deletion of
+  imported records which have disappeared from subsequent import data files
+  does not occur (this may be added in a future version).
+  
+* The batch duplicate person/case/contact detection facility has been made more
+  robust and now runs on demand "in the background", rather than interactively,
+  and the results of the last batch run of the duplicate detector are
+  displayed. This means that the duplicate detection system is now able to deal
+  with tens or hundreds of thousands of records if necessary. 
+
+* Installation options were added to allow customised login page and banner
+  logos to be used.
+
+* The installer is now smarter and doesn't reset previously specified options
+  (with a few exceptions - see the installation notes later in this file).
+  This makes the installation of upgrades and bug-fixes easier and less error-
+  prone.
+
+* The administrator interface for configuring demographic fields has been
+  improved, making it much quicker to use.
+
+* The tabbed interface to demographic fields can be disabled by the system 
+  administrator if required - for example, if only a small number of 
+  demographic fields have been enabled.
+
+* A few minor and obscure bugs were fixed, including a problem with the 
+  pop-up calendar when used with Microsoft Internet Explorer 6 and 7 web
+  browsers.
+
+* A utility has been added to create scatterplot graphs of the RTT (round-trip
+  time) performance data collected by NetEpi as it operates. These data give
+  an indication of the response times of individual end-users of a NetEpi
+  installation. This allows problems with their Internet or other network 
+  access to the NetEpi web site to be monitored and addressed pro-actively.
+  The script which extracts the RTT data from the web server logs is now 
+  smarter and can filter the data in various ways. 
+
+* An example of a separate, simple "labsurv" web application designed to 
+  collect weekly, aggregate surveillance data on the numbers and results of
+  tests for common respiratory viruses has been included under the labsurv/
+  directory of the NetEpi-Collection distribution tarball. Currently, NetEpi
+  Collection is designed to collect unit-record data about persons (cases or
+  contacts of a disease or syndrome), and although it can be (ab)used to 
+  collect aggregate data about "things", it is far from optimal for such 
+  purposes. The simple "labsurv" application, which uses the same infra-
+  structure as NetEpi Collection (i.e. Python, the Albatross web framework,
+  PostgreSQL) has been provided as both a template for similar use-cases else-
+  where, and as a test-bed for features and design approaches to be integrated
+  into future versions of NetEpi Collection. It should be possible for a
+  programmer familiar with Python to customise the labsurv application for
+  similar purposes in just a few days. In the future, we hope to provide the
+  ability for NetEpi admistrators to be able to  set up similar aggregate 
+  and/or "thing"-related (as opposed to person-related) data collection 
+  facilities with the usual NetEpi point-and-click interface.
+
+SUMMARY OF CHANGES IN VERSION 1.2.0 RELATIVE TO VERSION 1.1.0
+======================================================================
+
+The following changes have been made in this version:
+
+* The ability to import demographic data from CSV or other delimited or
+  column-formatted data files has been added. A "point-and-click" interface
+  to "map" columns in the file to be imported to target demographic
+  fields in NetEpi Collection is provided, and a range of 
+  transformations of data values can also be specified. Transformed data
+  can be previewed before it is imported. The parameters used to import
+  a particular data file can be saved and re-used on subsequent occasions.
+  
+* Several new fields were added to the core "demographics" fields:
+
+  - a third set of address fields, so there are now address fields 
+    for residential address, an alternate address, and a work or 
+    school address (although the field labels on all of these can
+    be customised as previously, so they can be used for other types
+    of addresses). [1]
+
+  - a Country field has been added to each of the three sets of address
+    fields.
+
+  - an Occupation field was added, grouped with the Work/School address
+    fields. [2]
+
+  - a second set of Passport Number and Passport Country fields were 
+    added to accommodate people with dual nationality. The default
+    label on the Passport Country fields was changed to "Passport
+    country/Nationality".
+
+  - fields to capture the name and contact details of the notifier of a
+    case or contact were added (these details are associated with the
+    case or contact and are thus stored on the underlying CASES table)
+
+  - an "Other Information" text box field was added to record other,
+    miscellaneous information about each person.
+
+  As previously, all of these fields and the other demographics fields
+  are configurable, and can be hidden or disable or set to appear in 
+  only certain parts of the application.
+
+* In order to better accommodate the increased number of demographics
+  core fields, a "tabbed" display for some of these fields has
+  been provided, which helps to avoid the need for too much vertical
+  scrolling. The tabbed field display is also provided on the search
+  parameter pages.
+
+* Two new data collection "input" types were added: a pull-down list
+  input for "Countries", which lists all current countries, and an equivalent
+  one for "Languages", which lists major languages.
+
+* Disabled input boxes are no longer used for the "read-only" display of
+  demographic data in certain places in the application; instead, an
+  easier-to-read and more compact format is used.
+
+* Searching for existing cases and contacts has been improved by providing
+  given name and nickname substitution when the "Phonetic" box is checked: 
+  for example, a search for "Tim" will also find "Timothy" and a search
+  for "Margaret" will find "Peggy" and so on.
+
+* The duplicate person matching algorithm has been improved (it now uses
+  trigrams instead of bigrams) and has been made faster.
+
+* Case and contact details are now colour-coded on the search results
+  pages in order to make visual scanning and parsing of the results easier.
+
+* "<<Back" buttons have been added to the top (in addition tot he foot) of
+  most pages.
+
+* The display of available contact definitions on the case contacts page
+  has been made consistent with the way in which case and contact definitions
+  are displayed on the home page.
+
+* The page is now scrolled down to any "Unsaved changes" warning messages
+  to avoid any confusion on long pages.
+
+* An "login_helpdesk_contact" configuration option has been added. The
+  option specifies an contact message that is used on the login and
+  new-user registration pages. This allows an alternate message to be
+  specified in these (potentially) less secure contexts.
+
+* Several other minor cosmetic and layout improvements have been made.
+
+* Several bug fixes and some refactoring to improve the robustness and 
+  maintainability of the program code.
+
+[1] We know that an unlimited number of addresses, including a complete
+address history, should ideally be stored in a separate ADDRESS table,
+but that requires fairly major refactoring of core parts of the application
+and will have to wait until version 2. The current arrangements seem to be
+adequate in the meantime (and changes to addresses are captured in the
+audit logs, although we understand that that is not a substitute for a
+full address history).
+
+[2] The Occupation column was added to the PERSONS table, for reasons
+of expedience. Ideally, it should be on the CASES table and reside 
+with other CASE data (as should some addresses and other data current stored
+in the PERSONS table). These structural changes are planned for version 2,
+but in the meantime, the current arrangements are unlikely to cause major 
+problems with most acute outbreak investigations or other relatively short-
+term epidemiological data collections, although we recognise that the current
+data model is not ideal for use by, say, a chronic disease registry.
+
+SUMMARY OF CHANGES IN VERSION 1.1.0 RELATIVE TO VERSION 1.0.4
+===============================================================
+
+The following changes have been made in this version:
+
+* The login page has been re-styled to be rather more attractive.
+
+* The previously separate administration application has been merged into
+  the main end-user application. Now there is only one URL for each NetEpi
+  Collection instance, and if a logged-in user has administrator rights,
+  then an additional menu item appears which allows them to access the
+  administration functions that were previously accessible only from a
+  separate admin URL. Apart from making things easier for administrators,
+  this change has enabled a reduction in otherwise duplicated code - thus
+  the total line count for the project has gone down substantially.
+
+* An internal "notification" mechanism has been added so that changes made in
+  the administration interface are immediately reflected in all sessions for
+  that NetEpi instance. Previously, due to caching, administrative changes
+  took up to ten minutes to propagate through to all user sessions, which
+  could be confusing for users and administrators alike. See also the notes
+  below on "Stand-alone Notification Daemon" regarding the need to disable
+  this facility in certain unusual server configurations.
+
+* Administrators can now specify the order in which syndromes/case/contact
+  definitions are listed on the home page.
+
+* Each instance of a data collection form is now assigned a unique ID,
+  which incorporates a check-digit, and this ID number is shown on screen
+  and appears in print-outs of forms and in data export files.
+
+* Users can specify a form instance ID number in the search page, and if it
+  is a valid form ID number and the user has permission to access that case
+  or contact, the form editing page for that form instance (and thus for
+  the correct person and case or contact record) will be displayed immediately.
+
+* A simple "epi curve" charting facility has been added to the built-in
+  reports. An "epi curve" is a frequency histogram by onset date (reporting
+  date can also be be chosen, or dual charts for both can be drawn). Various
+  date and time "binning" options are provided to control the degree of
+  temporal aggregation on the x-axis. Further features will be added to
+  this chart in later releases, and other built-in charts and graphs will
+  be added.  See also the additional installation prerequisites listed below
+  which relate to this new feature.
+
+* The search parameters which a user enters are now shown on all search results
+  pages. This is particularly important when adding a new case or contact,
+  because these search parameters provide context to the "Create a new case"
+  or "Create a new contact" buttons.
+
+* Users with "task queue admin" rights can now set up task queues specific to
+  their unit (or shared with other units or specific users) without needing
+  to ask a central administrator to do it for them.
+
+* Administrators can see summary statistics about the tasks allocated to each
+  task queue.
+
+* The refresh button on the end-user task listing page has been removed
+  (provided that Javascript is available and enabled in the user's browser).
+
+* Task filtering and display parameters for each user are automatically
+  restored and saved each time a user visits the task list page.
+
+* Built-in reporting parameters for each user are automatically restored
+  and saved, on a per case/contact definition basis, each time a user visits
+  the built-in reports facility.
+
+* User accounts are now only logically deleted, thus preserving entries
+  in the audit trail relating to deleted users. User accounts can also be
+  easily undeleted. The enabled/disabled user flag remains, unchanged, so
+  that user accounts can still be temporally disabled if necessary, and self-
+  registered user accounts are still created with the disabled flag set and
+  need to be deliberately enabled by an administrator.
+
+* Additional checks are now made before a unit can be deleted, and units with
+  enabled users assigned to them can't be deleted. Previously, if units with
+  active users were deleted, the users could be left with no unit membership,
+  which prevented them from logging in.
+
+* Deleting work queues is now possible. Database integrity constraints 
+  previously prevented this except in the case of work queues that had never
+  had any tasks associated with them. Work queues can now be deleted (after
+  confirmation), provided that all associated tasks have been completed.
+
+* Previously, there were a number of places in the application in which 
+  administrators could accidentally exit an admin page without being warned
+  they had unsaved changes. This has now been addressed.
+
+* More useful configuration and debug information is included in tracebacks
+  if an application exception occurs.
+
+* Authenticated user id, unit id and the NetEpi instance name are now included
+  in the RTT (round-trip-time) "perceived performance" data written to the
+  web server log for each user interaction. This makes identification of
+  network performance issues affecting individual users or groups of users
+  at a particular location much easier.
+
+* After much experimentation, problems with unexpected behavior when using
+  the browser back buttons on the Opera and Konqueror web browsers have now
+  been addressed. The browser back button now behaves as expected (that is,
+  the same way that it behaves when Gecko-based browsers such as Mozilla and
+  Firefox, or Microsoft Internet Explorer version 6 or 7 are used). In the
+  Safari browser, the  browser back button is now effectively disabled when
+  accessing NetEpi. This is an improvement on the unexpected behaviour of the
+  browser back button in Safari browser when accessing previous versions of
+  NetEpi. It should be noted that many web applications have major difficulties
+  with the non-standard behaviour of the browser back button in the Safari
+  browser (and possibly in the related WebKit browser engine). Of course,
+  Safari users can still use the "<<Back" buttons provided in the NetEpi
+  application: these work exactly as expected in Safari and in all other
+  Web browsers.
+
+* Numerous minor bug fixes and other minor cosmetic adjustments have been
+  made.
+
+* Updates to technical and system documentation.
+
+SUMMARY OF CHANGES IN VERSION 1.0.4 RELATIVE TO VERSION 1.0.3
+===============================================================
+
+Version 1.0.4 provides the ability to set the preferred date input and
+output format on an instance-wide basis, and/or by individual users. Three
+date formats can be specified: DMY (DD/MM/YYYY format), MDY (MM/DD/YYYY
+format) or ISO (YYYY-MM-DD format). All dates and date/time values are
+stored in the database in a format-neutral manner, thus there is no
+problem if different users of the same NetEpi database instance use
+different preferences for the date format, and individual users can
+change their preferred date format on-the-fly without problems.
+
+This feature, together with customisable state/territory/region fields
+introduced in Version 1.0.3 and the ability to customise the labels of the
+demographic fields added to Version 0.94, should allow NetEpi Collection
+to be more easily adapted for use in English-speaking locales outside
+Australia. A fully internationalised version accommodating non-English
+locales is possible but collaborators are required - the current NetEpi
+team cannot create such a fully-internationalised version without
+assistance, although they would very much like to do so.
+
+Additionally, Version 1.0.4 fixes several minor bugs - a list of
+fixes can be found in the doc/CHANGELOG file. Support for a new
+Python-to-PostgreSQL adaptor being developed by Object Craft Pty Ltd
+(http://www.object-craft.com.au) has been added. The free, open-source
+Object Craft adaptor is still be tested but when released, NetEpi
+Collection installations running Version 1.0.4 or later will automatically
+make use of it if it is installed.  The release of the Object Craft
+Python-to-PostgreSQL adaptor, which promises to be considerably faster
+than existing Python-to-PostgreSQL adaptors, will be announced on the
+netepi-discuss mailing list as well as elsewhere.
+
+Finally, a PDF version of a presentation on NetEpi Collection and
+NetEpi Analysis, given at the School of Information Technologies
+at the University of Sydney in June 2007 has been included in
+documentation section of the NetEpi page on SourceForge - see
+http://sourceforge.net/docman/?group_id=123700
+
+
+SUMMARY OF CHANGES IN VERSION 1.0.3 RELATIVE TO VERSION 1.0.2
+===============================================================
+
+Version 1.0.3 provides the ability to customise the list of geographical
+states, territories and regions in the address part of the demographics
+section.  The global list of states and territories for an entire instance
+of NetEpi Collection can be customised, and this can be further customised
+on a per-syndrome or per-case-definition basis if required. The customised
+lists of states and territories are automatically taken into account
+when performing general searches.
+
+Additionally, Version 1.0.3 fixes a small number of minor but annoying
+bugs - a list of fixes can be found in the doc/CHANGELOG file. Special
+thanks to Stefan Stirzaker, Office of Health Protection, Surveillance
+Branch, Surveillance Policy & Systems Section, Population Health Division,
+Australian Government Department of Health and Ageing, for reporting
+the bugs in question.
+
+
+SUMMARY OF CHANGES IN VERSION 1.0.2 RELATIVE TO VERSION 1.0beta
+===============================================================
+
+This is a bug-fix release only, no new features or facilities have
+been added.  A list of fixes and other minor cosmetic changes can be
+found in the doc/CHANGELOG file.
+
+Special thanks to Francois Marsan for finding and carefully reporting a
+number of obscure and not-so-obscure bugs that had eluded us.
+
+
+SUMMARY OF CHANGES IN VERSION 1.0beta RELATIVE TO VERSION 0.99
+==============================================================
+
+The major addition to Version 1.0beta is the inclusion of a comprehensive
+record merging facility. This provides a mechanism to identify potentially
+duplicated PERSON records (using a bigram-based fuzzy matching algorithm,
+although arbitrary pairs of records can also be merged), and the user can
+then selectively merge demographic details and associated case, contact
+and task records, for each pair of duplicated person records. This may
+result in duplicated case or contact records for the resulting "merged"
+person, so there is an additional facility which can be used to merge
+case or contact records for a given person. Similarly for each case or
+contact record, there is a facility to merge data form records of the
+same type. In these merge facilities, each of which can be accessed
+independently of the others, the user can select whether to retain
+data from "record A" or "record B", on a data-item-by-data-item basis,
+or may chose to include information from both A and B records and edit
+the resulting combined data field.  Much effort was put into designing a
+simple user interface to these merge facilities which make the complex
+merging task as quick and easy as possible for the end user. Unlike
+deletions, merges of records cannot be undone, but full details of
+all merge actions are captured in the audit trail log, allowing manual
+separation of merged records if required subsequently.
+
+Another major change in this version is the renaming of the application
+from "NetEpi Case Manager" to "NetEpi Collection", which better reflects
+the fairly generic role it plays, while also sounding less clinical.
+
+Other significant enhancements to Version 1.0beta include:
+
+* Provision of a read-only mode, in which the privileges of selected 
+  users can be restricted so that they can only view data, but not
+  edit or delete it. The usual fine-grained access control mechanisms 
+  still apply to such read-only users.
+* Pull-down menus have replaced a plethora of buttons on the case 
+  and contact editing pages. The result is a cleaner look with no loss
+  in usability (we feel, feedback welcome).
+* Labelling of cases versus contacts has been made smarter in order to
+  reduce the occasional semantic confusion that was evident in parts 
+  of the application.
+* On certain pages more contextual information with respect to the 
+  current user or current case or contact has been provided to assist
+  users in regaining their "bearings" after being interrupted while using
+  the system.
+* Visual feedback is now provided each time a record of any type is updated.
+* Most error messages and warnings now appear at the top of the page, 
+  where they are harder to overlook.
+* Access to the built-in line-listing/reports facility is now restricted
+  to those users who have been granted the "bulk export" privilege.
+* The "Next" button on search pages is now the default, so that the 
+  Enter key can be used to cause a search to be performed (thus
+  improving end user ergonomics).
+* The "round-trip-time" facility, which measures and captures the 
+  response time (including network-related delays and latency) of NetEpi 
+  from the point-of-view of the end user, has been enhanced to work
+  correctly when the Microsoft Internet Explorer browser is used, and now
+  also records a timestamp for each response time captured in the web server
+  log. Utilities to extract these response times from the web server log 
+  for analysis and presentation in statistical or other visualisation 
+  packages have also been added, including a script to import the data
+  into NetEpi Analysis.
+* Another utility, called "httpinteract", has been included. It is
+  a simple tool which can be used to acquire time-series data about
+  network performance from end-user's workstations or access points.
+  We have found it useful in pinpointing when and where network bandwidth,
+  latency or congestion may be inadequate for satisfactory use of NetEpi,
+  so that appropriate remedial action can be taken - such network problems
+  can almost always be solved.
+* The deletion status of records is clearly shown when they are printed
+  out.
+* Facilities to browse all cases for a given person, and to jump directly
+  to the parent case of a contact, were added.
+* Unit tests and some Selenium functional tests were updated to work
+  correctly with the current version.
+* System documentation was brought up-to-date.
+
+Finally, a lot of work has also gone into the creation of a "live CD"
+for demonstration purposes. This "live CD", which is based on the popular
+Ubuntu Linux distribution, allows most recent (that is, less than four
+or five years old) desktop or laptop computers to be booted directly
+from the live CD into a cut-down version of Ubuntu Linux, with a full,
+working copy of NetEpi Collection installed and ready to use. Data can be
+stored between sessions on a USB memory stick or external hard drive. No
+software or files are actually installed on the host computer - it runs
+entirely from the CD-ROM. The demonstration system includes a full Web
+server and can thus be accessed over a network by multiple users, as well
+as locally.  Introductory "screencasts" and other background material will
+be included on the final NetEpi live CD. However, at this stage the live
+CD is still undergoing testing, but we have included the scripts needed
+to build the live CD in the NetEpi Collection distribution tarball for
+those who wish to create their own customised version. However, these
+scripts are complex and dangerous, and should only be run and modified
+by experienced system administrators and developers who know exactly
+what they are doing. They are only needed to create new versions of a
+live CD and should be completely ignored by NetEpi users and most system
+administrators. An .iso file of a demo live CD will be made available
+for download (and then burning onto a CD-ROM) at the time of the final
+release of Version 1.0.
+
+
+SUMMARY OF CHANGES IN VERSION 0.99 RELATIVE TO VERSION 0.98
+===========================================================
+
+Apart from several minor bug fixes, some general cleaning up of the code
+base and some additional unit tests, the very big addition to Version
+0.99 is a built-in "line-listing" reporting facility.
+
+This facility allows tabular "line-listing" reports to be produced
+through a simple and easy-to-use interface. Filters and sorting orders 
+based on demographic data and on data items contained in syndrome/case
+definition-specific forms can be defined, and the resulting record sets 
+appear in the report or can be used as a "browse list" to page through
+case or contact records in the edit screens, one at a time. Summary 
+or user-selectable fields (columns) from forms can also be included
+in the reports.
+
+The (still experimental) case-to-contact relationship visualisation tool 
+has also been integrated into the reporting framework to take advantage
+of the filtering facilities it provides.
+
+Report definitions (including the filtering parameters) can be saved
+for re-use later, and these saved report definitions can be shared 
+with other members of the user's business unit or with all users 
+on the system.
+
+
+SUMMARY OF CHANGES IN VERSION 0.98 RELATIVE TO VERSION 0.97
+===========================================================
+
+Version 0.98 brings the following (in no particular order): 
+
+* A (global) count of active cases of each syndrome is now
+  shown on the home page.
+
+* An indication of number of contacts is now shown on the 
+  main case edit page.
+
+* The ability to examine the details of users in each
+  business unit from task assignment and ACL (access control
+  list) pages.
+
+* All current and enabled syndromes/case definitions are now
+  shown on the main page, not just those the unit (or rather
+  users in that unit) has access to, but the "add" button is
+  suppressed if the unit does not have edit rights for that 
+  syndrome/case definition.
+
+* A facility to allow NetEpi administrators to "clear" a 
+  syndrome/case definition of data - this deletes all cases,
+  contacts, form instances (but not form definitions!) and
+  tasks associated with a syndrome/case definition (without
+  deleting the syndrome/case definition itself). This is very
+  useful for clearing out training or test data from a 
+  syndrome/case definition prior to "production" or real-life
+  use. An additional confirmation was added because this 
+  facility permanently deletes data.
+
+* A facility by which a NetEpi administrator can use the web 
+  interface to permanently delete a syndrome/case definition
+  and all associated cases, forms, tasks and log entries. This
+  allows redundant, obsolete or test/dummy syndromes/case
+  definitions to be removed from an existing NetEpi instance,
+  or for a NetEpi instance to be cloned (using PostgreSQL 
+  database back-up and restore utilities) and then unwanted 
+  syndromes/case definitions removed. An additional confirmation
+  was added because this facility permanently deletes data.
+
+* No longer indicate nature of login failures to improve
+  security.
+
+* Add additional demographic fields for one extra set of 
+  alternative address and other contact information (which
+  can be relabelled for each case definition/syndrome)
+ 
+* Improvements to form definition importing (form definition
+  import name matching a little smarter, make form import seed
+  the "forms" table if necessary).
+
+* A new command line facility to import and export form definitions
+  in batches from a Collection instance.
+
+* "Onset date" and "Notification date" error messages now
+  honour syndrome-specific labelling for these fields.
+
+* The ability to view logs associated with a contact.
+
+* The main application structure graph was updated, and an admin
+  application structure graph was added.
+
+SUMMARY OF CHANGES IN VERSION 0.97 RELATIVE TO VERSION 0.96
+===========================================================
+
+The major additions to Version 0.97 are: 
+
+* Ability to add a contact record and post-hoc associate it with 
+  a case, and/or dissociate it from a case and re-assign to a different
+  case, and handle the merging of ACL (access rights) necessitated
+  by such changes.
+* Improvements to the form data roll-forward facility so that 
+  incompatible changes to form filed data types that would lead
+  to data loss or truncation can be readily identified and corrected.
+* Ability to print the data associated with a case or contact as a
+  "report" (rather like a set a already-filled-in forms)
+* Ability to optionally include or exclude deleted records from 
+  data exports
+* Restriction of ability to export data to only some users who 
+  have been explicitly granted the right to do so.
+* Improvements to the information captured in the audit log,
+  particularly with respect to contact records and their association
+  with case records.
+* Require confirmation when undeleting cases or contacts.
+* Require confirmation needed when deleting a user in the admin
+  application.
+* Fixed bug when a users from a disabled unit tried to log in.
+* Simplification of conditional question skip/enable subsystem.
+* Additional guards against inadvertent failure to save changes in 
+  admin interface
+
+In addition, numerous minor cosmetic changes and bug fixes have been 
+implemented.
+
+SUMMARY OF CHANGES IN VERSION 0.96 RELATIVE TO VERSION 0.95
+===========================================================
+
+The major addition to Version 0.96 is a conditional form input skip/enable
+feature, which allows parts of questions, whole questions or multiple
+questions on a form to be selectively enabled or disabled based on
+categorical data elsewhere on the same form. Skip instructions are
+automatically generated for printed forms or where Javascript is
+unavailable or disabled.
+
+A large improvement to usability is also provided by some clever
+JavaScript which captures the "Back" button on the user's browser and
+makes it behave like the "<<Back"" navigation buttons in the application
+itself. This effectively removes a major source of user frustration by
+avoiding browser-generated "re-post" dialogue boxes appearing on screen.
+
+In addition, a large number of bug fixes have been made and the interface
+to parts of the admin application has been made more consistent and
+foolproof - it is now very hard to inadvertently forget to save changes
+made in the admin application. Also, the question editor pages in the
+admin form definition editor facility has been revised.
+
+
+SUMMARY OF CHANGES IN VERSION 0.95 RELATIVE TO VERSION 0.94
+===========================================================
+
+The major addition to Version 0.95 is a simple (but we hope effective)
+workflow subsystem, which allows "tasks", such as completing a case or
+contact follow-up form, to be assigned to individual users, business
+units or arbitrary "task queues" to which users and business units can
+be subscribed.  These tasks can be scheduled for immediate or delayed
+attention, and users have access to a list of tasks assigned to them
+or otherwise available to them through their membership of a business
+unit or subscription to a task queue.  Clicking on an assigned task
+automatically loads the correct case or contact record and opens the
+correct data form to be completed. Additional instructions can be added
+to tasks if necessary.
+
+This subsystem is intended to allow tasks generated by a large number
+of cases or contacts of cases of, say, a novel strain of influenza to
+be distributed to many workers located in many business units across
+the health system. It should also be useful for many other purposes,
+including reminders to oneself to follow-up missing data or check
+responses and so on.
+
+Other features added to Version 0.95 include better visual feedback when
+data in forms is updated, better indication of the deletion status of
+records, improvements to the form editor, and various minor cosmetic
+and labelling improvements.
+
+SUMMARY OF CHANGES IN VERSION 0.94 RELATIVE TO VERSION 0.90
+===========================================================
+
+Following is a summary, in no particular order, of the major changes 
+visible to or of relevance to end-users and/or administrators, in 
+NetEpi Collection Version 0.94, relative to NetEpi Collection
+Version 0.90 which was released in June 2005. Note that Versions 0.91
+and 0.92 were intermediate versions which were not released publicly
+and Version 0.93 was quickly superseded by Version 0.94.
+
+In addition, there has been considerable refactoring and general tidying-up
+of the underlying programme code, as well as several bug fixes and security
+improvements. 
+
+ * Problem with download of exported data files via Microsoft Internet
+   Explorer fixed.
+
+ * Added a new class of user (called "unit admins") who can administer
+   users in their unit via a new page accessible from the end-user (not
+   admin) application. This removes a potential bottleneck of admins
+   having to remotely vet and approve large numbers of new user accounts
+   in a short time during an emergency.
+
+ * Added JavaScript to track and report client's submit RTT
+   (round-trip-time), added code to Request object to log reported
+   RTT. This allows the total response time, as perceived by the end
+   user, to be monitored centrally - in particular, problems related to
+   network congestion can be detected, as well as problems due excessive
+   server load.
+
+ * Added the ability to print selectable sets of blank forms, on
+   a per-syndrome basis, for use if the system is off-line, down or
+   otherwise unavailable.
+
+ * Ability to add certain rights to groups of users, and also ability
+   to add certain rights to individual users. These include the right
+   to see or edit all records.
+
+ * Version information added to login screens to help avoid confusion
+   during support calls.
+
+ * Ability to save user preferences, including preferences for phonetic
+   searching, results per page and pop-up calendars (see below).
+
+ * Added client-side sorting of various tables in the admin application.
+
+ * JavaScript used to to scroll to first error in forms.
+
+ * Form definitions are now stored in XML form in the main database, not
+   as Python files in the Web server file system. This improves security
+   and makes it much easier to back-up the entire state of the system,
+   without having to interrupt use of the system in any way.
+
+ * Added ability to export and import form definitions in XML form, which
+   lays the foundations for a shared and/or distributed form definition
+   "library".
+
+ * Form inputs that are required (mandatory) are now visually identified.
+
+ * Added "definition last updated" and other useful metadata to form
+   definitions.
+
+ * Merge demogfields-branch
+
+ * Added additional demographic/ID fields: mobile_phone, fax_phone,
+   e_mail, passport_number and passport_country, interpreter
+   required/language, to make the system better suited for use in border
+   screening at airports etc.
+
+ * Added ability to relabel or hide demographic/ID fields on a
+   per-syndrome basis.
+
+ * Added per-syndrome case status field, renamed field to just "status".
+
+ * Storage of case and contact data unified. This allows a great deal
+   more flexibility, including the ability to specify multiple "contact
+   syndromes" for different types of contacts of cases.
+
+ * Added interactive pop-up date entry widget (calendar).
+
+ * Allowed allow a person to be contact of a case for more than one
+   contact syndrome; included contact type in search results; revised
+   styling of search results for cases and contacts to make them slightly
+   clearer.
+
+ * Simplified application navigation slightly (removed user details
+   link from page banner, use tools instead), carry more context across
+   new/edit/search screens.
+
+ * Added paging to contacts list to allow cases with large numbers of
+   contacts to be more easily managed.
+
+ * Added experimental Case/Contact relationship visualisation using
+   GraphViz.
+
+ * Changes to allow PostgreSQL versions 8.0 and 8.1 to be used, as well
+   as versions 7.3 and 7.4 as supported previously.
+
+ * Deleting/hiding of cases and contacts now fully implemented.
+
+ * Major speed improvements to phonetic searches.
+
+ * Updated Collection-ER documentation to reflect schema changes.
+
+ * Added a confirmation dialog when admins enable a user, to ensure that
+   they have checked the new user's bona fides.
+
+ * Add logging of case access (ACL) control changes.
+
+ * Added support for use of Trac-style wiki mark-up for text used in
+   various places in the application (see doc/NetEpi_wiki_markup.html ).

@@ -1,0 +1,3 @@
+label,form_type,cur_version,name,allow_multiple 
+sars_exposure,case,1,Exposure History (SARS),1
+hospital_admit,case,1,Hospital admission,1

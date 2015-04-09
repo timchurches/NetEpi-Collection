@@ -1,0 +1,86 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+ <table width="100%" class="rfields">
+  <tr>
+   <th><label for="ts_join">By</label></th>
+   <td><al-select id="ts_join" name="reportparams.ts_join" 
+         class="rmw" onchange="submit();"
+         optionexpr="reportparams.available_forms()" /></td>
+  </tr>
+  <al-if expr="reportparams.ts_join">
+   <tr>
+    <th><label for="ts_missing_forms">Include records with no form</label></th>
+    <td>
+     <al-input type="radio" name="reportparams.ts_missing_forms" value="True">&nbsp;Yes&nbsp;&nbsp;<al-input type="radio" name="reportparams.ts_missing_forms" value="False">&nbsp;No
+    </td>
+   </tr>
+  </al-if>
+  <tr>
+   <th><label for="ts_bincol">Timeseries by</label></th>
+   <td><al-select id="ts_bincol" name="reportparams.ts_bincol" 
+         class="rmw"
+         optionexpr="reportparams.available_bincol()" /></td>
+  </tr>
+  <tr>
+   <th><label for="ts_bincol2">2nd panel</label></th>
+   <td><al-select id="ts_bincol2" name="reportparams.ts_bincol2" 
+         class="rmw"
+         optionexpr="reportparams.available_bincol(1)" /></td>
+  </tr>
+  <tr>
+   <th><label for="ts_nbins">Bins</label></th>
+   <td><al-select id="ts_nbins" name="reportparams.ts_nbins" 
+         class="rmw"
+         optionexpr="reportparams.available_nbins()" /></td>
+  </tr>
+  <tr>
+   <th><label for="ts_stacking">Stacking</label></th>
+   <td><al-select id="ts_stacking" name="reportparams.ts_stacking" 
+         class="rmw" onchange="submit();"
+         optionexpr="reportparams.available_strata()" /></td>
+  </tr>
+  <tr>
+   <th><label for="ts_stack_ratios">Ratios</label></th>
+   <td>
+    <al-input type="radio" name="reportparams.ts_stack_ratios" value="True">&nbsp;Yes&nbsp;&nbsp;<al-input type="radio" name="reportparams.ts_stack_ratios" value="False">&nbsp;No
+   </td>
+  </tr>
+  <al-if expr="reportparams.ts_stacking">
+   <tr>
+    <th><label for="ts_stack_suppress">Suppress</label></th>
+    <td>
+     <al-for vars="name, label" expr="reportparams.available_values(reportparams.ts_stacking)">
+      <span style="white-space: nowrap; min-width: 10em;">
+       <al-input type="checkbox" name="reportparams.ts_stack_suppress" list 
+        valueexpr="name" idexpr="'ts_suppress_' + name"/>
+       <al-label forexpr="'ts_suppress_' + name">&nbsp;<al-value expr="label" /></al-label>
+      </span>
+     </al-for>
+    </td>
+   </tr>
+  </al-if>
+  <tr>
+   <th><label for="ts_outfmt">Output format</label></th>
+   <td><al-select id="ts_outfmt" name="reportparams.ts_outfmt" 
+         class="rmw"
+         optionexpr="reportparams.available_outfmts()" /></td>
+  </tr>
+ </table>

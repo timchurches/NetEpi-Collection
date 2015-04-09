@@ -1,0 +1,20 @@
+webuser=www-data
+db=httpinteract
+table=reports
+
+createdb "${db}"
+psql "${db}" << EOF
+CREATE TABLE ${table} (
+    started TIMESTAMP,
+    siteinfo VARCHAR,
+    status VARCHAR,
+    elapsed FLOAT,
+    received INTEGER,
+    srcaddr INET,
+    forwarded VARCHAR,
+    useragent VARCHAR
+);
+CREATE INDEX timesite ON ${table} (started, siteinfo);
+GRANT SELECT, INSERT, UPDATE ON ${table} TO "${webuser}";
+EOF
+

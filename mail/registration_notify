@@ -1,0 +1,14 @@
+To: {{registration_notify}}
+Subject: [{{appname}}] New user registration for {{fullname}}
+
+Received registration request:
+
+    Instance:     {{apptitle}} ({{appname}})
+    Sponsor:      {{sponsor}}
+    Username:     {{username}}
+    Fullname:     {{fullname}}
+    Title:        {{title}}
+    Agency:       {{agency}}
+    Work Phone:   {{phone_work}}
+    Mobile Phone: {{phone_mobile}}
+    e-mail:       {{email}}

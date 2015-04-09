@@ -1,0 +1,193 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-include name="form_inputs.html" />
+<al-include name="admin_form_edit_input.html" />
+
+<al-macro name="feq_add">
+      <al-input type="image" alt="add" class="he-opener"
+                srcexpr="appath('images/plus.png')"
+                nameexpr="'add:%s' % index" />
+       <span class="he-open">
+        <al-input type="image" alt="add"
+          srcexpr="appath('images/add-input.png')"
+          nameexpr="'op:input:add:%s' % index" />
+        <al-if expr="feq_cutbuff">
+         <al-input type="image" alt="paste"
+           srcexpr="appath('images/add-paste.png')"
+           nameexpr="'paste:%s' % index" />
+        </al-if>
+       </span>
+</al-macro>
+
+<al-expand name="page_layout_admin">
+ <al-setarg name="title">Design form question - section "<al-value expr="question.edit_info.section_title" />"</al-setarg>
+ <al-script srcexpr="appath('admin.js')" type="text/javascript"></al-script>
+ <table class="admin-fe-work" cellpadding="0" id="feq_edit">
+  <tr>
+   <td class="fe-left">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+
+     <al-comment><!-- Question text --></al-comment>
+     <tr id="select:question">
+      <td>
+       <b>Question:</b><br>
+       <al-if expr="getattr(question, 'help', None)">
+        <al-img expr="appath('images/info.png')" class="right" />
+       </al-if>
+       <al-value expr="wiki_text(question.text)" noescape />
+      </td>
+     </tr>
+
+     <al-for iter="input_i" expr="question.inputs">
+      <al-comment><!-- Add input row --></al-comment>
+      <tr>
+       <td class="line hover-expand">
+        <al-exec expr="index = input_i.index()" />
+        <al-expand name="feq_add" />
+       </td>
+      </tr>
+
+      <al-tr class="selectable" idexpr="'select:input_%d' % input_i.index()">
+       <al-comment><!-- Input preview --></al-comment>
+       <td class="inputview">
+        <table width="100%" border="0">
+         <al-exec expr="input = input_i.value()" />
+         <al-value lookup="input_markup" expr="input.get_renderer()" />
+        </table>
+       </td>
+      </al-tr>
+     </al-for>
+
+     <al-comment><!-- final add input --></al-comment>
+     <tr>
+      <td class="line hover-expand">
+       <al-exec expr="index = len(question.inputs)" />
+       <al-expand name="feq_add" />
+      </td>
+     </tr>
+
+     <al-comment><!-- Skips --></al-comment>
+     <tr id="select:triggers">
+      <td>
+       <al-if expr="question.disabled">
+        <div class="reverr">Question is disabled</div>
+       <al-else>
+        <b>Conditional:</b> <al-value expr="question.describe_triggers()" />
+       </al-if>
+      </td>
+     </tr>
+
+     <tr><td width="100%" class="line"></td></tr>
+
+    </table>
+   </td>
+
+   <td class="fe-divide active">&nbsp;</td>
+
+   <td class="fe-right active">
+
+    <div id="fold:question">
+     <b><div class="right"><al-expand name="wikihelp" /></div>Question text:</b><br>
+     <al-textarea name="question.text" rows="10" /><br>
+     <b><div class="right"><al-expand name="wikihelp" /></div>Help text:</b><br>
+     <al-textarea name="question.help" rows="10" /><br>
+     <b>Help preview:</b><al-input type="submit" class="butt" name="preview" value="Refresh" /><br>
+     <div class="preview">
+      <al-value expr="wiki_text(question.help)" noescape />
+     </div>
+    </div>
+
+    <div id="fold:triggers">
+     <b>Skips and enables</b><br>
+     Unconditionally disable question? 
+      <al-input type="radio" name="question.disabled" value="True" />&nbsp;Yes
+      <al-input type="radio" name="question.disabled" value="" />&nbsp;No
+      <br>
+     Conditions 
+      <al-input type="radio" name="question.trigger_mode" value="enable" />&nbsp;Enable
+      <al-input type="radio" name="question.trigger_mode" value="disable" />&nbsp;Disable
+      question?<br>
+     <al-if expr="question.edit_info.other_condition_names">
+      <table border="0" width="100%">
+       <tr>
+        <td width="24" align="right" valign="middle">
+          <al-input type="image" alt="Add"
+              srcexpr="appath('images/add-s.png')"
+              name="op:trigger:add" /></td>
+        <th class="choice">Triggers</th>
+        <th></th>
+       </tr>
+       <al-for iter="trigger_i" expr="question.triggers">
+        <al-exec expr="trigger = trigger_i.value()" />
+        <al-exec expr="triggername = 'question.triggers[%d]' % trigger_i.index()" />
+        <tr>
+         <td></td>
+         <td class="choice">
+          <al-select nameexpr="triggername + '.name'" style="width: 100%;"
+           optionexpr="question.edit_info.sorted_condition_names()" />
+         </td>
+         <td width="24" align="right">
+          <al-input type="image" alt="Delete"
+              srcexpr="appath('images/button-del.png')"
+              nameexpr="'op:trigger:del:%s' % trigger_i.index()" /></td>
+        </tr>
+       </al-for>
+      </table>
+     <al-else>
+      No triggers available for this question.
+     </al-if>
+    </div>
+
+    <al-for vars="input_number" expr="range(len(question.inputs))">
+     <al-div idexpr="'fold:input_%d' % input_number">
+      <al-expand name="form_edit_input" />
+     </al-div>
+    </al-for>
+
+   </td>
+  </tr>
+  <tr>
+   <td valign="top" align="center">
+    <al-expand name="confirm_or_error">
+     <table width="100%">
+      <tr>
+       <td align="left">
+        <al-input type="submit" class="butt" name="cancel" value="<< Cancel" />
+       </td>
+       <td align="center">
+        <al-input type="submit" class="butt" name="okay" value="Okay" />
+       </td>
+      </tr>
+     </table>
+    </al-expand>
+   </td>
+  </tr>
+ </table>
+ <al-input name="selected" type="hidden" />
+ <al-input name="cutsel" type="hidden" />
+ <script>
+  attachClickOpenOne('feq_edit', 'appform', 'selected');
+  jsselect('feq_edit', fe_select('appform', 'cutsel', 
+                ['Cancel', 'Copy', 'Cut']));
+  attachExpandOnHover('feq_edit');
+ </script>
+</al-expand>
+

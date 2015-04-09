@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Case Manager". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+
+    Copyright (C) 2006 Health Administration Corporation.
+    All Rights Reserved.
+
+-->
+<html>
+ <head>
+  <title>NetEpi web interactivity tester</title>
+  <link href="httpinteract.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="/MochiKit/MochiKit.js"></script>
+  <script type="text/javascript" src="httpinteract.js"></script>
+ </head>
+ <body>
+  <form id="params_form">
+   <h1>NetEpi web interactivity tester</h1>
+   <div id="motd"></div>
+   <div class="controls">
+    <input type="button" name="togopr" value="Start" onClick="stopStartTester(this);" />
+    <input type="button" name="toglog" value="View Log" onClick="toggleLog('log', this);" />
+   </div>
+   <div class="params">
+    <div class="prm">
+     <label for="siteinfo">Site info</label>
+     <input id="siteinfo" name="siteinfo">
+    </div>
+    <div class="prm">
+     <label for="server">Server</label>
+     <input id="server" name="server" value="/cgi-bin/httpinteract.cgi" readonly>
+    </div>
+    <div class="prm">
+     <label for=interval">Interval</label>
+     <input id="interval" name=interval" value="0.1" readonly> (minutes)
+    </div>
+    <div class="prm">
+     <label for="sendcount">Send byte count</label>
+     <input id="sendcount" name="sendcount" value="4096" readonly>
+    </div>
+   </div>
+   <table id="stats">
+    <tr><td>Running?</td><td id="stat_running"></td></tr>
+    <tr><td>Requests:</td><td id="stat_requests"></td></tr>
+    <tr><td>Responses:</td><td id="stat_responses"></td></tr>
+    <tr><td>Success rate:</td><td id="stat_rate"></td></tr>
+    <tr><td>Best:</td><td id="stat_minimum"></td></tr>
+    <tr><td>Worst:</td><td id="stat_maximum"></td></tr>
+    <tr><td>Average:</td><td id="stat_average"></td></tr>
+   </table>
+   <div id="results">
+    <noscript><div class="error">This system requires Javascript</div></noscript>
+   </div>
+  </form>
+  <div id="log" class="hidden">
+   <h2>Log</h2>
+   <div id="_MochiKit_LoggingPane">
+   </div>
+  </div>
+ </body>
+</html>

@@ -1,0 +1,154 @@
+<?xml version="1.0"?>
+<form name='sars_china' form_type='case' allow_multiple='True'>
+ <label>Travel history - China (SARS)</label>
+ <section>
+  <label>Transit in China</label>
+  <question>
+   <label>Transited through China (as distinct from travelled in China)</label>
+   <input name='Transit_airport' type='TextInput'>
+    <summary>Transit airport</summary>
+    <pre_text>Airport</pre_text>
+   </input>
+   <input name='Transit_date' type='DateInput'>
+    <summary>Transit date</summary>
+    <pre_text>Transit date</pre_text>
+   </input>
+   <input name='Transit_period' type='IntInput'>
+    <summary>Transit period</summary>
+    <pre_text>Transit period</pre_text>
+    <post_text>whole hours</post_text>
+   </input>
+  </question>
+  <question>
+   <label>While in transit, did you leave the airport?</label>
+   <input name='Left_airport' type='YesNo'>
+    <summary>Left airport</summary>
+   </input>
+  </question>
+ </section>
+ <section>
+  <label>Travel in China</label>
+  <question>
+   <label>Total period spent in China</label>
+   <input name='China_arrival' type='DateInput' required='True'>
+    <summary>Arrived China:</summary>
+    <pre_text>Arrived in China</pre_text>
+   </input>
+   <input name='China_depart' type='DateInput' required='True'>
+    <summary>Departed China:</summary>
+    <pre_text>Departed China</pre_text>
+   </input>
+  </question>
+  <question>
+   <label>Did you visit Guangdong?</label>
+   <input name='Guangdong' type='YesNo' required='True'>
+    <summary>Visited Guangdong</summary>
+   </input>
+   <input name='Guangdong_arrival' type='DateInput'>
+    <pre_text>Arrived in Guangdong</pre_text>
+   </input>
+   <input name='Guangdong_depart' type='DateInput'>
+    <pre_text>DepartedGuangdong</pre_text>
+   </input>
+  </question>
+  <question>
+   <label>Did you visit Shanxi?</label>
+   <input name='Shanxi' type='YesNo' required='True'>
+    <summary>Visited Shanxi</summary>
+   </input>
+   <input name='Shanxi_arrival' type='DateInput'>
+    <pre_text>Arrived in Shanxi</pre_text>
+   </input>
+   <input name='Shanxi_deprt' type='DateInput'>
+    <pre_text>Departed Shanxi</pre_text>
+   </input>
+  </question>
+  <question>
+   <label>Did you visit Beijing?</label>
+   <input name='Beijing' type='YesNo' required='True'>
+    <summary>Visited Beijing</summary>
+   </input>
+   <input name='Beijing_arrival' type='DateInput'>
+    <pre_text>Arrived in Beijing</pre_text>
+   </input>
+   <input name='Beijing_depart' type='DateInput'>
+    <pre_text>Departed Beijing</pre_text>
+   </input>
+  </question>
+  <question>
+   <label>Did you visit any other provinces?
+Please specify</label>
+   <input name='Province1' type='TextInput'>
+    <summary>Other provinces:</summary>
+    <pre_text>Province name</pre_text>
+   </input>
+   <input name='Prov1_arrival' type='DateInput'>
+    <pre_text>Arrived</pre_text>
+   </input>
+   <input name='Prov1_depart' type='DateInput'>
+    <pre_text>departed</pre_text>
+   </input>
+  </question>
+  <question>
+   <label></label>
+   <input name='Province2' type='TextInput'>
+    <pre_text>Province name</pre_text>
+   </input>
+   <input name='Prov2_arrival' type='DateInput'>
+    <pre_text>Arrived</pre_text>
+   </input>
+   <input name='Prov2_depart' type='DateInput'>
+    <pre_text>Departed</pre_text>
+   </input>
+  </question>
+  <question>
+   <label></label>
+   <input name='Province3' type='TextInput'>
+    <pre_text>Province name</pre_text>
+   </input>
+   <input name='Prov3_arrival' type='DateInput'>
+    <pre_text>Arrived</pre_text>
+   </input>
+   <input name='Prov3_depart' type='DateInput'>
+    <pre_text>Departed</pre_text>
+   </input>
+  </question>
+  <question>
+   <label>While travelling did you visit a health care facility?</label>
+   <input name='China_hcfac' type='YesNo' required='True'>
+    <summary>Visited health care fac:</summary>
+   </input>
+   <input name='Hcfac_date' type='DateInput'>
+    <pre_text>Date of visit</pre_text>
+   </input>
+   <input name='Hcfac_name' type='TextInput'>
+    <pre_text>Name of facility, town, and province</pre_text>
+   </input>
+  </question>
+  <question>
+   <label>Reason for visit</label>
+   <input name='Reason_travel' type='CheckBoxes'>
+    <summary>Reason</summary>
+    <choices>
+     <choice name='Business'>Business</choice>
+     <choice name='Holiday'>Holiday</choice>
+     <choice name='Visit'>Visit Family/friends</choice>
+     <choice name='Other'>Other (please specify)</choice>
+    </choices>
+   </input>
+   <input name='Reason_other' type='TextInput'>
+    <pre_text>Please specify</pre_text>
+   </input>
+  </question>
+  <question>
+   <label>If you were on holiday, were you part of a tour?</label>
+   <input name='Tour' type='YesNo' />
+   <input name='Tour_org' type='TextInput'>
+    <pre_text>Tour name and tour company</pre_text>
+   </input>
+   <input name='Tour_other' type='TextInput'>
+    <pre_text>Other countries visited on tour</pre_text>
+   </input>
+  </question>
+ </section>
+</form>

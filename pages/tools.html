@@ -1,0 +1,103 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-expand name="page_layout_banner">
+ <al-setarg name="title">Tools</al-setarg>
+  <table class="widelabelform">
+   <al-if expr="'DATAMGR' in _credentials.rights">
+    <tr><th colspan="2">Data</th></tr>
+    <tr>
+     <td class="label">
+      <label for="dupecfg">Duplicate <al-value expr="config.person_label" /> record matching</label>
+     </td>
+     <td><al-input id="dupecfg" name="dupecfg" type="submit" class="butt" value=">>" /></td>
+    </tr>
+    <tr>
+     <td class="label">
+      <label for="dupecases">Duplicate Case record matching</label>
+     </td>
+     <td><al-input id="dupecases" name="dupecases" type="submit" class="butt" value=">>" /></td>
+    </tr>
+    <tr>
+     <td class="label">
+      <label for="manualdupe">Manually merge <al-value expr="config.person_label" /> records associated with Cases</label>
+     </td>
+     <td><al-input id="manualdupe" name="manualdupe" type="submit" class="butt" value=">>" /></td>
+    </tr>
+   </al-if>
+   <al-if expr="'IMPORT' in _credentials.rights">
+    <tr>
+     <td class="label">
+      <label for="conflicts">View import conflicts</label></td>
+     <td><al-input id="conflicts" name="conflicts" type="submit" class="butt" value=">>" /></td>
+    </tr>
+   </al-if>
+
+   <tr><th colspan="2">User</th></tr>
+   <tr>
+    <td class="label">
+     <label for="prefsedit">Preferences</label></td>
+    <td><al-input type="submit" class="butt" id="prefsedit" name="prefsedit" value=">>" /></td>
+   </tr>
+   <tr>
+    <td class="label">
+     <label for="details">Edit your details</label></td>
+    <td><al-input type="submit" class="butt" id="details" name="details" value=">>" /></td>
+   </tr>
+   <tr>
+    <td class="label">
+     <label for="viewlog">View a log of your activities</label></td>
+    <td><al-input type="submit" class="butt" id="viewlog" name="viewlog" value=">>" /></td>
+   </tr>
+   <al-if expr="config.user_browser">
+    <tr>
+     <td class="label">
+      <label for="user_browser">Browse user contact details</label></td>
+     <td><al-input type="submit" class="butt" id="user_browser" name="user_browser" value=">>" /></td>
+    </tr>
+   </al-if>
+   <al-if expr="can_sponsor(_credentials)">
+    <tr>
+     <td class="label">
+      <label for="user_sponsor">Sponsor a new user onto the system</label></td>
+     <td><al-input type="submit" class="butt" id="user_sponsor" name="user_sponsor" value=">>" /></td>
+    </tr>
+   </al-if>
+
+   <al-if expr="'UNITADMIN' in _credentials.rights or 'TQADMIN' in _credentials.rights">
+    <tr><th colspan="2">Administration</th></tr>
+   </al-if>
+   <al-if expr="'UNITADMIN' in _credentials.rights">
+    <tr>
+     <td class="label">
+      <label for="users">Administer <al-value expr="config.unit_label.lower()" /> users</label></td>
+     <td><al-input type="submit" class="butt" id="users" name="users" value=">>" /></td>
+    </tr>
+   </al-if>
+   <al-if expr="'TQADMIN' in _credentials.rights">
+    <tr>
+     <td class="label">
+      <label for="taskqueue">Administer task queues</label></td>
+     <td><al-input type="submit" class="butt" id="taskqueue" name="taskqueue" value=">>" /></td>
+    </tr>
+   </al-if>
+  </table>
+</al-expand>
+

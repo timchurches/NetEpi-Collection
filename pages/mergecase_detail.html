@@ -1,0 +1,54 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+<al-include name="demogfields.html" />
+<al-expand name="page_layout_banner">
+ <al-setarg name="title">Merge record - proposed actions</al-setarg>
+ <al-exec expr="field_rows = selcasemerge.personfields_rows_and_cols()" />
+ <al-expand name="demogfields_text" />
+
+ <p><b>This will irreversably merge the two selected records
+  into one record, merging access controls and logs. Be certain this is
+  what you want before clicking the Merge button.</b></p>
+ <al-exec expr="desc = casemerge.desc_edit()" />
+ <al-if expr="desc">
+  <table class="duperes">
+   <tr>
+    <th colspan="3">Edit actions</th>
+   </tr>
+   <al-for iter="s_i" expr="desc">
+    <al-exec expr="label, op, value, hilite = s_i.value()" />
+    <al-if expr="hilite"><tr class="warn"><al-else><tr></al-if>
+     <th class="op"><al-value expr="op" /></th>
+     <th class="label"><al-value expr="label" /></th>
+     <td><al-value expr="value" /></td>
+    </tr>
+   </al-for>
+  </table>
+ <al-else>
+  <div class="dupres">No edits are required</div>
+ </al-if>
+ <table width="100%">
+  <tr>
+   <td align="right">
+    <al-input name="merge" type="submit" class="butt" value="Merge" /><br>
+   </td>
+  </tr>
+ </table>
+</al-expand>

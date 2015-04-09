@@ -1,0 +1,46 @@
+Weekly respiratory virus laboratory surveillance application
+============================================================
+
+This is a small, bespoke web application to assist in the collection of
+weekly respiratory virus test data from participating laboratories in New
+South Wales, Australia. As such,the application has limited flexibility,
+and that which it does have requires editing of its python source files
+(in particular, the labsurv/labsurv.py file to change the list of
+labs, tests and diagnoses). However, we have included it in the NetEpi
+Collection distribution in order to demonstrate how the infrastructure
+used by NetEpi can also be used to rapidly create custom applications
+for specific purposes. The application could be used as a template for
+similar data collection use-cases (scenarios).
+
+It also serves as a prototype for the possible future inclusion in
+NetEpi of a more generalised facility to collect aggregate statistics
+(as it stands, NetEpi Collection is strongly oriented towards collection
+data on individual cases and contacts, not aggregate data).
+
+Prerequisites and configuration options are a subset of those offered by
+NetEpi Collection. Prerequisites are unix, apache, python, albatross,
+mx Tools, PostgreSQL, pyPgSQL or ocpgdb. Configuration options include
+appname, apptitle, dsn, cgi_dir, html_dir, and tracedb. Please refer to
+the NetEpi Collection README for more details.
+
+To create the database ("labsurv" and "www-data" can be changed to suit
+your environment):
+
+    createdb labsurv
+    psql labsurv -f schema/schema.sql
+    schema/chown www-data | psql labsurv
+
+
+LICENCE
+=======
+
+All materials associated with "NetEpi" are Copyright (C) 2004-2010 Health
+Administration Corporation (New South Wales Department of Health) and
+others (see the CONTRIBUTORS file for details).
+
+NetEpi is licensed under the terms of the Health Administration
+Corporation Open Source Licence Version 1.2 (HACOS Licence V1.2),
+the full text of which can be found in the LICENCE file provided with
+NetEpi Collection.
+
+

@@ -1,0 +1,62 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-expand name="page_layout_banner">
+ <al-setarg name="title">Duplicate Cases for <al-value expr="case_dups.syndrome_name" /></al-setarg>
+ <table class="duperes">
+  <thead>
+   <tr>
+    <al-th colspanexpr="len(case_dups.fields) + 2">
+     <al-expand name="page_select" />
+    </al-th>
+   </tr>
+  </thead>
+  <tbody>
+   <al-for vars="person" expr="case_dups.result_page()">
+    <tr>
+     <al-th colspanexpr="len(case_dups.fields) + 2">
+      <al-value expr="person.summary()" />
+     </al-th>
+    </tr>
+    <tr class="subhead">
+     <td class="indent">&nbsp;</td>
+     <al-for vars="field" expr="case_dups.fields">
+      <th><al-value expr="field.label" /></th>
+     </al-for>
+     <th>&nbsp;</th>
+    </tr>
+    <al-for vars="cs" iter="cs_i" expr="person.cases">
+     <tr>
+      <td class="indent">&nbsp;</td>
+      <al-for vars="field" expr="case_dups.fields">
+       <td><al-value expr="field.outtrans(cs.row)" /></td>
+      </al-for>
+      <al-if expr="cs_i.index() == 0">
+       <al-td rowspanexpr="len(person.cases)" align="right">
+        <al-input type="submit" class="butt" value="Select"
+          nameexpr="'merge:%s' % person.person_id" />
+       </al-td>
+      </al-if>
+     </tr>
+    </al-for>
+   </al-for>
+  </tbody>
+ </table>
+</al-expand>

@@ -1,0 +1,48 @@
+
+From mod_auth_pgsql version 2.0,  apache >= 2.0.40 and PostgreSQL >= 7.1 are needed
+	for apache 1.3.x use the mod_auth_pgsql 0.9.x tree
+
+
+APXS DSO Install:
+	- untar mod_auth_pgsql  
+		cd /usr/local/src
+		tar zxf mod_auth_pgsql-2.0.x.tar.gz
+		cd mod_auth_pgsql-2.0.x
+	- make & install as DSO
+	 	
+	 	/usr/local/apache2/bin/apxs  -i -a -c -I /usr/local/pgsql/include -L /usr/local/pgsql/lib -lpq mod_auth_pgsql.c
+ 
+	
+
+STATIC Install
+
+
+	- untar mod_auth_pgsql  
+		cd /usr/local/src
+		tar zxf mod_auth_pgsql-2.0.x.tar.gz
+
+	- untar apache source and run ./configure from the apache source dir
+		cd /usr/local/src
+		tar zxf httpd-2.0.x.tar.gz
+		
+		cd httpd-2.0.x
+		./configure --with-module=aaa:../mod_auth_pgsql-2.0.x/mod_auth_pgsql.c
+
+	- edit config_vars.mk
+		vi build/config_vars.mk		
+		add "-I/usr/local/pgsql/include" to the end of  EXTRA_INCLUDES 
+		add "-lpq -L/usr/local/pgsql/lib" to the end of  EXTRA_LIBS
+		
+		NOTE: they have to be the last in the line, otherwise we get conflicts between pgsql & apache includes
+		NOTE2: there is a way to do it in a better way (without vi ) ? 
+		   
+	- make & install	   
+		make
+		make install
+		
+
+
+
+bye,
+  Giuseppe Tanzilli <info@giuseppetanzilli.it>
+

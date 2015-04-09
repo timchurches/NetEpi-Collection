@@ -1,0 +1,32 @@
+NetEpi Collection was developed by Tim Churches of the Centre for
+Epidemiology and Research, New South Wales Department of Health (Health
+Administration Corporation, New South Wales), and by Andrew McNamara of Object
+Craft Pty Ltd, Melbourne, working under contract to the New South Wales
+Department of Health. James Farrow of Farrow Norris Pty Ltd, also 
+working under contract to the New South Wales Department of Health, also
+contributed to the work. All work on NetEpi Collection performed by McNamara,
+Farrow and Churches is copyright to the NSW Department of Health under the 
+terms of the contractual arrangements covering their respective engagements by
+the NSW Department of Health.
+
+The Australian Government Department of Health and Ageing sponsored the
+following enhancements to version 0.15 of NetEpi Collection:
+
+  * Added function to export cases/person and case forms as a row
+    per case CSV file (and associated unit tests).
+  * Added new "local case id" case field, re-label "case id" as
+    "system case id".
+  * Parameterised "syndrome label" -> "Case Definition".
+  * Miscellaneous cosmetic/presentation changes.
+  * Miscellaneous bug fixes.
+
+The Australian Government Department of Health and Ageing also sponsored
+extensive enhancements to the reporting system for version 1.7 of NetEpi
+Collection.
+
+Some third-party programme code and software components, all of which are 
+licensed under free, open source licences which are compatible with that used
+by NetEpi Collection, have also been incorporated into NetEpi Collection
+and are included as part of the NetEpi Collection distribution. Details of
+these inclusions are provided in the LICENCE file.
+

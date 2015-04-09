@@ -1,0 +1,6 @@
+case_id,local_case_id,person_id,syndrome_id,case_assignment,notification_datetime,onset_datetime
+1,case_A,1,2,,3/4/2003,2/4/2003
+2,case_B,2,2,,4/5/2003,3/5/2003
+3,case_C_diff_syndrome,2,1,,5/6/2003,4/6/2003
+4,case_D_diff_unit,2,2,,5/6/2003,4/6/2003
+5,case_E_diff_unit_acl,2,2,,5/6/2003,4/6/2003

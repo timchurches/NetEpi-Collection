@@ -1,0 +1,7 @@
+owner=$1
+cat << EOF
+ALTER TABLE lab_reports OWNER TO "${owner}";
+ALTER TABLE lab_totals OWNER TO "${owner}";
+ALTER TABLE lab_diags OWNER TO "${owner}";
+ALTER TABLE lab_cases OWNER TO "${owner}";
+EOF

@@ -1,0 +1,73 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-expand name="page_layout_banner">
+ <al-setarg name="title"><al-value expr="paged_search.title" /></al-setarg>
+  <table border="0" class="gridtab">
+   <al-for iter="h" expr="paged_search.cols()">
+    <al-if expr="h.value().wide">
+     <col align="left" width="100%">
+    <al-else>
+     <col align="center">
+    </al-if>
+   </al-for>
+   <thead>
+    <tr>
+     <al-td colspanexpr="paged_search.ncols()">
+      <al-expand name="page_select" />
+     </al-td>
+    </tr>
+    <tr>
+     <al-expand name="sort_header" />
+    </tr>
+   </thead>
+   <tfoot>
+    <tr>
+     <al-td colspanexpr="paged_search.ncols()">
+      <al-expand name="page_select" />
+     </al-td>
+    </tr>
+   </tfoot>
+   <tbody>
+    <al-for iter="log_i" expr="paged_search.result_page()">
+     <al-exec expr="log = log_i.value()" />
+     <al-if expr="log_i.index() & 1">
+      <tr>
+     <al-else>
+      <tr class="darker">
+     </al-if>
+      <al-for iter="h" expr="paged_search.cols()">
+       <al-exec expr="col = h.value()" />
+       <al-td nowrapbool="not col.wide">
+        <al-value expr="col.pretty_row(log)" />
+       </al-td>
+      </al-for>
+     </tr>
+    </al-for>
+    <al-if expr="paged_search.error">
+     <tr>
+      <al-td colspanexpr="len(paged_search.headers)" class="reverr">
+       <al-value expr="paged_search.error" />
+      </al-td>
+     </tr>
+    </al-if>
+   </tbody>
+  </table>
+</al-expand>

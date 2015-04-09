@@ -1,0 +1,1091 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" 
+   "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+-->
+
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Script-Type" content="text/javascript">
+  <link rel="shortcut icon" hrefexpr="/images/favicon.ico" type="image/x-icon">
+  <style type="text/css" media="all">
+   @import "/collection/style.css";
+   body { font-size: 9pt; }
+   .sg {
+    clear: both;
+    border-left: 2em solid #bbb;
+    border-right: 2em solid #bbb;
+    border-bottom: 2em solid #bbb;
+   }
+   .sg .sgsg {
+    background: #bbb;
+    clear: both;
+    margin-left: -2em;
+    padding-left: 2em;
+    margin-bottom: 0;
+   }
+  </style>
+  <title>NetEpi Collection - stylesheet gallery</title>
+ <body>
+  <h1>NetEpi Collection - stylesheet gallery</h1>
+  <p>This is mainly for developers, but also serves as a sort of
+  regression test for the main application style sheet. At this stage,
+  it is incomplete. Also note, all paths are hard-coded to expect the
+  application resources to be installed at /collection/.</p>
+
+  <h2>common stuff</h2>
+
+   <div class="err">err</div>
+   <div class="reverr">reverr <input type="submit"></div>
+   <div class="boxed">boxed</div>
+   <div class="deleted" style="height: 10ex;">deleted</div>
+   <div class="required">required (should be red)</div>
+   <div class="preview">preview (should be inset)</div>
+   <div class="danger">danger</div>
+   <div class="smaller">smaller</div>
+   <a href="#">a link</a>
+   <div class="content">content (indent by 2ex)</div>
+   <h2 class="pagetitle">pagetitle</h2>
+   <div class="pagesubtitle">pagesubtitle</div>
+   <div class="copyright">copyright</div>
+   <div>(fauxrule follows)</div>
+   <div class="fauxrule"></div>
+   <div class="more">more (float right)</div>
+   <div class="debug">debug (box)</div>
+   <input class="smallbutt" type="submit" value="smallbutt">
+   <input class="butt" type="submit" value="butt">
+   <input class="bigbutt" type="submit" value="bigbutt">
+   <div class="centbox"><h1>centbox</h1>centbox content</div>
+   <div class="userdetails">userdetails (italic, smaller)</div>
+   <div class="msgbox">msgbox</div>
+   <div class="errbox">errbox</div>
+   <div class="adminbox">adminbox</div>
+
+  <div class="sg">
+   <h2 class="sgsg">pagebanner</h2>
+   <table width="100%" border="0" class="pagebanner">
+    <tr>
+     <td><img alt="NetEpi logo" src="/collection/images/netepi.png" /></td>
+     <th>NetEpi Collection</th>
+     <td>|</td>
+     <td><a id="Admin" href="#">Admin</a></td>
+     <td>|</td>
+     <td><a id="Tasks" href="#">Tasks</a></td>
+     <td>|</td>
+     <td><a id="Search" href="#">Search</a></td>
+     <td>|</td>
+     <td><a id="Tools" href="#">Tools</a></td>
+     <td>|</td>
+     <td><button id="help"><img border="0" alt="Help" src="/collection/images/help.png" /></button></td>
+     <td>|</td>
+     <td><a id="Logout" href="#">Logout</a></td>
+    </tr>
+   </table>
+  </div>
+
+
+  <div class="sg">
+   <h2 class="sgsg">syndlist</h2>
+   <div class="syndlist">
+    <h2 class="pagetitle">Case/Contact Definition</h2>
+    <table width="100%" cellspacing="0" border="0">
+     <tbody class="case">
+      <tr class="header">
+       <td class="title left-blob" width="100%" colspan="2">SARS</td>
+       <td class="info"><input type="image" align="absmiddle" src="/collection/images/info.png" name="syn_detail:1" /></td>
+       <td class="count right-line" nowrap align="right">54 records</td>
+      </tr>
+      <tr>
+       <td class="desc left-line right-line" colspan="4"> 
+        Severe Acute Respiratory Syndrome</p></td>
+      </tr>
+      <tr class="footer">
+       <td class="date left-line" nowrap>Posted 15/05/2006 18:16:00</td>
+       <td align="right" class="buttons">
+        <input type="submit" class="bigbutt" name="new:1" value="Add Case" /><input type="submit" class="bigbutt" name="edit:1" value="Edit Case" /></td>
+       <td align="right" nowrap colspan="2" class="extra right-blob">
+        <select onchange="submit();" name="syndextra">
+         <option value="">more options</option>
+         <option value="reports:1">Reports</option>
+         <option value="printforms:1">Print blank forms</option>
+         <option value="export:1">Export records</option>
+         <option value="import:1">Import data</option>
+         <option value="contactvis:1">Visualise contacts</option>
+         </select>
+        <input type="submit" class="smallbutt" name="go" value="go" />
+       </td>
+      </tr>
+      <tr><td colspan="4" class="line"></td></tr>
+     </tbody>
+     <tbody class="contact">
+      <tr class="header">
+       <td class="title left-blob" width="100%" colspan="2">SARS followup</td>
+       <td class="info"></td>
+       <td class="count right-line" nowrap align="right">26 records</td>
+      </tr>
+      <tr>
+       <td class="desc left-line right-line" colspan="4">Sars Followup</p></td>
+      </tr>
+      <tr class="footer">
+       <td class="date left-line" nowrap>Posted 17/05/2006 12:08:00</td>
+       <td align="right" class="buttons">
+        <input type="submit" class="bigbutt" name="new:3" value="Add Contact" />
+        <input type="submit" class="bigbutt" name="edit:3" value="Edit Contact" />
+       </td>
+       <td align="right" nowrap colspan="2" class="extra right-blob">
+        <select onchange="submit();" name="syndextra">
+         <option value="">more options</option>
+         <option value="reports:3">Reports</option>
+         <option value="printforms:3">Print blank forms</option>
+         <option value="export:3">Export records</option>
+         <option value="import:3">Import data</option>
+         <option value="contactvis:3">Visualise contacts</option>
+        </select>
+        <input type="submit" class="smallbutt" name="go" value="go" />
+       </td>
+      </tr>
+      <tr>
+       <td colspan="4" class="line"></td>
+      </tr>
+     </tbody>
+    </table>
+   </div>
+  </div>
+
+  <div class="sg">
+   <h2 class="sgsg">labelform</h2>
+   <table>
+    <tbody class="labelform details">
+     <tr>
+      <td><label for="search.syndrome_id">Case/Contact Definition</label></td>
+      <td>
+       <select id="search.syndrome_id" name="search.syndrome_id">
+        <option value="Any">Any</option>
+        <option value="1">SARS</option>
+        <option value="3">SARS followup</option>
+       </select>
+      </td>
+      <td><label for="search.local_case_id">Local ID</label></td>
+      <td><input id="search.local_case_id" name="search.local_case_id" value="" /></td>
+     </tr>
+     <tr>
+      <td><label for="search.deleted">Deleted</label></td>
+      <td>
+       <input type="radio" class="autowidth" id="search.deleted" name="search.deleted" value="n" checked />&nbsp;No&nbsp;&nbsp;
+       <input type="radio" class="autowidth" id="search.deleted" name="search.deleted" value="y" />&nbsp;Yes&nbsp;&nbsp;
+       <input type="radio" class="autowidth" id="search.deleted" name="search.deleted" value="" />&nbsp;Both&nbsp;&nbsp;
+      </td>
+     </tr>
+    </tbody>
+   </table>
+  </div>
+
+
+  <div class="sg">
+   <h2 class="sgsg">widelabelform</h2>
+   <table>
+    <tbody class="widelabelform">
+     <tr>
+      <th colspan="3">Searching</th>
+     </tr>
+     <tr>
+      <td class="label">
+       <label for="preferphonetic">Prefer phonetic</label></td>
+      <td id="preferphonetic" class="autowidth">
+       <input type="radio" name="phonetic_search" value="True" checked />&nbsp;Yes
+       <input type="radio" name="phonetic_search" value="False" />&nbsp;No
+      </td>
+      <td><input type="submit" class="butt" name="reset:phonetic_search" value="Reset" /></td>
+     </tr>
+     <tr>
+      <td class="label">
+       <label for="resultsperpage">Results per page</label></td>
+      <td id="resultsperpage" class="autowidth">
+       <input type="radio" name="results_per_page" value="10" checked />&nbsp;10
+       <input type="radio" name="results_per_page" value="25" />&nbsp;25
+       <input type="radio" name="results_per_page" value="50" />&nbsp;50
+      </td>
+      <td><input type="submit" class="butt" name="reset:results_per_page" value="Reset" /></td>
+     </tr>
+    </tbody>
+   </table>
+  </div>
+
+  <div class="sg">
+   <h2 class="sgsg">key</h2>
+   <div class="key">
+    <b>Choosing a good password</b>
+    <p>
+    You must choose a password which is known only to you and which is
+    hard to guess. It must be at least 6 characters long and must contain a
+    mixture of letters and numbers. The letters must be a mixture of upper
+    and lower case. It is unwise to base your password on obvious words or
+    sets of numbers, such as your name, or your partner's or employer's
+    name, or your birthday, telephone number, car registration number,
+    and so on.
+    </p>
+    <p><span class="required">*</span> - required field.</p>
+    <p><span class="onerequired">*</span> - at least one field must be supplied.</p>
+   </div>
+  </div>
+
+  <div class="sg">
+   <h2 class="sgsg">bull-summ</h2>
+   <div class="bull-summ">
+    <input type="hidden" name="bulletin_detail" value="" />
+    <div class="banner">
+     <div class="hide"><a href="#">Hide</a></div>
+     News Bulletins
+    </div>
+    <div class="item">
+     <div class="header">item header</div>
+     <div class="synopsis">item synopsis</div>
+     <div class="date">
+      <div class="more"><a href="#">More&raquo;</a></div>
+      Posted 11/01/2008</div>
+    </div>
+   </div>
+  </div>
+
+  <div class="sg">
+   <h2 class="sgsg">bulletin-detail</h2>
+   <div class="bulletin-detail">
+    <table width="100%" border="0" />
+     <tr>
+      <th>Title:</th>
+      <td>Blah blah!</td>
+     </tr>
+     <tr>
+      <th>Posted:</th>
+      <td>21/08/2006 17:46:11</td>
+     </tr>
+     <tr>
+      <th></th>
+      <td>this is the detail text</td>
+     </tr>
+    </table>
+    <div class="back"><input type="submit" name="back" value="Back" /></div>
+   </div>
+  </div>
+
+  <div class="sg">
+   <h2 class="sgsg">login</h2>
+   <table class="login" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+     <td class="lhs logo">
+      <img alt="NetEpi Collection logo" src="/collection/images/netepi-bb.png" /></td>
+     <td class="rhs">
+      <div class="title">
+       NetEpi Collection</div>
+      <div class="subtitle">
+       Network-enabled tools for epidemiology and public health practice.</div>
+      <div class="copyright">
+       <a target="_blank" href="/collection/help/copyright.html">Copyright &copy;</a> 2004-2010 NSW Department of Health and others.<br>
+       <a href="http://www.netepi.org/">NetEpi Collection</a> version 9.9.9 12345<br>
+      </div>
+     </td>
+    </tr>
+    <tr class="prompt">
+     <td class="lhs">
+      <label for="username">User name</label>
+     </td>
+     <td class="rhs">
+      <input type="text" id="username" tabindex="1" name="username" /></td>
+    </tr>
+    <tr class="prompt">
+     <td class="lhs">
+      <label for="password">Password</label>
+     </td>
+     <td class="rhs">
+      <input type="password" id="password" tabindex="2" name="password" value="" /></td>
+    </tr>
+    <tr class="prompt">
+     <td class="lhs">&nbsp;</td>
+     <td class="rhs">
+      <input type="submit" tabindex="4" name="login" value="Log in" /></td>
+    </tr>
+    <tr class="apply prompt">
+     <td class="lhs">
+      <a class="help" target="_blank" href="/collection/help/help.html#login"><img border="0" alt="Help" src="/collection/images/help-w.png" /></a></td>
+     <td class="rhs">
+       <input type="submit" name="register" value="Apply for a user account" /></td>
+    </tr>
+    <tr class="dedication">
+     <td class="lhs">&nbsp;</td>
+     <td class="rhs">
+      Dedicated to the memory of Professor Aileen Plant, 1948-2007.<br>
+      <a href="http://memorial.curtin.edu.au/aileenplant/">[1]</a> <a href="http://www.smh.com.au/news/obituaries/she-fought-disease-despite-risks/2007/04/15/1176575678645.html?page=fullpage">[2]</a> <a href="http://en.wikipedia.org/wiki/Aileen_Plant">[3]</a> <a href="http://www.publish.csiro.au/view/journals/dsp_journal_fulltext.cfm?nid=226&amp;f=NB07067">[4]</a> <a href="http://www.who.int/mediacentre/news/statements/2007/s07/en/index.html">[5]</a> <a href="http://www.mja.com.au/public/issues/187_06_170907/mat10698_obit_fm.html">[6]</a><br>
+     </td>
+    </tr>
+   </table>
+  </div>
+
+  <div class="sg">
+   <h2 class="sgsg">formslist</h2>
+   <table cellspacing="0" class="formslist" cellpadding="1">
+    <tr>
+     <th colspan="2" class="formname">Exposure History (SARS)</th>
+     <th align="center" width="5%"></th>
+    </tr>
+    <tr>
+     <td class="formid">
+      F490<br>
+      25/08/2006<br>
+      14:23:57</td>
+     <td width="100%">
+      Contact with case: No; Contact duration (hours): 123.0; Date of
+      first contact: 13/08/2007; Most recent contact: 16/08/2007</td>
+     <td align="center">
+      <input type="submit" class="butt" name="edit:sars_exposure:49" value="Edit" /></td>
+    </tr>
+    <tr>
+     <th colspan="2" class="formname">Travel history - China (SARS)</th>
+     <th align="center" width="5%">
+      <input type="submit" class="butt" name="new:sars_china" value="New" /></th>
+    </tr>
+    <tr>
+     <td class="formid">
+      F580<br>
+      02/07/2007<br>
+      13:46:13</td>
+     <td width="100%">
+      Transit airport: n/a; Transit date: n/a; Transit period: n/a;
+      Left airport: Not answered; Arrived China:: 30/01/2007; Departed
+      China:: 30/01/2007; Visited Guangdong: No; Visited Shanxi: No;
+      Visited Beijing: No; Other provinces:: n/a; Visited health care
+      fac:: No; Reason: n/a</td>
+     <td align="center">
+      <input type="submit" class="butt" name="edit:sars_china:58" value="Edit" /></td>
+    </tr>
+    <tr>
+     <td class="formid">
+      F720<br>
+      04/09/2007<br>
+      10:25:09</td>
+     <td width="100%">
+      Transit airport: n/a; Transit date: 01/09/2007; Transit period: n/a;
+      Left airport: Not answered; Arrived China:: 02/09/2007; Departed
+      China:: 03/09/2007; Visited Guangdong: Not answered; Visited Shanxi:
+      Not answered; Visited Beijing: Not answered; Other provinces::
+      n/a; Visited health care fac:: Not answered; Reason: n/a</td>
+     <td align="center">
+      <input type="submit" class="butt" name="edit:sars_china:72" value="Edit" /></td>
+    </tr>
+   </table>
+  </div>
+
+  <div class="sg">
+   <h2 class="sgsg">syndrome-form</h2>
+   todo
+  </div>
+
+  <div class="sg">
+   <h2 class="sgsg">selexp</h2>
+   <table border="0" class="selexp">
+    <tr>
+     <td width="30%">Case or contact forms?</td>
+     <td>
+      <table>
+       <tr>
+        <td><input type="radio" name="forms.contact_syndrome_id" value="" checked /></td>
+        <td>Cases</td>
+       </tr>
+       <tr>
+        <td><input type="radio" name="forms.contact_syndrome_id" value="3" /></td>
+        <td>Sars Followup</td>
+       </tr>
+      </table>
+     </td>
+     <td align="center"><input type="submit" class="butt" name="set" value="Set" /></td>
+    </tr>
+    <tr>
+     <td width="30%">Which forms would you like to print?</td>
+     <td>
+      <table>
+       <tr>
+        <td><input type="checkbox" name="forms.include_forms" value="_demographics" /></td>
+        <td width="100%">Demographics/Identification</td>
+       </tr>
+       <tr>
+        <td><input type="checkbox" name="forms.include_forms" value="sars_exposure" /></td>
+        <td width="100%">Exposure History (SARS)</td>
+       </tr>
+       <tr>
+        <td><input type="checkbox" name="forms.include_forms" value="sars_china" /></td>
+        <td width="100%">Travel history - China (SARS)</td>
+       </tr>
+      </table>
+     </td>
+     <td align="center">
+      <input type="submit" class="bigbutt" name="select_all" value="Select All" /><br />
+      <input type="submit" class="bigbutt" name="clear_all" value="Clear Selection" /></td>
+    </tr>
+   </table>
+  </div>
+
+  <div class="sg">
+   <h2 class="sgsg">pt-search</h2>
+   <table>
+    <tr>
+     <td width="50%" valign="top" class="pt-search">
+      <table width="100%" border="0" cellspacing="0">
+       <tr>
+        <th colspan="3" align="left">Case/Contact Definition Forms</th>
+       </tr>
+       <tr>
+        <td width="14"><img height="10" width="14" alt="" src="/collection/images/button-nil.png" /></td>
+        <td width="14"><input type="image" height="10" width="14" alt="dn" src="/collection/images/button-down.png" name="pt_search:move_dn:0" /></td>
+        <td width="90%" class="lighter">sars_exposure</td>
+        <td width="5%"><input type="image" src="/collection/images/arrow-r.png" height="15" width="24" name="pt_search:remove:0" /></td>
+       </tr>
+       <tr>
+        <td width="14"><input type="image" height="10" width="14" alt="up" src="/collection/images/button-up.png" name="pt_search:move_up:1" /></td>
+        <td width="14"><img height="10" width="14" alt="" src="/collection/images/button-nil.png" /></td>
+        <td width="90%" class="lighter">sars_china</td>
+        <td width="5%"><input type="image" src="/collection/images/arrow-r.png" height="15" width="24" name="pt_search:remove:1" /></td>
+       </tr>
+      </table>
+     </td>
+     <td width="50%" valign="top" class="pt-search">
+      <table width="100%" class="pt-search" border="0" cellspacing="0">
+       <tr>
+        <th colspan="3" align="left">Form Search</th>
+       </tr>
+       <tr>
+        <td width="5%"></td>
+        <td><input type="text" name="pt_search.search_term" value="" /><input type="submit" class="butt" name="pt_search:search" value="Search" /><input type="submit" class="butt" name="pt_search:clear" value="Clear" /></td>
+       </tr>
+      </table>
+     </td>
+    </tr>
+   </table>
+  </div>
+
+  <div class="sg">
+   <h2 class="sgsg">pt-sel</h2>
+   <table width="100%" class="pt-sel">
+    <tr>
+     <th width="50%">Selected</th>
+     <th width="50%">Available</th>
+    </tr>
+    <tr>
+     <td>
+      <select size="5" multiple name="group_edit.exclude_group">
+       <option value="0">Group A</option>
+       <option value="1">Group B</option>
+      </select><br />
+      <input class="butt" type="submit" name="group_edit:remove" value="Remove &gt;&gt;" />
+     </td>
+     <td>
+      <select size="5" multiple name="group_edit.include_group">
+       <option value="0">Group C</option>
+      </select><br />
+      <input class="butt" type="submit" name="group_edit:add" value="&lt;&lt; Add" />
+     </td>
+    </tr>
+   </table>
+  </div>
+
+  <div class="sg">
+   <h2 class="sgsg">duperes</h2>
+   <table class="duperes">
+    <thead>
+     <tr class="top">
+      <td align="right">Source:</td>
+      <th>A</th>
+      <th>B</th>
+      <th>Edit</th>
+      <th>Clear</th>
+     </tr>
+    </thead>
+    <tbody>
+     <tr class="warn">
+      <th class="label"><label for="personmerge.person.surname">Surname</label></th>
+      <td><input type="radio" name="personmerge.fields[0].source" value="a" checked />SMITH</td>
+      <td><input type="radio" name="personmerge.fields[0].source" value="b" />SMITH</td>
+      <td class="user"><input id="personmerge.person.surname" name="personmerge.person.surname" /></td>
+      <td align="center"><input type="radio" name="personmerge.fields[0].source" value="d" /></td>
+     </tr>
+     <tr>
+      <th class="label"><label for="personmerge.person.state">State</label></th>
+      <td></td>
+      <td><input type="radio" name="personmerge.fields[12].source" value="b" checked />New South Wales</td>
+      <td class="user">
+       <select id="personmerge.person.state" name="personmerge.person.state">
+        <option value="">Unknown</option>
+        <option value="ACT">Australian Capital Territory</option>
+        <option value="Lost">Lost</option>
+        <option value="NSW">New South Wales</option>
+        <option value="NT">Northern Territory</option>
+        <option value="Other">Other</option>
+        <option value="QLD">Queensland</option>
+        <option value="SA">South Australia</option>
+        <option value="TAS">Tasmania</option>
+        <option value="VIC">Victoria</option>
+        <option value="WA">Western Australia</option>
+       </select>
+      </td>
+      <td align="center"><input type="radio" name="personmerge.fields[12].source" value="d" /></td>
+     </tr>
+    </tbody>
+   </table>
+  </div>
+
+  <div class="sg">
+   <h2 class="sgsg">searchres</h2>
+   <table width="100%" border="0" class="searchres" cellspacing="0">
+    <tbody>
+     <tr class="person">
+      <td>SMITH, John, 01/01/1941 (67 yrs), Male, State: New South Wales</td>
+      <td class="buttcol" align="right">&nbsp;</td>
+     </tr>
+     <tr class="case">
+      <td>SARS, Status: Excluded, System ID: 44</td>
+      <td class="buttcol" align="right"><input type="submit" class="butt" idexp="name" name="edit_case:44" value="Edit Case" /></td>
+     </tr>
+     <tr class="case">
+      <td>SARS, System ID: 53, Onset Date: 01/02/2003 04:05:06</td>
+      <td class="buttcol" align="right"><input type="submit" class="butt" idexp="name" name="edit_case:53" value="Edit Case" /></td>
+     </tr>
+     <tr class="contact">
+      <td>SARS contact, System ID: 105</td>
+      <td class="buttcol" align="right"><input type="submit" class="butt" idexp="name" name="edit_contact:7:105" value="Edit Contact" /></td>
+     </tr>
+     <tr class="contactcase">
+      <td>Contact of: SARS, Status: Preliminary, Local ID: ABC, System ID: 7, Onset Date: 16/01/2008 00:00:00 - SMITH, Jane, 45 yrs, Female, Locality/Suburb: LAMPTON, State: New South Wales</td>
+      <td class="buttcol"></td>
+     </tr>
+    </tbody>
+   </table>
+  </div>
+
+  <div class="sg">
+   <h2 class="sgsg">searchres</h2>
+   <table class="task" width="95%" cellspacing="0" border="0">
+    <tr>
+     <th colspan="2" align="left">Creating a new task for this case:</th>
+    </tr>
+    <tr><td colspan="2" class="fauxrule"></td></tr>
+    <tr>
+     <td width="30%"><label for="task_description">Task Description</label></td>
+     <td><input class="fill" id="task_description" name="edittask.task_description" value="" /></td>
+    </tr>
+    <tr>
+     <td align="right">or <input type="submit" class="bigbutt" name="apply_desc" value="Apply Description" /></td>
+     <td>
+      <select class="fill" id="task_descriptions" name="popular_tasks">
+       <option>Get onset date</option>
+       <option>Get exposure history</option>
+       <option>Get contact details for user.</option>
+      </select>
+     </td>
+    </tr>
+    <tr><td colspan="2" class="fauxrule"></td></tr>
+    <tr>
+     <td>Assign task to</td>
+     <td>
+      <table width="100%">
+       <tr>
+        <td><input type="radio" id="assign_me" name="edittask.assignee.assign_type" value="me" checked /></td>
+        <td width="40%"><label for="assign_me">Me</label></td>
+        <td width="40%"></td>
+        <td align="right"></td>
+       </tr>
+       <tr>
+        <td><input type="radio" id="assign_myunit" name="edittask.assignee.assign_type" value="myunit" /></td>
+        <td width="40%"><label for="assign_myunit">My unit</label></td>
+        <td width="40%"></td>
+        <td align="right"></td>
+       </tr>
+       <tr>
+        <td><input type="radio" id="assign_queue" name="edittask.assignee.assign_type" value="queue" /></td>
+        <td width="40%"><label for="assign_queue">Task queue</label></td>
+        <td width="40%">
+         <select class="fill" name="edittask.assignee.queue_id">
+          <option value="1">Queue A</option>
+          <option value="2">Queue B</option>
+          <option value="3">Queue C</option>
+         </select>
+        </td>
+        <td align="right"></td>
+       </tr>
+       <tr>
+        <td><input type="radio" id="assign_user" name="edittask.assignee.assign_type" value="user" /></td>
+        <td width="40%"><label for="assign_user">Another user</label></td>
+        <td width="40%"></td>
+        <td align="right"><input type="submit" class="bigbutt" name="search_user" value="Select User" /></td>
+       </tr>
+      </table>
+     </td>
+    </tr>
+   </table>
+  </div>
+
+  <div class="sg">
+   <h2 class="sgsg">casecontacts</h2>
+   <table border="0" class="casecontacts" cellspacing="0">
+    <thead>
+     <tr><td colspan="5"></td></tr>
+     <tr>
+      <th colspan="5" align="right">Order by:
+       <select onchange="submit();" name="contacts.order">
+        <option selected>Surname</option>
+        <option>Given Names</option>
+       </select>
+       <input type="submit" class="butt" name="refetch" value="Update" />
+      </th>
+     </tr>
+     <tr>
+      <th>Person</th>
+      <th>ID</th>
+      <th>Date</th>
+      <th>Case/Contact Definition</th>
+      <th></th>
+     </tr>
+    </thead>
+    <tr class="lighter">
+     <td>BLAKE, John</td>
+     <td>145</td>
+     <td>1/2/2007</td>
+     <td>SARS followup</td>
+     <td class="buttcol"><input type="submit" class="butt" name="edit:145" value="Edit" /></td>
+    </tr>
+    <tr class="darker">
+     <td>SMITH, Jack, Male</td>
+     <td>54</td>
+     <td>None</td>
+     <td>SARS followup</td>
+     <td class="buttcol"><input type="submit" class="butt" name="edit:54" value="Edit" /></td>
+    </tr>
+   </table>
+  </div>
+
+  <div class="sg">
+   <h2 class="sgsg">choosenewcontact</h2>
+   <table class="choosenewcontact" border="0">
+    <tr>
+     <td class="name">SARS followup</td>
+     <td>Sars Followup</p></td>
+     <td class="buttcol"><input type="submit" class="bigbutt" name="new:3" value="New Contact" /></td>
+    </tr>
+    <tr>
+     <td class="name">SARS confirmed contact</td>
+     <td>Contirm SARS contact - additional measures required</td>
+     <td class="buttcol"><input type="submit" class="bigbutt" name="new:3" value="New Contact" /></td>
+    </tr>
+   </table>
+  </div>
+
+  <div class="sg">
+   <h2 class="sgsg">adminusers</h2>
+   <table class="adminusers sorttable">
+    <thead>
+     <tr>
+      <th class="sortable">Enabled</th>
+      <th class="sortable">Bad Pass</th>
+      <th class="sortable">Username</th>
+      <th class="sortable defaultsort">Full name</th>
+      <th class="sortable">Role</th>
+      <th></th>
+     </tr>
+    </thead>
+    <tbody>
+     <tr>
+      <td>Yes</td>
+      <td></td>
+      <td>admin</td>
+      <td>Administrator</td>
+      <td>Administrator</td>
+      <td><input type="submit" class="smallbutt" name="edit:0" value="Edit" /><input type="submit" class="smallbutt" name="log:0" value="Log" /></td>
+     </tr>
+     <tr class="darker">
+      <td>Yes</td>
+      <td></td>
+      <td>jsmith</td>
+      <td>John Smith</td>
+      <td>Admin</td>
+      <td><input type="submit" class="smallbutt" name="edit:21344" value="Edit" /><input type="submit" class="smallbutt" name="log:21344" value="Log" /></td>
+     </tr>
+    </tbody>
+   </table>
+  </div>
+
+  <div class="sg">
+   <h2 class="sgsg">ltab</h2>
+   <table class="ltab" cellpadding="0" cellspacing="0">
+    <tr>
+     <td class="tabs">
+      <input type="submit" accesskey="T" name="tab:title" value="Title" /><br>
+      <input type="submit" class="selected" disabled name="tab:filters" value="Filters" /><br>
+      <br>
+      <input class="act" type="submit" name="report" value="Report" /><br>
+      <input type="submit" accesskey="V" name="tab:vis" value="Visualise" /><br>
+     </td>
+     <td class="rcontent">
+     </td>
+    </tr>
+   </table>
+  </div>
+
+  <div class="sg">
+   <h2 class="sgsg">admin-m</h2>
+   <table border="0" class="admin-m">
+    <tr>
+     <td rowspan="4" class="op">Users</td>
+     <td class="ilabel"><label for="user_search_name">by user name</label></td>
+     <td class="inputs"><input id="user_search_name" class="inputs" type="text" name="user_search.name" value="" /></td>
+     <td rowspan="4" align="left">
+      <label><input type="radio" id="user_search_enabled" name="user_search.enabled" value="enabled" checked />Enabled</label><br>
+      <label><input type="radio" id="user_search_disabled" name="user_search.enabled" value="disabled" />Disabled</label><br>
+      <label><input type="radio" id="user_search_both" name="user_search.enabled" value="either" />Either</label><br>
+      <label><input type="radio" id="user_search_deleted" name="user_search.enabled" value="deleted" />Deleted</label><br>
+     </td>
+     <td rowspan="4" class="buttons">
+      <input class="smallbutt" type="submit" name="user_search_go" value="Find" /><br />
+      <input class="smallbutt" type="submit" name="user_add" value="New" />
+     </td>
+    </tr>
+    <tr>
+     <td class="ilabel"><label for="user_search.fullname">by full name</label></td>
+     <td class="inputs"><input id="user_search.fullname" class="inputs" type="text" name="user_search.fullname" value="" /></td>
+    </tr>
+    <tr>
+     <td class="ilabel"><label for="user_search.role">by role</label></td>
+     <td class="inputs"><input id="user_search.role" class="inputs" type="text" name="user_search.role" value="" /></td>
+    </tr>
+    <tr>
+     <td class="ilabel"> <label for="user_search.unit">by unit</label></td>
+     <td class="inputs"><input id="user_search.unit" class="inputs" type="text" name="user_search.unit" value="" /></td>
+    </tr>
+    <tr><td></td><td colspan="3" class="err">error</td></tr>
+    <tr><td class="spacer" colspan="5"></td></tr>
+   </table>
+  </div>
+
+  <div class="sg">
+   <h2 class="sgsg">gridtab</h2>
+   <table border="0" class="gridtab">
+    <thead class="darkest">
+     <tr>
+      <th nowrap>&nbsp;Selected</th>
+      <th nowrap><img src="/collection/images/sortdnsel.png" /><input type="image" src="/collection/images/sortup.png" name="page:orderby:name_desc" />&nbsp;Name</th>
+      <th nowrap><input type="image" src="/collection/images/sortdn.png" name="page:orderby:street_address" /><input type="image" src="/collection/images/sortup.png" name="page:orderby:street_address_desc" />&nbsp;Street Address</th>
+      <th nowrap><input type="image" src="/collection/images/sortdn.png" name="page:orderby:enabled" /><input type="image" src="/collection/images/sortup.png" name="page:orderby:enabled_desc" />&nbsp;Enabled</th>
+      <th nowrap> &nbsp; Context</th>
+      <th style="text-align: center;"> <input class="smallbutt" type="submit" name="add:" value="New" /></th>
+     </tr>
+    </thead>
+    <tfoot class="darkest">
+     <tr>
+      <td colspan="7" align="left" class="darkest">
+       <table width="100%" cellspacing="0" cellpadding="0" border="0">
+        <tr>
+         <td align="left">
+          Select
+          <input class="smallbutt" type="submit" name="select_all" value="All" /><input class="smallbutt" type="submit" name="select_none" value="None" />
+         </td>
+         <td align="center">
+          Selected role to/from context<select name="select_group_id"><option value="0">AAA</option><option value="1">BBB</option></select>
+          <input class="butt" type="submit" name="select_group:add" value="Add" /><input class="butt" type="submit" name="select_group:del" value="Remove" />
+         </td>
+        </tr>
+       </table>
+      </td>
+     </tr>
+    </tfoot>
+    <tbody>
+     <tr class="darker">
+      <td><input type="checkbox" name="selected" value="4002" /></td>
+      <td>xxxx</td>
+      <td>xxxx</td>
+      <td>xxxx</td>
+      <td>xxxx</td>
+      <td align="center" nowrap>
+       <input class="smallbutt" type="submit" name="edit:4002" value="Edit" /></td>
+     </tr>
+     <tr>
+      <td><input type="checkbox" name="selected" value="0" /></td>
+      <td>xxxx</td>
+      <td>xxxx</td>
+      <td>xxxx</td>
+      <td>xxxx</td>
+      <td align="center" nowrap>
+       <input class="smallbutt" type="submit" name="edit:0" value="Edit" /></td>
+     </tr>
+     <tr class="darker">
+      <td><input type="checkbox" name="selected" value="1" /></td>
+      <td>xxxx</td>
+      <td>xxxx</td>
+      <td>xxxx</td>
+      <td>xxxx</td>
+      <td align="center" nowrap>
+       <input class="smallbutt" type="submit" name="edit:1" value="Edit" /></td>
+     </tr>
+    </tbody>
+   </table>
+  </div>
+
+  <div class="sg">
+   <h2 class="sgsg">admin-u</h2>
+   <table border="0" class="admin-u">
+    <tr>
+     <td colspan="2">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+       <tr>
+        <th width="100%">Edit user</th>
+        <th align="right"><input type="submit" class="butt" name="view_log" value="View Log" /></th>
+       </tr>
+      </table>
+     </td>
+    </tr>
+    <tr>
+     <td align="right">Username:</td>
+     <td><input size="40" name="user.username" value="jsmith" /></td>
+    </tr>
+    <tr>
+     <td align="right">Enabled:</td>
+     <td align="left">
+      <input id="user_enabled" type="radio" name="user.enabled" value="True" checked />Yes&nbsp;
+      <input id="user_disabled" type="radio" name="user.enabled" value="" />No
+     </td>
+    </tr>
+    <tr>
+     <td align="right">Locked due to bad password:</td>
+     <td>
+      <table width="100%" cellspacing="0" cellpadding="0" border="0">
+       <tr>
+        <td align="left" width="100%">No</td>
+        <td>
+         <input type="submit" class="butt" name="reset_attempts" value="Reset" /></td>
+       </tr>
+      </table>
+     </td>
+    </tr>
+    <tr>
+     <td align="right">Rights:</td>
+     <td align="left">
+      <table width="100%" class="gridtab" cellpadding="2" style="text-align: center;">
+       <tr>
+        <th>Unit A</th>
+        <th>User</th>
+        <th style="text-align: left;" width="100%">Right</th>
+       </tr>
+       <tr class="darker">
+        <td><input type="checkbox" disabled name="unitrights" value="on" /></td>
+        <td><input type="checkbox" name="rights" value="ADMIN" /></td>
+        <td align="left">System Administrator</td>
+       </tr>
+       <tr class="darker">
+        <td><input type="checkbox" disabled name="unitrights" value="on" /></td>
+        <td><input type="checkbox" name="rights" value="UNITADMIN" /></td>
+        <td align="left">Unit Administrator</td>
+       </tr>
+      </table>
+     </td>
+    </tr>
+    <tr>
+     <td align="right">Unit:</td>
+     <td>
+      <table width="100%" bgcolor="black" border="0" cellpadding="0">
+       <tr>
+        <td width="50%" valign="top" class="pt-search">
+         <table width="100%" border="0" cellspacing="0">
+          <tr>
+           <th colspan="3" align="left">Units</th>
+          </tr>
+          <tr>
+           <td width="24"></td>
+           <td width="90%" class="lighter">Unit A</td>
+           <td width="5%"><input type="image" src="/collection/images/arrow-r.png" height="15" width="24" name="pt_search:remove:0" /></td>
+          </tr>
+         </table>
+        </td>
+        <td width="50%" valign="top" class="pt-search">
+         <table width="100%" class="pt-search" border="0" cellspacing="0">
+          <tr>
+           <th colspan="3" align="left">Add/Search</th>
+          </tr>
+          <tr>
+           <td width="5%"></td>
+           <td><input type="text" name="pt_search.search_term" value="" /><input type="submit" class="butt" name="pt_search:search" value="Search" /><input type="submit" class="butt" name="pt_search:clear" value="Clear" /></td>
+          </tr>
+         </table>
+        </td>
+       </tr>
+      </table>
+     </td>
+    </tr>
+   </table>
+  </div>
+
+  <div class="sg">
+   <h2 class="sgsg">admin-syndromes</h2>
+   <table border="0" class="admin-syndromes toptable" width="95%">
+    <tr>
+     <th colspan="3">
+      <table width="100%" cellspacing="0" cellpadding="0">
+       <tr>
+        <td align="left">Edit Case/Contact Definition</td>
+        <td align="right">
+         <input class="bigbutt" type="submit" name="case_status" value="Status Values" />
+         <input class="bigbutt" type="submit" name="demog_fields" value="Demographic Fields" />
+        </td>
+       </tr>
+      </table>
+     </th>
+    </tr>
+    <tr>
+     <td><label for="syndrome.name">Name</label></td>
+     <td colspan="2"><input size="60" name="syndrome.name" value="SARS" /></td>
+    </tr>
+    <tr>
+     <td>
+      <label for="syndrome.description">Description<br>
+      <input class="butt" type="submit" name="wikiedit:description" value="Edit" /></label>
+     </td>
+     <td colspan="2"><div class="preview">Severe Acute Respiratory Syndrome</p></div></td>
+    </tr>
+    <tr>
+     <td><label>Forms</label></td>
+     <td colspan="2">
+     <table class="pt-search">
+   <tr class="title">
+    <th>Selected</th>
+    <th>Available</th>
+    <td>
+     <input type="submit" class="butt" name="pt_search:clear" value="Clear" /></td>
+   </tr>
+   <tr>
+    <td></td>
+    <td>
+     <input type="text" style="width:98%;" name="pt_search.search_term" value="sars*" /></td>
+    <td>
+     <input type="submit" class="butt" name="pt_search:search" value="Search" /></td>
+   </tr>
+   <tr>
+    <td class="pane">
+     <table>
+      <tr>
+        <td width="14">
+          <img height="10" width="14" alt="" src="/collection/images/button-nil.png" /></td>
+         <td width="14">
+          <input type="image" height="10" width="14" alt="dn" src="/collection/images/button-down.png" name="pt_search:move_dn:0" /></td>
+        <td width="90%">
+         sars_exposure</td>
+        <td width="5%">
+         <input type="image" src="/collection/images/arrow-r.png" height="15" width="24" name="pt_search:remove:0" /></td>
+       </tr>
+      <tr>
+        <td width="14">
+          <input type="image" height="10" width="14" alt="up" src="/collection/images/button-up.png" name="pt_search:move_up:1" /></td>
+         <td width="14">
+          <img height="10" width="14" alt="" src="/collection/images/button-nil.png" /></td>
+        <td width="90%">
+         sars_china</td>
+        <td width="5%">
+         <input type="image" src="/collection/images/arrow-r.png" height="15" width="24" name="pt_search:remove:1" /></td>
+       </tr>
+      </table>
+    </td>
+    <td class="pane" colspan="2">
+     <table>
+       <tr>
+         <td width="5%" nowrap>
+          <input type="image" src="/collection/images/arrow-l.png" height="15" width="24" name="pt_search:add:2" /></td>
+         <td>
+          sars_china</td>
+         <td>
+          </td>
+        </tr>
+       <tr>
+         <td width="5%" nowrap>
+          <input type="image" src="/collection/images/arrow-l.png" height="15" width="24" name="pt_search:add:0" /></td>
+         <td>
+          sars_exposure</td>
+         <td>
+          </td>
+        </tr>
+       <tr>
+         <td width="5%" nowrap>
+          <input type="image" src="/collection/images/arrow-l.png" height="15" width="24" name="pt_search:add:1" /></td>
+         <td>
+          sars_followup_b</td>
+         <td>
+          </td>
+        </tr>
+       </table>
+     </td>
+   </tr>
+  </table>
+     </td>
+    </tr>
+    <tr>
+     <td><label>Groups</label></td>
+     <td colspan="2">
+      <table width="100%" class="pt-sel darker">
+       <tr>
+        <th width="50%">Selected</th>
+        <th width="50%">Available</th>
+       </tr>
+       <tr>
+        <td>
+         <select size="5" multiple name="group_edit.exclude_group">
+          <option value="0">Group A</option>
+          <option value="1">Group B</option>
+         </select><br />
+         <input class="butt" type="submit" name="group_edit:remove" value="Remove &gt;&gt;" />
+        </td>
+        <td>
+         <select size="5" multiple name="group_edit.include_group">
+          <option value="0">Group C</option>
+         </select><br />
+         <input class="butt" type="submit" name="group_edit:add" value="&lt;&lt; Add" />
+        </td>
+       </tr>
+      </table>
+     </td>
+    </tr>
+   </table>
+  </div>
+
+  <div class="sg">
+   <h2 class="sgsg">admin-fe</h2>
+   todo
+  </div>
+
+  <div class="sg">
+   <h2 class="sgsg">admin-fe-work</h2>
+   todo
+  </div>
+
+  <div class="sg">
+   <h2 class="sgsg">f-deploy</h2>
+   todo
+  </div>
+
+  <div class="sg">
+   <h2 class="sgsg">dupecfg</h2>
+   todo
+  </div>
+
+
+ </body>
+</html>
+

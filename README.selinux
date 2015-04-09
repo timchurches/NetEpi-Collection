@@ -1,0 +1,21 @@
+Possible SELinux issues
+=======================
+
+Under Red Hat Enterprise Linux Server release 5.1 with SELinux
+active, installed files may need to be in the httpd_sys_script_exec_t
+context and may be set using
+
+    chcon -t httpd_sys_script_exec_t ...
+
+The notification socket directory (db/notification) may need to be
+created by hand and needs to have a context of httpd_sys_script_rw_t
+
+    chcon -t httpd_sys_script_rw_t notification
+
+
+
+--
+For more information on SELinux, see:
+
+    http://selinuxproject.org/
+    http://docs.fedoraproject.org/selinux-faq-fc5/

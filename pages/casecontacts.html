@@ -1,0 +1,107 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-include name="demogfields.html">
+<al-include name="taskbanner.html" />
+
+<al-expand name="page_layout_banner">
+ <al-setarg name="title">Case <al-value expr="config.contact_label" />s</al-setarg>
+ <al-expand name="taskbanner" />
+ <h3>Details of the case to which <al-value expr="config.contact_label.lower()" />s relate:</h3>
+ <al-exec expr="field_rows = case.rows_and_cols('form')" />
+ <al-if expr="case.deleted"><div class="deleted"><al-else><div></al-if>
+  <al-expand name="demogfields_text" />
+ </div>
+
+ <al-expand name="confirm_or_error">
+  <span>This case has <al-value expr="len(contacts)"> <al-value expr="config.contact_label.lower()" /><al-if expr="len(contacts) != 1">s</al-if>.</span>
+  <table width="100%">
+   <tr>
+    <td>
+     Order by:
+     <al-select name="contacts.order_by" onchange="submit();"
+       optionexpr="contacts.get_order_options()" />
+     <al-if expr="not has_js">
+      <al-input type="submit" class="butt" name="refetch" value="Update" />
+     </al-if>
+     &nbsp;Select:<al-input type="submit" class="smallbutt" 
+      name="page:select_all" value="All"><al-input type="submit" 
+      class="smallbutt" name="page:select_none" value="None">
+    </td>
+    <td align="right">
+     <al-if expr="syndromes">
+      <al-select name="contact_syndrome" optionexpr="syndromes.options()" />
+      <al-input class="bigbutt" type="submit" name="add_contacts" 
+        expr="'Add ' + config.contact_label" />
+     </al-if>
+    </td>
+   </tr>
+  </table>
+
+  <al-if expr="contacts.result_count()">
+   <table class="casecontacts">
+    <thead>
+     <tr><td colspan="7"><al-expand name="page_select" /></td></tr>
+     <tr>
+      <th></th>
+      <th>ID</th>
+      <th><al-value expr="config.syndrome_label" /></th>
+      <th>Status</th>
+      <th><al-value expr="config.person_label" /></th>
+      <th><al-value expr="config.contact_label" /> Type</th>
+      <th><al-value expr="config.contact_label" /> Date</th>
+     </tr>
+    </thead>
+    <tfoot>
+     <tr>
+      <td class="select">&nbsp;</td>
+      <td colspan="5" class="select">
+       Selected:
+       <al-input class="bigbutt" type="submit" name="editcontacts" 
+         value="Change type" />
+       <al-input class="bigbutt" type="submit" name="makecaseset" 
+         value="As Case Set" />
+      </td>
+      <td class="select" align="right">
+       <al-input type="submit" class="bigbutt danger" value="Remove selected"
+         name="remove_selected" /></td>
+     </tr>
+     <tr><td colspan="7"><al-expand name="page_select" /></td></tr>
+    </tfoot>
+    <al-for iter="contact_i" expr="contacts.result_page()">
+     <al-exec expr="c = contact_i.value()">
+     <tr class="row">
+      <td class="select">
+       <al-input type="checkbox" list name="contacts.page_selected" 
+        valueexpr="contact_i.index()" />
+      </td>
+      <td><al-value expr="c.case_id" /></td>
+      <td><al-value expr="c.syndrome_name" /></td>
+      <td><al-value expr="c.case_status" /></td>
+      <td><al-value expr="c.person.summary(contacts.order)" /></td>
+      <td><al-value expr="c.contact_type" /></td>
+      <td><al-value expr="c.contact_date" /></td>
+     </tr>
+    </al-for>
+   </table>
+  </al-if>
+ </al-expand>
+</al-expand>
+

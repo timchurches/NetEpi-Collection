@@ -1,0 +1,535 @@
+#!/bin/sh
+#
+#   The contents of this file are subject to the HACOS License Version 1.2
+#   (the "License"); you may not use this file except in compliance with
+#   the License.  Software distributed under the License is distributed
+#   on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+#   implied. See the LICENSE file for the specific language governing
+#   rights and limitations under the License.  The Original Software
+#   is "NetEpi Collection". The Initial Developer of the Original
+#   Software is the Health Administration Corporation, incorporated in
+#   the State of New South Wales, Australia.
+#
+#   Copyright (C) 2004-2008 Health Administration Corporation and others.
+#   All Rights Reserved.
+#
+#   Contributors: See the CONTRIBUTORS file for details of contributions.
+#
+# This script is almost certainly Linux-specific, and probably requires a
+# Debian or Ubuntu host.
+#
+# PREREQUISITES (this list is almost certainly not complete):
+#   ppmtolss16 
+#               from the package syslinux - for regenerating splash screen
+#   squashfs kernel support
+#               for unpacking the root filesystem image
+#   mksquashfs
+#               for repacking the root filesystem (Debian: squashfs-tools)
+#   mkisofs
+#               what version? Needs to be modern (boot support)
+#
+# Issues:
+# XXX better seed pgdump?
+#
+# Puzzles
+# XXX sendfile(2) is failing with EINVAL for apache
+#
+set -e
+ourname=`basename $0`
+
+function usage {
+    cat <<EOF
+Usage:"
+  ${ourname} build
+  ${ourname} cleanup
+
+NOTE - this script has only been tested in one specific context, is
+undocumented, and performs many potentially dangerous actions that can
+easily corrupt your system. Run it only if you understand exactly what
+it does, and only on a scratch installation.
+EOF
+    exit 1;
+}
+
+function cleanup {
+    echo "Cleanup..."
+#    umount -f ${root}/proc || true
+    umount -d -f ${root}
+    umount -d -f ${cdimg}
+    rm -rf ${newcdimg} ${newroot} ${downloads}
+    rmdir ${cdimg} ${root} ${scratch}
+    echo "done."
+}
+function section {
+    echo '==============================================================================='
+    echo "$*"
+}
+
+if [ "$UID" -ne 0 ] ; then echo "$0 must run as root"; exit 1; fi
+
+# Defines
+scratch=netepi-live-work
+cdimg=${scratch}/ubuntu-cd
+newcdimg=${scratch}/ubuntu-cd-new
+root=${scratch}/ubuntu-root
+newroot=${scratch}/ubuntu-root-new
+downloads=${newroot}/tmp/downloads
+assetdir=`dirname $0`
+confvars="master_iso seed_pgdump collection_src flash_tar video documentation"
+alias chroot="HOME=/root LC_ALL=C LC_MESSAGES=C chroot"
+
+case "$1" in
+    build)
+        ;;
+    cleanup)
+        cleanup ;;
+    *)
+        usage ;;
+esac
+
+. ${assetdir}/config
+for confvar in ${confvars}
+do
+    if [ ! -e "${!confvar}" ]
+    then 
+        echo "config var \"${confvar}\" points to \"${!confvar}\" but it does not exist"
+        exit 1
+    fi
+done
+
+newiso=`basename ${master_iso} .iso`-NetEpi.iso
+
+# nobble cleanup while testing...
+#trap cleanup 0
+
+# Create work directories
+mkdir -p ${scratch} ${cdimg} ${root} ${downloads}
+
+# Download extra packages
+section "Downloading extra packages"
+wget -c http://www.object-craft.com.au/projects/albatross/download/albatross-1.36.tar.gz -P ${downloads}
+wget -c http://optusnet.dl.sourceforge.net/sourceforge/pypgsql/pyPgSQL-2.5.1.tar.gz -P ${downloads}
+wget -c "${fastcgi_url}" -P ${downloads}
+
+# Mount and copy the CD image
+if [ -d ${cdimg}/isolinux -a -d ${cdimg}/casper ] ; then
+    echo "${master_iso} already mounted to ${cdimg}"
+else
+    section "Mounting ${master_iso} to ${cdimg}"
+    mount -o loop,ro ${master_iso} ${cdimg}
+fi
+
+if [ -d ${newcdimg}/isolinux ] ; then
+    echo "${newcdimg} already exists - not copying"
+else
+    section "Copying ${cdimg} to ${newcdimg}"
+    rsync -a \
+        --exclude=/bin \
+        --exclude=/programs \
+        --exclude=/casper/filesystem.squashfs \
+        ${cdimg}/ ${newcdimg}
+fi
+#(cd ${newcdimg} && sh)
+
+# extract root filesystem
+if [ -d ${root}/etc ] ; then
+    echo "root already mounted"
+else
+    section "Mounting root to ${root}"
+    mount -o loop,ro -t squashfs ${cdimg}/casper/filesystem.squashfs ${root}
+fi
+if [ -d ${newroot}/etc ] ; then
+    echo "${newroot} already exists - not copying"
+else
+    section "Copying root to ${newroot}"
+    rsync -a ${root}/ ${newroot}/
+fi
+#unsquashfs -d ${root} ${cdimg}/casper/filesystem.squashfs
+cp /etc/resolv.conf ${newroot}/etc
+#mount -o bind /proc ${newroot}/proc
+#(cd ${newroot} && sh)
+
+# now toss a bunch of stuff to make the image smaller
+#dpkg-query -W --showformat='${Installed-Size} ${Package}\n' | sort -nr | less
+section "Uninstalling stuff"
+# invoke-rc.d fails in chroot jail, so work around
+if [ ! -x ${newroot}/usr/sbin/invoke-rc.d-disabled ] ; then
+    mv ${newroot}/usr/sbin/invoke-rc.d{,-disabled}
+    cp -p ${newroot}/bin/true ${newroot}/usr/sbin/invoke-rc.d
+fi
+# hplip Packaging bug? preinit fails, so work around
+chroot ${newroot} delgroup scanner || true
+patterns='openoffice.org|language-pack|cdparanoia|linux-headers'
+matches=`chroot ${newroot} dpkg -l | egrep ${patterns} | awk '{print $2}'`
+chroot ${newroot} apt-get -y remove --purge \
+    ${matches} \
+    ttf-indic-fonts-core ttf-arphic-uming \
+    ttf-kochi-mincho ttf-kochi-gothic ttf-arabeyes \
+    ttf-lao ttf-malayalam-fonts ttf-thai-tlwg \
+    ubiquity-frontend-gtk ubiquity ubiquity-casper ubiquity-ubuntu-artwork \
+    diveintopython ubuntu-docs example-content \
+    ekiga gcalctool rhythmbox file-roller tsclient eog \
+    gnome-games gnome-games-data gnome-mag gnome-utils \
+    gnome-user-guide gnome-pilot gnome-pilot-conduits \
+    gnome-media-common bluez-gnome \
+    gnome-btdownload bittorrent \
+    evolution-common \
+    hplip hplip-data \
+    update-notifier alacarte aptitude tasksel tasksel-data screen \
+    apport apport-gtk \
+    gthumb rss-glx xscreensaver-gl \
+    gedit gedit-common \
+    pidgin pidgin-data \
+    libsane xsane-common \
+    bogofilter-common brltty \
+    evolution-data-server evolution-data-server-common \
+    evolution-exchange evolution-plugins evolution-webcal \
+    nautilus-sendto evolution contact-lookup-applet bug-buddy \
+    totem-mozilla totem totem-gstreamer serpentine sound-juicer \
+    gstreamer0.10-plugins-good gstreamer0.10-x gstreamer0.10-plugins-base-apps \
+    gstreamer0.10-tools gstreamer0.10-plugins-base gstreamer0.10-gnomevfs \
+    gstreamer0.10-esd \
+    mono-runtime mono-jit mono-gac mono-common libmono0 \
+    libgcj-bc gcj-4.2-base \
+    libicu36 libopal-2.2 \
+    gimp libgimp2.0 gimp-data \
+    samba-common
+
+# Add extra bits we need
+section "Updating, Installing apache2 and postgres, dist-upgrade"
+chroot ${newroot} apt-get update
+chroot ${newroot} apt-get -y -u dist-upgrade
+chroot ${newroot} apt-get -y install apache2 apache2-mpm-prefork \
+    postgresql-8.2 postgresql-client-8.2 python-egenix-mxdatetime \
+    libc6-dev python-dev libpq-dev apache2-prefork-dev
+chroot ${newroot} apt-get clean
+
+
+# Discarding doc saves >60MB (albeit before compression)
+rm -rf ${newroot}/usr/share/doc
+
+section "Installing Albatross"
+chroot ${newroot} sh -c "cd /tmp/downloads && tar -x -f albatross-1.36.tar.gz && cd albatross-1.36 && python setup.py install"
+
+section "Installing pyPgSQL"
+chroot ${newroot} sh -c "cd /tmp/downloads && tar -x -f pyPgSQL-2.5.1.tar.gz && cd pyPgSQL-2.5.1 && python setup.py install"
+
+section "Installing mod_fastcgi"
+# Fool broken apxs tool
+if grep -q 'LoadModule' ${newroot}/etc/apache2/httpd.conf; then true
+else
+    echo -e "\n#LoadModule dummy_module mod_dummy.so\n" >> ${newroot}/etc/apache2/httpd.conf
+fi
+fastcgi_tar=`basename "${fastcgi_url}"`
+chroot ${newroot} sh -c "cd /tmp/downloads && tar -x -f ${fastcgi_tar} && cd mod_fastcgi-* && apxs2 -o mod_fastcgi.so -c *.c && apxs2 -i -a -n fastcgi .libs/mod_fastcgi.so"
+
+# Now remove the development environment
+# chroot ${newroot} apt-get remove --purge \
+#       libc6-dev python-dev libpq-dev
+#       apache2-prefork-dev autoconf autotools-dev libapr0-dev libdb4.3-dev
+#       libexpat1-dev libldap2-dev libpcre3-dev libpcrecpp0 libtool m4
+
+# Edit some stuff...
+# Fix PG port - postinstall script detects any PG's running on build host and
+# sets port to avoid those, but we want PG on a known port.
+sed -ie 's/^port =.*/port = 5432/' \
+    ${newroot}/etc/postgresql/8.2/main/postgresql.conf
+if grep -q '^kernel.shmmax' ${newroot}/etc/sysctl.conf; then true
+else
+    echo 'kernel.shmmax = 67108864' >> ${newroot}/etc/sysctl.conf
+fi
+
+# Init script for Albatross session daemon
+if grep -q '^alsession:' ${newroot}/etc/passwd ; then true
+else
+    chroot ${newroot} groupadd -g 123 alsession
+    chroot ${newroot} useradd -u 123 -g 123 alsession
+fi
+cat > ${newroot}/etc/init.d/al-session <<"EOF"
+#!/bin/sh -e
+### BEGIN INIT INFO
+# Provides:             al-session
+# Required-Start:       
+# Required-Stop:        
+# Should-Start:         
+# Should-Stop:          
+# Default-Start:        2 3 4 5
+# Default-Stop:         S 0 1 6
+# Short-Description:    Albatross Session Daemon
+### END INIT INFO
+
+
+DAEMON=/usr/bin/al-session-daemon
+USER=alsession
+LOGFILE=/var/log/al-session-daemon.log
+PIDFILE=/var/run/albatross/session-daemon.pid
+
+test -x ${DAEMON} || exit 0
+
+umask 077
+
+case "$1" in
+    start)
+        echo "Starting albatross session daemon"
+        piddir=`dirname ${PIDFILE}`
+        touch ${LOGFILE}
+        if [ ! -d ${piddir} ]; then
+                mkdir -p ${piddir}
+        fi
+        chown ${USER} ${LOGFILE} ${piddir}
+        su ${USER} -c "${DAEMON} -l ${LOGFILE} -k ${PIDFILE} start"
+        ;;
+
+    stop)
+        echo "Stopping albatross session daemon"
+        su ${USER} -c "${DAEMON} -l ${LOGFILE} -k ${PIDFILE} stop"
+        ;;
+
+    *)
+        echo "Usage: $* {start|stop}"
+        exit 1
+        ;;
+esac
+EOF
+chmod a+rx ${newroot}/etc/init.d/al-session
+chroot ${newroot} update-rc.d al-session \
+    start 21 2 3 4 5 . \
+    stop 79 S 0 1 6 .
+
+# Install a script to init postgres and load our seed data
+section "Creating seed database script"
+cat > ${newroot}/etc/init.d/netepi-live <<"EOF"
+#!/bin/sh -e
+### BEGIN INIT INFO
+# Provides:             netepi
+# Required-Start:       postgresql-8.2
+# Required-Stop:        postgresql-8.2
+# Should-Start:         $syslog
+# Should-Stop:          $syslog
+# Default-Start:        2 3 4 5
+# Default-Stop:         S 0 1 6
+# Short-Description:    NetEpi Collection
+### END INIT INFO
+
+
+case "$1" in
+    start)
+        if sudo -u postgres createdb collection
+        then
+            sudo -u postgres createuser --no-superuser --no-createdb \
+                --no-createrole root || true
+            sudo -u postgres createuser --no-superuser --no-createdb \
+                --no-createrole www-data || true
+            sudo -u postgres pg_restore -d collection /var/tmp/collection.pgdump || true
+        fi
+        python /var/tmp/compile_db.py -v -u www-data ::collection: /usr/lib/cgi-bin/collection
+        ;;
+    *)
+        ;;
+esac
+EOF
+chmod a+rx ${newroot}/etc/init.d/netepi-live
+chroot ${newroot} update-rc.d netepi-live \
+    start 26 2 3 4 5 . \
+    stop 74 S 0 1 6 .
+cp ${seed_pgdump} ${newroot}/var/tmp/collection.pgdump
+cp ${collection_src}/tools/compile_db.py ${newroot}/var/tmp/
+
+# Make sure apache starts
+sed -ie 's/NO_START=1/NO_START=0/' ${newroot}/etc/default/apache2
+# Make apache start earlier, was S 91, K 91
+chroot ${newroot} update-rc.d -f apache2 remove
+chroot ${newroot} update-rc.d -f apache2 \
+    start 22 2 3 4 5 . \
+    stop 78 S 0 1 6 .
+# Make gdm (desktop) start later, was S 13, K 01
+chroot ${newroot} update-rc.d -f gdm remove
+chroot ${newroot} update-rc.d -f gdm \
+    start 23 2 3 4 5 . \
+    stop 01 S 0 1 6 .
+
+# Make sure there's a loopback interface
+echo '127.0.0.1 localhost' > ${newroot}/etc/hosts
+grep -q '^auto lo' ${newroot}/etc/network/interfaces \
+        || cat << EOF >> ${newroot}/etc/network/interfaces
+auto lo
+iface lo inet loopback
+EOF
+
+# Set up app-specific apache config
+cat > ${newroot}/etc/apache2/sites-enabled/netepi <<"EOF"
+# For some reason, the sendfile() system call fails with EINVAL within the
+# LiveCD environment - maybe unionfs doesn't support mmap, or?
+EnableSendfile off
+<IfModule mod_fastcgi.c>
+    # is this the best option?
+    FastCgiIpcDir /tmp
+    FastCgiConfig -idle-timeout 300
+    <Directory /usr/lib/cgi-bin/collection>
+        AddHandler fastcgi-script .py
+        Options +ExecCGI
+    </Directory>
+    <Directory /var/www/collection>
+        DirectoryIndex /cgi-bin/collection/menu.py
+    </Directory>
+</IfModule>
+<Directory /var/www/>
+    RedirectMatch ^/$ /collection/
+</Directory>
+EOF
+
+# Install the app
+echo ">>> Installing NetEpi Collection"
+test -L ${newroot}/var/www/collection/help && \
+    rm ${newroot}/var/www/collection/help
+python ${collection_src}/install.py appname=collection dsn='::collection:' \
+    create_db=False compile_py=False install_prefix=${newroot}
+find ${newroot}/usr/lib/cgi-bin/collection -name '*.py[co]' | xargs -r rm
+chroot ${newroot} python -m compileall /usr/lib/cgi-bin/collection
+rm -rf ${newroot}/var/www/collection/help
+ln -s /cdrom/docs ${newroot}/var/www/collection/help
+rm -f ${newroot}/var/www/collection/video
+ln -s /cdrom/video ${newroot}/var/www/collection/video
+install -m 0755 -o root -g root -p ${assetdir}/images/h5n1.jpg \
+    ${newroot}/usr/share/backgrounds/
+
+# Now remove some stuff from the gnome panel config
+echo ">>> Tweak Gnome"
+chroot ${newroot} gconftool-2 --direct \
+    --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults/ \
+    --set /apps/panel/default_setup/general/applet_id_list \
+    --type=list --list-type=string  \
+    [clock,notification_area,show_desktop_button,window_list,workspace_switcher]
+chroot ${newroot} gconftool-2 --direct \
+    --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults/ \
+    --set /apps/panel/default_setup/general/object_id_list \
+    --type=list --list-type=string \
+    [menu_bar,browser_launcher,session_dialog]
+chroot ${newroot} gconftool-2 --direct \
+    --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults/ \
+    --recursive-unset \
+    /apps/panel/default_setup/applets/trashapplet \
+    /apps/panel/default_setup/applets/mixer \
+    /apps/panel/default_setup/objects/email_launcher
+# and change desktop background
+chroot ${newroot} gconftool-2 --direct \
+    --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults/ \
+    --set /desktop/gnome/background/picture_filename \
+    --type string '/usr/share/backgrounds/h5n1.jpg'
+
+# Firefox customisation:
+echo ">>> Tweak Firefox"
+# change default firefox homepage
+# XXX
+#if [ -f ${newroot}/usr/share/firefox/chrome/en-US.jar ]; then
+#    mkdir -p ${newroot}/usr/share/firefox/chrome/en-US
+#    (cd ${newroot}/usr/share/firefox/chrome/en-US &&\
+#        unzip -o ../en-US.jar && rm ../en-US.jar)
+#    sed -ie 's;file:///usr/share/ubuntu-artwork/home/index.html;http://localhost/collection/;' ${newroot}/usr/share/firefox/chrome/en-US/locale/browser-region/region.properties
+#fi
+mkdir -p ${newroot}/usr/share/firefox/chrome/.scratch &&\
+    (cd ${newroot}/usr/share/firefox/chrome/.scratch &&\
+     jar -x < ../en-US.jar &&\
+     sed -ie 's;file:///usr/share/ubuntu-artwork/home/index.html;http://localhost/collection/;' locale/browser-region/region.properties && \
+     find -type f | jar -c@ > ../en-US.jar) &&\
+    rm -rf ${newroot}/usr/share/firefox/chrome/.scratch
+# And remove BBC bookmark
+sed -ie '/BBC Headlines/d' ${newroot}/etc/firefox/profile/bookmarks.html
+# And don't warn when submitting passwd via http
+sed -i -e '/security.warn_submit_insecure/b' -e '$auser_pref("security.warn_submit_insecure", false);' ${newroot}/etc/firefox/profile/prefs.js
+# And make it start on boot
+cat > ${newroot}/usr/share/gnome/autostart/firefox.desktop <<"EOF"
+[Desktop Entry]
+Name=Firefox
+Encoding=UTF-8
+Version=1.0
+Exec=/usr/bin/firefox
+X-GNOME-Autostart-enabled=true
+EOF
+# And install flash
+tar -x -z -f ${flash_tar} -C ${downloads}
+install -m 0755 -o root -g root -p \
+    ${downloads}/install_flash_player_9_linux/libflashplayer.so \
+    ${newroot}/usr/lib/firefox/plugins/
+
+# Now clean up some temporary stuff we put in place to help the
+# chroot environment.
+rm -rf ${downloads}
+mv ${newroot}/usr/sbin/invoke-rc.d{-disabled,}
+rm ${newroot}/etc/resolv.conf
+#umount ${newroot}/proc
+
+# Now repackage it
+echo ">>> Repackaging"
+# Change splash screen and boot menu options
+grep -q 'Start NetEpi Collection' ${newcdimg}/isolinux/isolinux.cfg \
+    || patch -s ${newcdimg}/isolinux/isolinux.cfg <<"EOF"
+1$ diff -u netepi-live-work/ubuntu-cd-new/isolinux/isolinux.cfg{.orig,}--- netepi-live-work/ubuntu-cd-new/isolinux/isolinux.cfg.orig   2007-10-16 09:53:09.000000000 +1000
++++ netepi-live-work/ubuntu-cd-new/isolinux/isolinux.cfg        2007-12-06 14:53:12.000000000 +1100
+@@ -3,21 +3,17 @@
+ GFXBOOT-BACKGROUND 0xB6875A
+ APPEND  file=/cdrom/preseed/ubuntu.seed boot=casper initrd=/casper/initrd.gz quiet splash --
+ LABEL live
+-  menu label ^Start or install Ubuntu
++  menu label ^Start NetEpi Collection
+   kernel /casper/vmlinuz
+   append  file=/cdrom/preseed/ubuntu.seed boot=casper initrd=/casper/initrd.gz quiet splash --
++LABEL livepersist
++  menu label ^Persistent mode (see README file on CD first!)
++  kernel /casper/vmlinuz
++  append  file=/cdrom/preseed/ubuntu.seed boot=casper initrd=/casper/initrd.gz quiet splash persistent --
+ LABEL xforcevesa
+-  menu label Start Ubuntu in safe ^graphics mode
++  menu label Start NetEpi Collection in safe ^graphics mode
+   kernel /casper/vmlinuz
+   append  file=/cdrom/preseed/ubuntu.seed boot=casper xforcevesa initrd=/casper/initrd.gz quiet splash --
+-LABEL driverupdates
+-  menu label Install with driver ^update CD
+-  kernel /casper/vmlinuz
+-  append  file=/cdrom/preseed/ubuntu.seed boot=casper debian-installer/driver-update=true initrd=/casper/initrd.gz quiet splash --
+-LABEL oem
+-  menu label ^OEM install (for manufacturers)
+-  kernel /casper/vmlinuz
+-  append  file=/cdrom/preseed/ubuntu.seed boot=casper oem-config/enable=true initrd=/casper/initrd.gz quiet splash --
+ LABEL check
+   menu label ^Check CD for defects
+   kernel /casper/vmlinuz
+EOF
+cp ${assetdir}/images/netepi-live-splash.pcx ${newcdimg}/isolinux/splash.pcx
+pcxtoppm ${assetdir}/images/netepi-live-splash.pcx \
+    | ppmtolss16 '#ff9e00=7' '#000000=0' > ${newcdimg}/isolinux/splash.rle
+sed -ie 's/Edgy Eft/& + NetEpi/' ${newcdimg}/README.diskdefines
+# Update manifest
+chroot ${newroot} dpkg-query -W --showformat='${Package} ${Version}\n' \
+    > ${newcdimg}/casper/filesystem.manifest
+sed -e '/ubiquity/d' ${newcdimg}/casper/filesystem.manifest \
+    > ${newcdimg}/casper/filesystem.manifest-desktop
+# Squash root
+section "Squashing ${newroot} to ${newcdimg}/casper/filesystem.squashfs"
+rm -f ${newcdimg}/casper/filesystem.squashfs
+mksquashfs ${newroot} ${newcdimg}/casper/filesystem.squashfs
+# Autorun and README
+cp ${assetdir}/README.html ${newcdimg}
+cat > ${newcdimg}/autorun.inf <<"EOF"
+[autorun]
+shellexecute=README.html
+EOF
+# Videos & doco
+rsync -a --delete ${video}/ ${newcdimg}/video/
+rsync -a --delete ${documentation}/ ${newcdimg}/docs/
+# Make example persistence file
+dd if=/dev/zero bs=1k count=200k of=${newcdimg}/casper-rw
+mke2fs -F -q -b 1024 -j -J size=4 ${newcdimg}/casper-rw
+zip -j -m ${newcdimg}/persistence.zip ${newcdimg}/casper-rw
+# Checksum
+section "md5sum"
+(cd ${newcdimg} && find . -type f -print0 | xargs -0 md5sum > md5sum.txt)
+# Master
+section "mkisofs ${newcdimg}"
+mkisofs -r -V "NetEpi LiveCD" -cache-inodes -J -l \
+    -b isolinux/isolinux.bin \
+    -c isolinux/boot.cat \
+    -no-emul-boot -boot-load-size 4 -boot-info-table \
+    -o ${newiso} ${newcdimg}
+section "All done. Thank you for your patience. Your new LiveCD is in"
+echo "${newiso}"

@@ -1,0 +1,99 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-include name="search_pt.html" />
+
+<al-expand name="page_layout_banner">
+ <al-setarg name="title">Task Queue <al-value expr="repr(queue.name)" /></al-setarg>
+  <table border="0" class="admin-u">
+   <tr>
+    <td colspan="3">
+     <table width="100%" cellpadding="0" cellspacing="0" border="0">
+      <tr>
+       <th width="100%">Edit queue</th>
+      </tr>
+     </table>
+    </td>
+   </tr>
+   <tr>
+    <td align="right">Task Queue Name:</td>
+    <td><al-input name="queue.name" size="40" /></td>
+    <td rowspan="2">
+     <al-if expr="queue_stats">
+      <div class="key">
+       Queue stats:
+       <table>
+        <al-for iter="qs" expr="queue_stats">
+         <al-exec expr="label, count = qs.value()" />
+         <tr>
+          <td><al-value expr="label" /></td>
+          <td><al-value expr="count" /></td>
+         </tr>
+        </al-for>
+       </table>
+      </div>
+     </al-if>
+    </td>
+   </tr>
+   <tr>
+    <td align="right">Description:</td>
+    <td><al-input name="queue.description" size="40" /></td>
+   </tr>
+   <tr>
+    <td align="right"><al-value expr="config.unit_label" />:</td>
+    <td colspan="2">
+     <al-exec expr="pt_search = unit_pt_search" />
+     <al-expand name="search_pt">
+      <al-setarg name="left_title">Selected</al-setarg>
+      <al-setarg name="left_row"><al-value expr="row.name" /></al-setarg>
+      <al-setarg name="right_title">Add/Search</al-setarg>
+      <al-setarg name="right_row"><al-value expr="row.name" /></al-setarg>
+     </al-expand>
+    </td>
+   </tr>
+   <tr>
+    <td align="right">Users:</td>
+    <td colspan="2">
+     <al-exec expr="pt_search = user_pt_search" />
+     <al-expand name="search_pt">
+      <al-setarg name="left_title">Selected</al-setarg>
+      <al-setarg name="left_row"><al-value expr="row.name" /></al-setarg>
+      <al-setarg name="right_title">Add/Search</al-setarg>
+      <al-setarg name="right_row"><al-value expr="row.name" /></al-setarg>
+     </al-expand>
+    </td>
+   </tr>
+
+   <tr>
+    <td colspan="3" class="darkest">
+     <al-expand name="confirm_or_error">
+      <table width="100%" cellpadding="0" cellspacing="0">
+       <tr>
+        <td align="right">
+         <al-input class="butt" name="update" type="submit" value="Save" />
+         <script>enterSubmit('appform', 'update');</script>
+        </td>
+       </tr>
+      </table>
+     </al-expand>
+    </td>
+   <tr>
+  </table>
+</al-expand>

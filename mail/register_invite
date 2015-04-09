@@ -1,0 +1,11 @@
+To: "{{fullname}}" <{{email}}>
+Subject: Invitation to use {{apptitle}}
+
+Your registration key is:
+
+   {{enable_key}}
+
+When registering to use the application, enter this key when prompted, or
+click on this link:
+
+   {{url}}

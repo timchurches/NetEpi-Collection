@@ -1,0 +1,133 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-expand name="page_layout_banner">
+ <al-setarg name="title">Duplicate <al-value expr="config.person_label" /> matching</al-setarg>
+ <table>
+  <td colspan="3">
+   <table class="dupestat" width="100%">
+    <tr>
+     <td>
+      Last scan: <al-value expr="last_dupe" /> (<al-value expr="datetime.relative(last_dupe)" />)
+     </td>
+     <td style="text-align: left;" class="button">
+      <al-input class="butt" type="submit" name="scan:" value="New Scan" />
+     </td>
+     <td style="text-align: left;" class="button">
+      <al-input class="butt" type="submit" name="scan:updated" value="Quick Scan" />
+     </td>
+     <td class="button">
+      <al-input class="butt" type="submit" name="view" value="View Matches" />
+     </td>
+    </tr>
+   </table>
+  </td>
+  <tr>
+   <td colspan="3">
+    N-gram matching occurs between fields within a group. Here you can
+    configure what fields make up those groups, and their relative weights.
+   </td>
+  </tr>
+  <tr>
+   <td valign="top" rowspan="2" width="50%">
+    <table class="dupecfg" border="0" width="100%">
+     <thead>
+      <tr>
+       <th>Group</th>
+       <th>Fields</th>
+       <th>&nbsp;</th>
+      </tr>
+     </thead>
+     <tbody>
+      <al-for iter="ng_i" expr="dupecfg.ngram_groups">
+       <al-exec expr="ng = ng_i.value()" />
+       <al-if expr="ng.enabled"><tr><al-else><tr class="disabled"></al-if>
+        <td class="group">
+         <label><al-value expr="ng.label"></label>
+         <div class="smaller">Weight: 
+          <al-lookup expr="ng.weight">
+           <al-item expr="0.5">Low</al-item>
+           <al-item expr="1.0">Normal</al-item>
+           <al-item expr="2.0">High</al-item>
+           <al-value expr="ng.weight">
+          </al-lookup></div>
+         <al-if expr="not ng.enabled"><div>DISABLED<div></al-if>
+        </td>
+        <td class="fields">
+         <al-for iter="ngf_i" expr="ng.demogfields()">
+          <al-exec expr="ngf = ngf_i.value()" />
+          <al-value expr="ngf.label" /><br>
+         </al-for>
+        </td>
+        <td class="button">
+         <al-input class="butt" type="submit"
+          nameexpr="'edit:%s' % ng_i.index()" value="Edit" />
+        </td>
+       </tr>
+      </al-for>
+     </tbody>
+     <tfoot>
+      <tr>
+       <td colspan="2" class="button"></td>
+       <td class="button">
+         <al-input class="butt" type="submit" name="new" value="New Group" />
+       </td>
+      </tr>
+     <tfoot>
+    </table>
+   </td>
+   <td width="30" rowspan="2">&nbsp;</td>
+   <td valign="top" align="right" width="50%">
+    <table class="dupecfg" border="0" width="100%" height="100%">
+     <tr>
+      <td class="group"><label for="dupecfg.ngram_level">Text match type</label></td>
+      <td>
+       <al-input type="radio" name="dupecfg.ngram_level" value="2">
+        &nbsp;bigram&nbsp;&nbsp;
+       <al-input type="radio" name="dupecfg.ngram_level" value="3">
+        &nbsp;trigram&nbsp;&nbsp;
+      </td>
+     </tr>
+     <tr>
+      <td class="group"><label for="dupecfg.cutoff">Cut-off</label></td>
+      <td>
+       <al-select name="dupecfg.cutoff" optionexpr="dupecfg.cutoff_options" />
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+  <tr>
+   <td valign="bottom">
+    <table width="100%" class="dupecfg">
+     <tr>
+      <td class="button" style="text-align: left;">
+       <al-input class="butt" type="submit" name="revert" value="Revert" />
+       <al-input class="butt" type="submit" name="reset" value="Defaults" />
+      </td>
+      <td class="button" style="text-align: right;">
+       <al-input class="butt" type="submit" name="save" value="Save" />
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+ </table>
+</al-expand>

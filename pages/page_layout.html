@@ -1,0 +1,420 @@
+<al-require version="2">
+<al-macro name="page_common">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" 
+   "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+-->
+
+ <html>
+  <head>
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <meta http-equiv="Content-Script-Type" content="text/javascript">
+   <meta name="robots" content="noindex,nofollow">
+   <al-if expr="session_timeout">
+    <meta http-equiv="Refresh" content="<al-value expr='session_timeout + 1' />">
+   </al-if>
+   <al-link rel="shortcut icon" hrefexpr="appath('images','favicon.ico')" type="image/x-icon">
+   <script type="text/javascript">
+    var _is_complete=false;
+    var set_complete = function () {
+     _is_complete=true;
+     var wait=document.getElementById('wait');
+     if (wait) wait.style.display='none';
+    }
+    var is_complete = function () {
+     if (_is_complete) return true;
+     var wait=document.getElementById('wait');
+     if (wait) wait.style.display='block';
+     return false;
+    }
+   </script>
+   <al-usearg name="head" />
+   <al-setdefault name="extrahead" />
+   <al-usearg name="extrahead" />
+   <al-if expr="has_js == 'yes' and _credentials and _credentials.prefs.get('nobble_back_button')">
+    <al-script srcexpr="appath('nobbleback.js')" type="text/javascript"></al-script>
+   </al-if>
+   <al-setdefault name="extrastyle" />
+   <style type="text/css" media="all">
+    <!-- <al-usearg name="style" /> <al-usearg name="extrastyle" /> -->
+   </style>
+   <title><al-usearg name="title" /> - <al-value expr="apptitle" /></title>
+  </head>
+  <body onload="set_complete();">
+   <al-if expr="has_js == 'yes' and _credentials and _credentials.prefs.get('nobble_back_button')">
+    <iframe style="border: 0px; width: 1px; height: 1px; position: absolute; bottom: 0px; right: 0px; visibility: visible;" name="bif" id="bif" src="<al-value expr="appath('backiframe.html')">"></iframe>
+   </al-if>
+   <div id="wait" style="color:red;padding:.5ex;background:#fee;border:solid 2px red;position:absolute;display:none;font-size:12pt;">Page is loading, please wait...</div>
+   <al-usearg>
+  </body>
+ </html>
+</al-macro>
+
+<al-macro name="req-sorttable">
+  <al-script srcexpr="appath('sorttable.js')" type="text/javascript"></al-script>
+</al-macro>
+
+<al-macro name="print_layout">
+ <al-expand name="page_common">
+  <al-setarg name="head">
+   <al-if expr="has_js == 'yes'">
+    <al-script srcexpr="appath('helpers.js')" type="text/javascript"></al-script>
+   </al-if>
+  </al-setarg>
+  <al-setarg name="style">
+   <al-comment>
+    <!-- we want these inline, so that the HTML is self-contained -->
+   </al-comment>
+   <al-include expr="html_target + '/printforms.css'" />
+   <al-include expr="html_target + '/wiki.css'" />
+  </al-setarg>
+  <al-form name="appform" method="post" autocomplete="off">
+   <al-expand name="render_msgs" />
+   <al-expand name="print_buttons" />
+   <al-usearg />
+   <al-expand name="print_buttons" />
+   <al-expand name="metric_fields" />
+  </al-form>
+ </al-expand>
+</al-macro>
+
+
+<al-macro name="help_button">
+      <al-if expr="__page__.startswith('admin')">
+       <al-exec expr="help_html = 'admin_help.html'" />
+      <al-else>
+       <al-exec expr="help_html = 'help.html'" />
+      </al-if>
+      <al-if expr="has_js == 'yes'">
+       <al-button onclickexpr="'pophelp(%r, %r);' % (appath('help', help_html), __page__)" id="help"><al-img expr="appath('images','help-g.png')" border="0" alt="Help" /></al-button>
+      <al-else>
+       <al-a expr="appath('help', help_html + '#' +  __page__)" target="_blank" id="help"><al-img expr="appath('images','help-g.png')" border="0" alt="Help" /></al-a>
+      </al-if>
+</al-macro>
+
+<al-macro name="wikihelp">
+ <al-if expr="has_js == 'yes'">
+  <al-button class="wikihelp" onclickexpr="'pophelp(%r, %r);' % (appath('help', 'wiki_help.html'), '')">W</al-button>
+ <al-else>
+  <al-a expr="appath('help', 'wiki_help.html')" class="wikihelp" target="_blank">W</al-a>
+ </al-if>
+</al-macro>
+
+<al-macro name="render_msgs">
+   <al-for vars="lvl, msg" expr="get_messages()">
+    <al-div classexpr="lvl + '-msg'"><al-value expr="msg" /></al-div>
+   </al-for>
+</al-macro>
+
+<al-macro name="metric_fields">
+   <al-input type="hidden" name="response_time" value="" />
+   <al-input type="hidden" name="start_time" expr="int(request_start)" />
+   <al-input type="hidden" name="server_time" 
+    expr="'%.3f' % request_elapsed()" />
+   <al-input type="hidden" name="last_page" expr="__page__" />
+</al-macro>
+
+<al-macro name="debug_box">
+    <al-if expr="debug">
+     <div class="debug">
+      <b>Debug:</b>
+      <b>Page module:</b> <al-value expr="__page__" />,
+      <b>Has JS:</b> <al-input type="checkbox" name="has_js" value="yes" onclick="submit();" />,
+      <b>Version:</b> <al-value expr="__version__" />,
+      <b>Py:</b> <al-value expr="__pyver__" />,
+      <b>SVN:</b> <al-value expr="__svnrev__" />,
+      <b>deploy:</b> <al-value expr="deploy_mode" />,
+      <b>Rights:</b> <al-value expr="_credentials.rights" />,
+      <b>Elapsed:</b> <al-value expr="'%.3fs' % request_elapsed()" />, 
+      <b>Page stack:</b> <al-value expr="'>'.join(__pages__)" />
+     </div>
+    </al-if>
+</al-macro>
+
+<al-macro name="banner_box">
+   <al-setdefault name="banner_extra" />
+   <table class="pagebanner">
+    <tr>
+     <td class="logo"><al-img expr="appath('images','netepi.png')" alt="NetEpi logo"></td>
+     <td class="title">
+      <div class="apptitle"><al-value expr="config.apptitle" /></div>
+      <div class="subbanner"><al-value expr="config.subbanner" /></div>
+     </td>
+     <al-usearg name="banner_extra" />
+     <td align="center">
+      <al-expand name="help_button" />
+     </td>
+    </tr>
+   </table>
+   <table class="menubar">
+    <tr>
+     <al-for vars="cell_style, items" expr="page_common.bannertabs(__ctx__).table_row()">
+      <al-td classexpr="cell_style">
+       <al-for vars="item" expr="items">
+        <al-input type="submit" nameexpr="item.name" idexpr="item.name" 
+         expr="item.label" class="sublink" />
+       </al-for>
+      </al-td>
+     </al-for>
+    </tr>
+   </table>
+</al-macro>
+
+<al-macro name="page_layout">
+ <al-expand name="page_common">
+  <al-setarg name="head">
+   <al-if expr="has_js == 'yes'">
+    <al-if expr="_credentials and _credentials.prefs.get('jscalendar')">
+     <al-script srcexpr="appath('calendar.js')" type="text/javascript"></al-script>
+     <al-script srcexpr="appath('lang/calendar-en.js')" type="text/javascript"></al-script>
+    </al-if>
+    <al-script srcexpr="appath('helpers.js')" type="text/javascript"></al-script>
+   </al-if>
+  </al-setarg>
+  <al-setarg name="style">
+    @import "/<al-value expr='appname' />/style.css";
+    @import "/<al-value expr='appname' />/wiki.css";
+    @import "/<al-value expr='appname' />/calendar.css";
+    <al-if expr="_credentials">
+     body { font-size: <al-value expr="_credentials.prefs.get('font_size')">;}
+    </al-if>
+  </al-setarg>
+  <al-form name="appform" action="app.py#cur" method="post" autocomplete="off"  onsubmit="return is_complete();">
+   <al-usearg />
+   <al-expand name="metric_fields" />
+  </al-form>
+ </al-expand>
+</al-macro>
+
+<al-macro name="page_layout_banner">
+ <al-setdefault name="subtitle" />
+ <al-expand name="page_layout">
+  <al-setarg name="title"><al-usearg name="title" /></al-setarg>
+   <al-expand name="banner_box" />
+   <al-expand name="render_msgs" />
+   <div class="pagetitle">
+    <al-usearg name="title" />
+   </div>
+   <div class="content">
+    <al-usearg />
+   </div>
+   <al-expand name="debug_box" />
+ </al-expand>
+</al-macro>
+
+<al-macro name="page_layout_banner_scroll">
+ <al-setdefault name="subtitle" />
+ <al-expand name="page_layout">
+  <al-setarg name="title"><al-usearg name="title" /></al-setarg>
+   <al-expand name="banner_box" />
+   <al-expand name="render_msgs" />
+   <div class="pagetitle">
+    <al-usearg name="title" />
+   </div>
+   <div class="scroll-content">
+    <al-usearg />
+   </div>
+   <al-expand name="debug_box" />
+ </al-expand>
+</al-macro>
+
+<al-macro name="page_layout_admin">
+ <al-expand name="page_layout_banner">
+  <al-setarg name="title">Admin: <al-usearg name="title" /></al-setarg>
+  <al-usearg />
+ </al-expand>
+</al-macro>
+
+<al-macro name="confirm">
+  <a name="cur" />
+  <div class="centbox">
+   <al-if expr="confirm.title">
+    <h1><al-value expr="confirm.title" /></h1>
+   </al-if>
+   <al-if expr="confirm.message">
+    <p><al-value expr="confirm.message" /></p>
+   </al-if>
+   <al-if expr="confirm.reason_prompt">
+    <p><al-value expr="confirm.reason_prompt" />
+       <al-input name="confirm.reason" size="50" /></p>
+   </al-if>
+   <al-for iter="cb_i" expr="confirm.buttons">
+    <al-input type="submit" nameexpr="'confirm:%s' % cb_i.value()[0]" 
+     class="bigbutt" expr="cb_i.value()[1]" />
+   </al-for>
+  </div>
+</al-macro>
+
+<al-macro name="confirm_or_error">
+ <al-if expr="confirm">
+  <al-expand name="confirm" />
+ <al-else>
+  <al-usearg />
+ </al-if>
+</al-macro>
+
+<al-lookup name="boolean">
+ <al-item expr="'True'">Yes</al-item>
+ <al-item expr="''">No</al-item>
+</al-lookup>
+
+<al-macro name="print_buttons">
+   <al-setdefault name="extrabuttons" />
+   <div class="noprint">
+    <al-input class="noprint butt" type="submit" name="back" value="<<" />
+    <al-usearg name="extrabuttons" />
+    <input class="noprint butt" type="button" name="print" value="Print" 
+     onclick="window.print()" />
+   </div>
+</al-macro>
+
+<al-macro name="confidential">
+   <div class="confidential">
+    Confidental personal health data for authorised use only - please
+    store or dispose of securely.<br>
+    Printed by <al-value expr="_credentials.user.fullname" /> 
+    (<al-value expr="_credentials.user.username" />) 
+    on <al-value expr="datetime.now()" />.
+   </div>
+</al-macro>
+
+<al-macro name="caseset">
+     <al-if expr="caseset is not None">
+      <table class="menubar">
+       <tr>
+        <td class="mbl" width="33%">
+         <al-input class="mbsb" type="submit" name="caseset_close" value="X" />
+         <al-input class="mbsb" type="submit" name="caseset_remove" value="-" />
+        </td>
+        <td class="mbm" width="34%">
+         <table class="mbp">
+          <tr>
+           <td>
+            <al-if expr="caseset.inrange(-20)">
+             <al-input class="mbsb" type="submit" name="caseset_seek:-20" value="<<" />
+            </al-if>
+            <al-if expr="caseset.inrange(-1)">
+             <al-input class="mbsb" type="submit" name="caseset_seek:-1" value="<" />
+            </al-if>
+           </td>
+           <td class="mbpt">
+            <al-value expr="caseset.info()" />
+           </td>
+           <td>
+            <al-if expr="caseset.inrange(1)">
+             <al-input class="mbsb" type="submit" name="caseset_seek:1" value=">" />
+            </al-if>
+            <al-if expr="caseset.inrange(20)">
+             <al-input class="mbsb" type="submit" name="caseset_seek:20" value=">>" />
+            </al-if>
+           </td>
+          </tr>
+         </table>
+        </td>
+        <td class="mbr" width="33%">
+         <al-if expr="casesets.new_name">
+          Rename:
+          <al-input type="text" name="casesets.new_name" />
+          <al-input type="submit" name="casesets_action:rename_okay" 
+           class="smallbutt" value="Okay" />
+          <al-input type="submit" name="casesets_action:rename_cancel" 
+           class="smallbutt" value="Cancel" />
+         <al-else>
+          <al-select name="casesets_action" onchange="submit();"
+           optionexpr="casesets.actionoptions(caseset)" />
+         </al-if>
+        </td>
+       </tr>
+      </table>
+     </al-if>
+</al-macro>
+
+<al-macro name="menubar">
+     <table class="menubar">
+      <tr>
+       <al-for vars="cell_style, items" expr="menubar.table_row()">
+        <al-td classexpr="cell_style">
+         <al-for iter="item_i" expr="items">
+          <al-exec expr="item = item_i.value()" />
+          <al-if expr="item.drop">
+           <al-select nameexpr="item.name" onchange="submit();" 
+            optionexpr="item.optionexpr()" />
+          <al-else>
+           <al-input type="submit" nameexpr="item.name" idexpr="item.name" 
+            expr="item.label" classexpr="item.style" 
+            styleexpr="menubar.style" />
+          </al-if>
+         </al-for>
+        </al-td>
+       </al-for>
+      </tr>
+     </table>
+</al-macro>
+
+<al-macro name="page_select">
+   <al-if expr="paged_search.has_pages()">
+    <table border="0" cellpadding="0" cellspacing="0" class="page-select">
+     <tr>
+      <al-if expr="paged_search.has_prev()">
+       <td align="left">
+        <al-input type="submit" class="smallbutt" 
+         name="page:prev" value="PREV" />
+       </td>
+      </al-if>
+      <td align="center" width="100%">
+       <al-select name="paged_search.go_page" list="list" onchange="submit();"
+        optionexpr="paged_search.page_list()" 
+        expr="'Page %d' % paged_search.cur_page()" />
+       <al-input type="submit" class="smallbutt" name="page:goto" value="Go" />
+      </td>
+      <al-if expr="paged_search.has_next()">
+       <td align="right">
+        <al-input type="submit" class="smallbutt" 
+         name="page:next" value="NEXT" />
+       </td>
+      </al-if>
+     </tr>
+    </table>
+   </al-if>
+</al-macro>
+
+<al-macro name="sort_header">
+ <al-for iter="h_i" expr="paged_search.headers">
+  <al-exec expr="col, label = h_i.value()" />
+  <th nowrap>
+   <al-if expr="col">
+    <al-if expr="col != paged_search.order_by">
+     <al-input type="image" srcexpr="appath('images','sortdn.png')"
+      nameexpr="'page:orderby:%s' % col" />
+    <al-else>
+     <al-img expr="appath('images','sortdnsel.png')" />
+    </al-if>
+    <al-if expr="col  + ' DESC'!= paged_search.order_by">
+     <al-input type="image" srcexpr="appath('images','sortup.png')"
+      nameexpr="'page:orderby:%s_desc' % col" />
+    <al-else>
+     <al-img expr="appath('images','sortupsel.png')" />
+    </al-if>
+   </al-if>
+   &nbsp;
+   <al-value expr="label">
+  </th>
+ </al-for>
+</al-macro>

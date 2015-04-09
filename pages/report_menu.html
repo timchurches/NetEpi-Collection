@@ -1,0 +1,79 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-expand name="page_layout_banner">
+ <al-setarg name="title">Reports - <al-value expr="user_reports.syndrome_name" /></al-setarg>
+ <al-if expr="report_upload_mode">
+  <div class="centbox">
+   <h1>Upload an XML report</h1>
+   <al-input type="file" name="report_import_file" size="40" class="file">
+   <al-input type="submit" name="report_import" value="Upload" class="butt">
+   <al-input type="submit" name="report_import_cancel" value="Cancel" class="butt">
+  </div>
+ <al-else>
+  <al-if expr="can_edit">
+   <div class="reportbuttons">
+    <al-input type="submit" class="bigbutt" name="upload" value="Upload Report" />
+    <al-input type="submit" class="bigbutt" name="new" value="New Report" />
+   </div>
+  </al-if>
+  <al-if expr="user_reports">
+   <table id="reports" class="reportmenu">
+    <al-for vars="sharing" expr="reports.sharing_tags">
+     <al-exec expr="ur_sharing = user_reports.by_sharing[sharing]" />
+     <al-if expr="ur_sharing">
+      <tr>
+       <td colspan="2">
+        <h3><al-lookup expr="sharing">
+          <al-item expr="'private'">My reports</al-item>
+          <al-item expr="'unit'"><al-value expr="config.unit_label" /> reports</al-item>
+          <al-item expr="'public'">Public reports</al-item>
+          <al-item expr="'quick'">Quick (home page) reports</al-item>
+        </al-lookup></h3>
+       </td>
+      </tr>
+      <tr>
+       <al-exec expr="split = int(len(ur_sharing) / 2.0 + 0.5)" />
+       <al-for vars="offs" expr="[0, split]">
+        <td width="50%">
+         <ul>
+          <al-for vars="rt" expr="ur_sharing[offs:offs+split]">
+           <li>
+            <al-if expr="can_edit">
+             <al-input type="submit" class="sublink edit" value="edit"
+                nameexpr="'edit:%s' % rt.report_params_id" />
+            </al-if>
+            <al-span idexpr="'report:%s' % rt.report_params_id" class="clickable"><al-value expr="rt.label" /></al-span>
+            <span class="rtype"> (<al-value expr="reports.type_label(rt.type)" />)</span>
+           </li>
+          </al-for>
+         </ul>
+        </td>
+       </al-for>
+      </tr>
+     </al-if>
+    </al-for>
+   </table>
+   <script type="text/javascript">clicktab('reports', 'appform');</script>
+  <al-else>
+   <p>No reports available</p>
+  </al-if>
+ </al-if>
+</al-expand>

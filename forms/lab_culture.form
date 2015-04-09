@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<form name='lab_culture' form_type='case' allow_multiple='True'>
+ <label>Lab test - Culture (SARS)</label>
+ <question>
+  <label>
+   At what stage of progression of the disease was the sample taken (More than
+   one series of results can be entered)
+  </label>
+  <input name='Respiratory_culture_stage' type='RadioList' required='True'>
+   <summary>Stage</summary>
+   <choices>
+    <choice name='Acute'>Acute</choice>
+    <choice name='Convalescent'>Convalescent</choice>
+    <choice name='None'>Not answered</choice>
+   </choices>
+  </input>
+ </question>
+ <question>
+  <label>
+   On what date was the sample taken? (More than one series of results can be
+   entered)
+  </label>
+  <input name='Respiratory_culture_date' type='DateInput' required='True'>
+   <summary>Respiratory sample date</summary>
+  </input>
+ </question>
+ <section>
+  <label>Respiratory Tract samples</label>
+  <question>
+   <label>Influenza A/B</label>
+   <input name='Influenza_culture' type='LabTestResult'>
+    <summary>Influenza A/B</summary>
+   </input>
+  </question>
+  <question>
+   <label>Adenovirus</label>
+   <input name='Adenovirus_culture' type='LabTestResult' required='True'>
+    <summary>Adenovirus</summary>
+   </input>
+  </question>
+  <question>
+   <label>Parainfluenza</label>
+   <input name='Parinfluenza_culture' type='LabTestResult' required='True'>
+    <summary>Parainfluenza</summary>
+   </input>
+  </question>
+  <question>
+   <label>Metapneumovirus</label>
+   <input name='Metapnem_culture' type='LabTestResult' required='True'>
+    <summary>Metapneumovirus</summary>
+   </input>
+  </question>
+  <question>
+   <label>Bacterial (respiratory tract)</label>
+   <input name='Bacterial_culture' type='LabTestResult' required='True'>
+    <summary>Bacterial (tract)</summary>
+   </input>
+  </question>
+  <question>
+   <label>Fungal</label>
+   <input name='Fungal_culture' type='LabTestResult' required='True'>
+    <summary>Fungal</summary>
+   </input>
+  </question>
+ </section>
+ <section>
+  <label>Serum samples</label>
+  <question>
+   <label>Bacterial (serum)</label>
+   <input name='Bacterial_serum_culture' type='LabTestResult' required='True'>
+    <summary>Bacterial (serum)</summary>
+   </input>
+  </question>
+ </section>
+</form>

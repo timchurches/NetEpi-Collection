@@ -1,0 +1,131 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-expand name="page_layout">
+  <al-expand name="render_msgs" />
+  <al-setarg name="title">Login</al-setarg>
+   <al-input name="has_js" type="hidden" />
+   <script>
+    <!--
+     document.forms[0].has_js.value = "yes";
+    -->
+   </script>
+
+   <table class="login" cellpadding="0" cellspacing="0" border="0">
+    <al-if expr="via_logout">
+     <tr>
+      <td class="lhs">&nbsp;</td>
+      <td class="rhs logout">
+       Thank you for using <al-value expr="apptitle" />. Your session
+       is now closed.  Please note: if you are using <al-value
+       expr="apptitle" /> from an untrusted computer (one that is
+       shared or in a public space) you should clear the browser's
+       cache and close the browser to ensure that others cannot see
+       any details of the data you may have entered or reviewed.
+      </td>
+     </tr>
+    </al-if>
+    <tr>
+     <td class="lhs logo">
+      <al-img expr="appath('images/netepi-bb.png')" 
+        alt="NetEpi Collection logo" />
+     </td>
+     <td class="rhs">
+      <div class="title">
+       <al-value expr="config.apptitle" />
+      </div>
+      <div class="subtitle">
+       <al-value expr="config.subbanner" />
+      </div>
+     </td>
+    </tr>
+    <tr class="prompt">
+     <td class="lhs">&nbsp;</td><td class="rhs">&nbsp;</td>
+    </tr>
+    <tr class="prompt">
+     <td class="lhs">
+      <label for="username">User name</label>
+     </td>
+     <td class="rhs">
+      <al-input type="text" name="username" id="username" 
+        disabledbool="unit_options" tabindex="1">
+     </td>
+    </tr>
+    <tr class="prompt">
+     <td class="lhs">
+      <label for="password">Password</label>
+     </td>
+     <td class="rhs">
+      <al-input name="password" type="password" id="password" 
+        disabledbool="unit_options" tabindex="2">
+     </td>
+    </tr>
+    <al-if expr="unit_options">
+     <tr class="prompt">
+      <td class="lhs">
+       <label for="unit"><al-value expr="config.unit_label" /></label>
+      </td>
+      <td class="rhs">
+        <al-select name="unit_id" id="unit" tabindex="3" 
+           optionexpr="unit_options" />
+      </td>
+     </tr>
+    </al-if>
+    <tr class="prompt">
+     <td class="lhs">&nbsp;</td>
+     <td class="rhs">
+      <al-input type="submit" name="login" value="Log in" tabindex="4">
+     </td>
+    </tr>
+    <al-if expr="config.user_registration_mode != 'none' and not unit_options">
+     <tr class="apply prompt">
+      <td class="lhs">&nbsp;</td>
+      <td class="rhs">
+        <al-input type="submit" name="register" value="Apply for a user account" >
+      </td>
+     </tr>
+    </al-if>
+    <tr class="help">
+     <td class="lhs">
+      <al-a class="help" target="_blank" expr="appath('help/help.html#' + __page__)"><al-img expr="appath('images/help-w.png')" border="0" alt="Help" /></al-a>
+     </td>
+     <td class="rhs">
+      <al-if expr="config.login_helpdesk_contact">
+       For assistance, please contact
+       <al-value expr="config.login_helpdesk_contact" noescape />.
+      </al-if>
+     </td>
+    </tr>
+    <tr class="dedication">
+     <td class="lhs">&nbsp;</td>
+     <td class="rhs">
+      Dedicated to the memory of Professor Aileen Plant, 1948-2007.<br>
+      <a href="http://memorial.curtin.edu.au/aileenplant/">[1]</a> <a href="http://www.smh.com.au/news/obituaries/she-fought-disease-despite-risks/2007/04/15/1176575678645.html?page=fullpage">[2]</a> <a href="http://en.wikipedia.org/wiki/Aileen_Plant">[3]</a> <a href="http://www.publish.csiro.au/view/journals/dsp_journal_fulltext.cfm?nid=226&amp;f=NB07067">[4]</a> <a href="http://www.who.int/mediacentre/news/statements/2007/s07/en/index.html">[5]</a> <a href="http://www.mja.com.au/public/issues/187_06_170907/mat10698_obit_fm.html">[6]</a><br>
+      <div class="copyright">
+       This web site uses <a href="http://www.netepi.org/">NetEpi Collection</a> version <al-value expr="__version__" /> <al-value expr="__svnrev__" /><br>
+       <al-a target="_blank" expr="appath('help', 'copyright.html')">
+       Copyright &copy;</al-a> 2004-2010 NSW Department of Health,
+       Australian Government Department of Health and Ageing, and others
+       and available under a free, open-source license.<br>
+      </div>
+     </td>
+    </tr>
+   </table>
+</al-expand>

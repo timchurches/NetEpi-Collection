@@ -1,0 +1,118 @@
+<?xml version="1.0"?>
+<form name='lab_pcr' form_type='case' allow_multiple='True'>
+ <label>Lab test - PCR (SARS)</label>
+ <question>
+  <label>
+   At what stage of progression of the disease was the sample taken (More than
+   one series of results can be entered)
+  </label>
+  <input name='PCR_stage' type='RadioList' required='True'>
+   <summary>Stage</summary>
+   <choices>
+    <choice name='Acute'>Acute</choice>
+    <choice name='Convalescent'>Convalescent</choice>
+    <choice name='None'>Not answered</choice>
+   </choices>
+  </input>
+ </question>
+ <question>
+  <label>
+   On what date was the sample taken? (More than one series of results can be
+   entered)
+  </label>
+  <input name='PCR_date' type='DateInput'>
+   <summary>Date</summary>
+   <pre_text>Date of collection</pre_text>
+  </input>
+ </question>
+ <section>
+  <label>Blood</label>
+  <question>
+   <label>SARS coronavirus</label>
+   <input name='SARS_serum_PCR' type='LabTestResult' required='True'>
+    <summary>SARS coronavirus</summary>
+   </input>
+  </question>
+  <question>
+   <label>Tuberculosis</label>
+   <input name='TB_serum_PCR' type='LabTestResult' required='True'>
+    <summary>TB</summary>
+   </input>
+  </question>
+  <question>
+   <label>Enteroviruses</label>
+   <input name='Enterovirus_serum_PCR' type='LabTestResult' required='True'>
+    <summary>Enteroviruses</summary>
+   </input>
+  </question>
+ </section>
+ <section>
+  <label>Respiratory tract</label>
+  <question>
+   <label>Chlamydia pneumoniae</label>
+   <input name='Chlamydia_nasophar_PCR' type='LabTestResult' required='True'>
+    <summary>Chlamydia pn.</summary>
+   </input>
+  </question>
+  <question>
+   <label>Mycoplasma pneumoniae</label>
+   <input name='Mycoplasma_nasophar_PCR' type='LabTestResult' required='True'>
+    <summary>Mycoplasma pneumoniae</summary>
+   </input>
+  </question>
+  <question>
+   <label>Influenza A/B</label>
+   <input name='Flu_nasophar_PCR' type='LabTestResult' required='True'>
+    <summary>Influenza A/B</summary>
+   </input>
+  </question>
+  <question>
+   <label>RSV</label>
+   <input name='RSV_nasophar_PCR' type='LabTestResult' required='True'>
+    <summary>RSV</summary>
+   </input>
+  </question>
+  <question>
+   <label>Adenovirus</label>
+   <input name='Adenovirus_nasophar_PCR' type='LabTestResult' required='True'>
+    <summary>Adenovirus</summary>
+   </input>
+  </question>
+  <question>
+   <label>Parainfluenza</label>
+   <input name='Parainfluenza_nasophar_PCR' type='LabTestResult' required='True'>
+    <summary>Parainfluenza</summary>
+   </input>
+  </question>
+  <question>
+   <label>Metapneumovirus</label>
+   <input name='Metapn_nasophar_PCR' type='LabTestResult' required='True'>
+    <summary>Metapneumovirus</summary>
+   </input>
+  </question>
+  <section>
+   <label></label>
+  </section>
+  <question>
+   <label>Mycoplasma pneumoniae</label>
+   <input name='Mycoplasma_sputum_PCR' type='LabTestResult'>
+    <summary>Mycoplasma</summary>
+   </input>
+  </question>
+  <question>
+   <label>Chlamydia pneumoniae</label>
+   <input name='Chlamydiapn_sputum_PCR' type='LabTestResult'>
+    <summary>Chlamydia pneumoniae</summary>
+   </input>
+  </question>
+ </section>
+ <section>
+  <label>Faeces</label>
+  <question>
+   <label>SARS coronavirus</label>
+   <input name='SARS_faecal_PCR' type='LabTestResult'>
+    <summary>SARS coronavirus</summary>
+   </input>
+  </question>
+ </section>
+</form>

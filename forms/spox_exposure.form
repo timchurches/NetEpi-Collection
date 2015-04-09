@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+<form name='spox_exposure' form_type='case' allow_multiple='False'>
+ <label>Case exposure - personal (smallpox)</label>
+ <section>
+  <label>Source of illness identifiable</label>
+  <question>
+   <label>
+    Patient can identify the person from whom they caught their ilness. Please
+    record the details of the source individual.
+   </label>
+   <input name='Source_name' type='TextInput'>
+    <pre_text>Name of source of infection</pre_text>
+    <post_text>Surname, Given Names</post_text>
+   </input>
+   <input name='Source_address' type='TextInput'>
+    <pre_text>Address of source of infection</pre_text>
+    <post_text>Street address, town/suburb</post_text>
+   </input>
+   <input name='Source_postcode' type='IntInput'>
+    <pre_text>Postcode of source of infection</pre_text>
+   </input>
+   <input name='source_phone' type='IntInput'>
+    <pre_text>Telephone number of source of infection</pre_text>
+    <post_text>Please include area code</post_text>
+   </input>
+  </question>
+  <question>
+   <label>Date of last exposure to source of infection</label>
+   <input name='Source_date' type='DateInput' />
+  </question>
+  <question>
+   <label>Did the person have any of the following signs or symptoms?</label>
+   <input name='Source_signs' type='CheckBoxes'>
+    <choices>
+     <choice name='Papules'>Rash: papules/bumps</choice>
+     <choice name='Vesicles'>Rash: vesicles</choice>
+     <choice name='Pustules'>Rash: pustules (fluid filled)</choice>
+     <choice name='Scabs'>Rash: crusts/scabs</choice>
+     <choice name='Fever'>Fever</choice>
+     <choice name='Cough'>Cough</choice>
+     <choice name='Ill'>severely ill</choice>
+     <choice name='Immobile'>Immobile</choice>
+     <choice name='Other'>Other</choice>
+    </choices>
+   </input>
+   <input name='Source_other' type='TextInput'>
+    <pre_text>If other, please specify</pre_text>
+   </input>
+  </question>
+ </section>
+ <section>
+  <label>Persons with similar illness</label>
+  <question>
+   <label>
+    Does the patient know anyone with an illness like theirs? Please record
+    the contact details of these people.
+   </label>
+   <input name='Similar_name' type='TextInput'>
+    <pre_text>Name of person</pre_text>
+    <post_text>Surname, Given Names</post_text>
+   </input>
+   <input name='Similar_address' type='TextInput'>
+    <pre_text>Address of person</pre_text>
+    <post_text>Street address, town/suburb</post_text>
+   </input>
+   <input name='Similar_postcode' type='IntInput'>
+    <pre_text>Postcode of person</pre_text>
+   </input>
+   <input name='Similar_phone' type='IntInput'>
+    <pre_text>Telephone number of person</pre_text>
+    <post_text>Please include area code</post_text>
+   </input>
+  </question>
+ </section>
+ <section>
+  <label>Other personal exposures</label>
+  <question>
+   <label>Exposure period (period of possible infection)</label>
+   <input name='Start_exposure' type='DateInput'>
+    <pre_text>Date 21 days before onset of rash</pre_text>
+   </input>
+   <input name='End_exposure' type='DateInput'>
+    <pre_text>Date 7 days before onset of rash</pre_text>
+   </input>
+  </question>
+  <question>
+   <label>
+    During the period between these 2 dates, were you in contact with anyone
+    who appeared to have chickenpox?
+   </label>
+   <input name='chickenpox' type='YesNo' />
+  </question>
+  <question>
+   <label>
+    During the period between these 2 dates, were you in contact with anyone
+    who had a severe rash on their face and/or arms?
+   </label>
+   <input name='Severe_rash' type='YesNo' />
+  </question>
+  <question>
+   <label>If yes, please provide their contact details</label>
+   <input name='Other_name' type='TextInput'>
+    <pre_text>Name of person</pre_text>
+    <post_text>Surname, Given Names</post_text>
+   </input>
+   <input name='Other_address' type='TextInput'>
+    <pre_text>Address of person</pre_text>
+    <post_text>Street address, town/suburb</post_text>
+   </input>
+   <input name='Other_postcode' type='IntInput'>
+    <pre_text>Postcode of person</pre_text>
+    <post_text>None</post_text>
+   </input>
+   <input name='Other_phone' type='IntInput'>
+    <pre_text>Telephone number of person</pre_text>
+    <post_text>Please include area code</post_text>
+   </input>
+  </question>
+  <question>
+   <label>Date of last exposure to this person</label>
+   <input name='Other_date' type='DateInput'>
+    <pre_text>None</pre_text>
+   </input>
+  </question>
+ </section>
+</form>

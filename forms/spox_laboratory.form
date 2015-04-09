@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<form name='spox_laboratory' form_type='case' allow_multiple='True'>
+ <label>Lab test results (smallpox)</label>
+ <question>
+  <label>What type of specimen was collected for testing?</label>
+  <input name='Specimen_detail' type='TextInput'>
+   <summary>Specimens collected</summary>
+   <pre_text>If yes, please specify types of specimen</pre_text>
+   <post_text>None</post_text>
+  </input>
+ </question>
+ <question>
+  <label>On what date were the specimens collected?</label>
+  <input name='Specimen_date' type='DateInput'>
+   <pre_text>None</pre_text>
+  </input>
+ </question>
+ <section>
+  <label>Electron microscopy</label>
+  <question>
+   <label>
+    Was specimen examined microscopically for evidence of smallpox?
+   </label>
+   <input name='EM' type='YesNo'>
+    <summary>Electron microscopy</summary>
+   </input>
+  </question>
+  <question>
+   <label>Result from EM examination</label>
+   <input name='EM_result' type='RadioList'>
+    <summary>EM result</summary>
+    <choices>
+     <choice name='Positive'>Pox virus identified</choice>
+     <choice name='Negative'>Pox virus not identified</choice>
+     <choice name='Indeterminate'>Indeterminate</choice>
+    </choices>
+   </input>
+  </question>
+ </section>
+ <section>
+  <label></label>
+ </section>
+</form>

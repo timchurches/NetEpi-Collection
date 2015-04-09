@@ -1,0 +1,16 @@
+1|2|sars_symptoms
+2|2|sars_exposure
+3|2|sars_travel
+4|2|sars_china
+5|2|sars_hk
+7|2|hospital_admit
+8|2|lab_serology
+9|2|lab_culture
+10|2|lab_pcr
+11|2|lab_direct_ag
+12|2|lab_haem_biochem
+13|1|spox_case
+14|1|spox_exposure
+15|1|spox_history
+16|1|spox_laboratory
+17|2|sars_followup

@@ -1,0 +1,252 @@
+<al-comment>
+
+    The contents of this file are subject to the HACOS License Version 1.2
+    (the "License"); you may not use this file except in compliance with
+    the License.  Software distributed under the License is distributed
+    on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    implied. See the LICENSE file for the specific language governing
+    rights and limitations under the License.  The Original Software
+    is "NetEpi Collection". The Initial Developer of the Original
+    Software is the Health Administration Corporation, incorporated in
+    the State of New South Wales, Australia.
+    
+    Copyright (C) 2004-2011 Health Administration Corporation, Australian
+    Government Department of Health and Ageing, and others.
+    All Rights Reserved.
+
+    Contributors: See the CONTRIBUTORS file for details of contributions.
+
+</al-comment>
+
+<al-expand name="page_layout_banner">
+ <al-setarg name="title"><al-value expr="ue.title" /></al-setarg>
+ <al-if expr="not ue.need_key">
+  <div class="key">
+   <al-if expr="ue.passwd_setting">
+    <b>Choosing a good password</b>
+    <p>
+    You must choose a password which is known only to you and which is
+    hard to guess. It must be at least 8 characters long and must contain a
+    mixture of upper and lower case letters and numbers. It may also contain
+    punctuation. Upper case letters must not only be at the beginning of the
+    password and digits must not only be at the end of the password.
+    </p>
+    <p>
+    It is unwise to base your password on obvious words or sets of numbers,
+    such as your name, or your partner's or employer's name, or your birthday,
+    telephone number, car registration number, and so on.
+    </p>
+   </al-if>
+     
+   <p><span class="required">*</span> - required field.</p>
+   <p><span class="onerequired">*</span> - at least one field must be supplied.</p>
+  </div>
+  <al-if expr="ue.user.is_new()">
+   <i>Please click on the HELP link at the upper right of this page for
+    further instructions.</i>
+  </al-if>
+  <al-if expr="ue.unregistered and config.login_helpdesk_contact">
+   <i>For assistance, contact <al-value expr="config.login_helpdesk_contact"
+    noescape />.</i>
+  </al-if>
+  <table>
+   <al-if expr="ue.enabling">
+    <thead>
+     <tr>
+      <td colspan="2" class="warn-msg">
+       <p>
+       Please carefully check the bona fides of the user you are
+       sponsoring.
+       <p>
+       Verify that the <i>correct person</i> has responded to your invitation.
+       <p>
+       Do NOT rely on these details when making contact with the
+       user to verify their request - <i>if the invitation was intercepted,
+       the contact details may not be correct</i>.
+      </td>
+     </tr>
+    </thead>
+   </al-if>
+   <tfoot>
+    <tr>
+     <td colspan="2">
+      <al-expand name="confirm_or_error">
+       <table width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+         <al-if expr="ue.check_details()">
+          <td align="left">
+           <al-input name="checked" type="submit" 
+            value="Details are correct" class="bigbutt" />
+          </td>
+         </al-if>
+         <td align="right"><al-input name="update" type="submit" class="butt"
+             expr="ue.submit_button" /></td>
+        </tr>
+       </table>
+      </al-expand>
+     </td>
+    </tr>
+   </tfoot>
+   <tbody class="widelabelform">
+    <tr>
+     <td class="label">
+      <label for="username">Username</label></td>
+     <td class="field">
+      <al-input name="ue.user.username" id="username" 
+        disabledbool="not ue.edit_username or ue.view_only" />
+      <al-if expr="ue.edit_username"><span class="required">*</span></al-if>
+     </td>
+    </tr>
+    <tr>
+     <td class="label">
+      <label for="fullname">Full name</label></td>
+     <td class="field">
+      <al-input name="ue.user.fullname" id="fullname" 
+        disabledbool="ue.view_only" />
+      <span class="required">*</span>
+     </td>
+    </tr>
+    <al-if expr="ue.sponsor">
+     <tr>
+      <td class="label">
+       <label for="title">Sponsored by</label></td>
+      <td class="field">
+       <al-value expr="ue.sponsor.fullname" /> (<al-value expr="ue.sponsor.username" />)
+      </td>
+     </tr>
+    </al-if>
+    <tr>
+     <td class="label">
+      <label for="title">Job Title</label></td>
+     <td class="field"><al-input name="ue.user.title" id="title" 
+      disabledbool="ue.view_only" /></td>
+    </tr>
+    <tr>
+     <td class="label">
+      <label for="agency">Agency/Employer</label></td>
+     <td class="field"><al-input name="ue.user.agency" id="agency" 
+      disabledbool="ue.view_only" /></td>
+    </tr>
+    <tr>
+     <td class="label">
+      <label for="expertise">Expertise</label></td>
+     <td class="field"><al-input name="ue.user.expertise" id="expertise" 
+      disabledbool="ue.view_only" /></td>
+    </tr>
+    <tr>
+     <td class="label">
+      <label for="email">e-mail address</label></td>
+     <td class="field">
+      <al-input name="ue.user.email" id="email" disabledbool="ue.view_only" />
+      <span class="onerequired">*</span>
+     </td>
+    </tr>
+    <tr>
+     <td class="label">
+      <label for="phone_wk">Work Phone</label></td>
+     <td class="field">
+      <al-input name="ue.user.phone_work" id="phone_wk" 
+       disabledbool="ue.view_only" />
+      <span class="onerequired">*</span>
+     </td>
+    </tr>
+    <tr>
+     <td class="label">
+      <label for="phone_mbl">Mobile Phone</label></td>
+     <td class="field">
+      <al-input name="ue.user.phone_mobile" id="phone_mbl" 
+       disabledbool="ue.view_only" />
+      <span class="onerequired">*</span>
+     </td>
+    </tr>
+    <tr>
+     <td class="label">
+      <label for="phone_hm">Home phone</label></td>
+     <td class="field">
+      <al-input name="ue.user.phone_home" id="phone_hm" 
+       disabledbool="ue.view_only" />
+      <span class="onerequired">*</span>
+     </td>
+    </tr>
+    <tr>
+     <td class="label">
+      <label for="phone_fax">Fax</label></td>
+     <td class="field">
+      <al-input name="ue.user.phone_fax" id="phone_fax" 
+       disabledbool="ue.view_only" /></td>
+    </tr>
+    <al-if expr="ue.admin_edit">
+     <tr>
+      <td class="label">
+       <label for="enabled">Enabled</label></td>
+      <td>
+       <al-input id="user_enabled" name="ue.user.enabled" type="radio" value="True">Yes&nbsp;
+       <al-input id="user_disabled" name="ue.user.enabled" type="radio" value="">No
+      </td>
+     </tr>
+     <tr>
+      <td class="label">
+       <label for="timelock">Locked due to bad password</label>
+      </td>
+      <al-if expr="ue.lock_remain()">
+       <td bgcolor="#ffcccc">
+         <al-input class="right butt" type="submit" name="reset_attempts" value="Reset" />
+         Yes - <al-value expr="ue.lock_remain()" /> remain
+       </td>
+      <al-else>
+       <td>No</td>
+      </al-if>
+     </tr>
+    </al-if>
+    <al-if expr="ue.passwd_setting">
+     <tr>
+      <td colspan="2">
+       <al-value expr="ue.passwd_setting_prompt" />
+      </td>
+     </tr>
+     <al-if expr="ue.passwd_setting_check_old">
+      <tr>
+       <td class="label">
+        <label for="oldpwd">Current Password</label></td>
+       <td>
+        <al-input type="password" name="ue.pwd.old" id="oldpwd" />
+        <span class="required">*</span>
+       </td>
+      </tr>
+     </al-if>
+     <tr>
+      <td class="label">
+       <label for="pwda">
+        <al-if expr="ue.passwd_setting_check_old">New </al-if>
+         Password</label></td>
+      <td>
+       <al-input type="password" name="ue.pwd.new_a" id="pwda" />
+       <span class="required">*</span>
+      </td>
+     </tr>
+     <tr>
+      <td class="label">
+       <label for="pwdb">Retype Password</label></td>
+      <td>
+       <al-input type="password" name="ue.pwd.new_b" id="pwdb" />
+       <span class="required">*</span>
+      </td>
+     </tr>
+    </al-if>
+   </tbody>
+  </table>
+  <script>enterSubmit('appform', 'update');</script>
+ <al-else>
+  <table class="widelabelform">
+   <tr>
+    <td class="label">
+     <label for="enable_key">Enter registration key</label></td>
+    <td class="field">
+     <al-input name="ue.enable_key" id="enable_key" />
+    <td align="right">
+     <al-input type="submit" name="key_submit" value="Okay" class="butt" /></td>
+   </tr>
+   <script>enterSubmit('appform', 'key_submit');</script>
+  </table>
+ </al-if>
+</al-expand>

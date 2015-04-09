@@ -1,0 +1,184 @@
+<?xml version="1.0"?>
+<form name='sars_symptoms' form_type='case' allow_multiple='False'>
+ <label>Onset symptoms (SARS)</label>
+ <question>
+  <label><![CDATA[Fever >38 degrees C]]></label>
+  <input name='Fever' type='RadioList' required='True'>
+   <summary><![CDATA[Fever >38C]]></summary>
+   <choices>
+    <choice name='True'>Yes</choice>
+    <choice name='False'>No</choice>
+    <choice name='Unknown'>Unknown</choice>
+   </choices>
+  </input>
+ </question>
+ <question>
+  <label>Date of fever onset</label>
+  <input name='Fever_onset' type='DateInput' required='True'>
+   <summary>Fever onset date</summary>
+  </input>
+ </question>
+ <question>
+  <label>Date of onset of first symptom</label>
+  <input name='Onset_first_symptom' type='DateInput' required='True' />
+ </question>
+ <question>
+  <label>Productive cough</label>
+  <input name='Productive_cough' type='RadioList' required='True'>
+   <summary>Productive cough</summary>
+   <choices>
+    <choice name='True'>Yes</choice>
+    <choice name='False'>No</choice>
+    <choice name='Unknown'>Unknown</choice>
+   </choices>
+  </input>
+ </question>
+ <question>
+  <label>Non-Productive Cough</label>
+  <input name='Nonproductive_cough' type='RadioList'>
+   <choices>
+    <choice name='True'>Yes</choice>
+    <choice name='False'>No</choice>
+    <choice name='Unknown'>Unknown</choice>
+   </choices>
+  </input>
+ </question>
+ <question>
+  <label>Difficulty breathing</label>
+  <input name='Diff_breathing' type='RadioList' required='True'>
+   <summary>Difficulty Breathing</summary>
+   <choices>
+    <choice name='True'>Yes</choice>
+    <choice name='False'>No</choice>
+    <choice name='Unknown'>Unknown</choice>
+   </choices>
+  </input>
+ </question>
+ <question>
+  <label>Headache</label>
+  <input name='Headache' type='RadioList'>
+   <summary>Headache</summary>
+   <choices>
+    <choice name='True'>Yes</choice>
+    <choice name='False'>No</choice>
+    <choice name='Unknown'>Unknown</choice>
+   </choices>
+  </input>
+ </question>
+ <question>
+  <label>Myalgia</label>
+  <input name='Myalgia' type='RadioList'>
+   <summary>Myalgia</summary>
+   <choices>
+    <choice name='True'>Yes</choice>
+    <choice name='False'>No</choice>
+    <choice name='Unknown'>Unknown</choice>
+   </choices>
+  </input>
+ </question>
+ <question>
+  <label>Diarrhoea</label>
+  <input name='Diarrhoea' type='RadioList' required='True'>
+   <summary>Diarrhoea</summary>
+   <choices>
+    <choice name='True'>Yes</choice>
+    <choice name='False'>No</choice>
+    <choice name='Unknown'>Unknown</choice>
+   </choices>
+  </input>
+ </question>
+ <question>
+  <label>Sore throat</label>
+  <input name='Sore_throat' type='RadioList'>
+   <summary>Sore throat</summary>
+   <choices>
+    <choice name='True'>Yes</choice>
+    <choice name='False'>No</choice>
+    <choice name='Unknown'>Unknown</choice>
+   </choices>
+  </input>
+ </question>
+ <question>
+  <label>Rigors</label>
+  <input name='Rigors' type='RadioList'>
+   <summary>Rigors</summary>
+   <choices>
+    <choice name='True'>Yes</choice>
+    <choice name='False'>No</choice>
+    <choice name='Unknown'>Unknown</choice>
+   </choices>
+  </input>
+ </question>
+ <question>
+  <label>Nausea/vomiting</label>
+  <input name='Nausea_vomiting' type='RadioList' required='True'>
+   <summary>Nausea/vomiting</summary>
+   <choices>
+    <choice name='True'>Yes</choice>
+    <choice name='False'>No</choice>
+    <choice name='Unknown'>Unknown</choice>
+   </choices>
+  </input>
+ </question>
+ <question>
+  <label>Dizziness</label>
+  <input name='Dizziness' type='RadioList'>
+   <choices>
+    <choice name='True'>Yes</choice>
+    <choice name='False'>No</choice>
+    <choice name='Unknown'>Unknown</choice>
+   </choices>
+  </input>
+ </question>
+ <question>
+  <label>Was an x-ray taken?</label>
+  <input name='xray_done' type='RadioList'>
+   <choices>
+    <choice name='True'>Yes</choice>
+    <choice name='False'>No</choice>
+    <choice name='Unknown'>Unknown</choice>
+   </choices>
+  </input>
+ </question>
+ <question>
+  <label>X-ray date</label>
+  <input name='xray_date' type='DateInput' />
+ </question>
+ <question>
+  <label>X-ray findings of pneumonia</label>
+  <input name='xray_pneumonia' type='RadioList'>
+   <summary>X-ray findings of pneumonia</summary>
+   <choices>
+    <choice name='True'>Yes</choice>
+    <choice name='False'>No</choice>
+    <choice name='Unknown'>Unknown</choice>
+   </choices>
+  </input>
+ </question>
+ <question>
+  <label>Description of x_ray findings</label>
+  <input name='xray_description' type='RadioList'>
+   <summary>x-ray description</summary>
+   <choices>
+    <choice name='xray1'>Lobar</choice>
+    <choice name='xray2'>Atypical</choice>
+    <choice name='xray3'>Not applicable</choice>
+   </choices>
+  </input>
+ </question>
+ <question>
+  <label>
+   Autopsy pathology of Respiratory Distress Syndrome without identifiable
+   cause
+  </label>
+  <input name='autopsy_rds' type='RadioList' required='True'>
+   <choices>
+    <choice name='True'>Yes</choice>
+    <choice name='False'>No</choice>
+    <choice name='Unknown'>Unknown</choice>
+    <choice name='None'>Not applicable</choice>
+    <choice name='Unanswered'>Not answered</choice>
+   </choices>
+  </input>
+ </question>
+</form>
